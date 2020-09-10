@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
+        file-extension: yaml
+  application:
+    name: service-good
+  profiles:
+    active: dev
+# nacos对应的配置文件名为 {application}-{active}.{file-extension}   =》service-good-dev.yaml
+# 注意好像application.yml启动会报错，不知道是不是只支持bootstrap.yml
