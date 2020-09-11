@@ -6,6 +6,7 @@ import com.hjb.repository.GoodsRepository;
 import com.hjb.util.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RefreshScope
 @RequestMapping(value = "/api/v1/service-good")
 public class GoodsController {
 

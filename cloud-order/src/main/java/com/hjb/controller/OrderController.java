@@ -1,5 +1,6 @@
 package com.hjb.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSON;
 import com.hjb.domain.DTO.GoodsDTO;
 import com.hjb.domain.DTO.OrderDTO;
@@ -9,6 +10,7 @@ import com.hjb.service.OrderService;
 import com.hjb.util.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/v1/service-order")
+@RefreshScope
 public class OrderController {
 
     @Autowired
@@ -43,7 +46,6 @@ public class OrderController {
 
     @GetMapping(value = "/submit")
     public Result submit(Long goodId){
-
         Result result = goodsFeignService.get(goodId);
 
         GoodsDTO goodsDTO = JSON.parseObject(JSON.toJSONString(result.getData()),GoodsDTO.class);
@@ -62,4 +64,6 @@ public class OrderController {
 
         return Result.SUCCESS();
     }
+
+
 }

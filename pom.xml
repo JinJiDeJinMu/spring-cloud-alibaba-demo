@@ -13,6 +13,7 @@
         <module>cloud-common</module>
         <module>cloud-good</module>
         <module>cloud-order</module>
+        <module>cloud-gateway</module>
     </modules>
 
     <parent>
