@@ -21,6 +21,7 @@ public class GoodsController {
     @Autowired
     private GoodsRepository goodsRepository;
 
+
     @GetMapping(value = "/list")
     public Result list(){
 
