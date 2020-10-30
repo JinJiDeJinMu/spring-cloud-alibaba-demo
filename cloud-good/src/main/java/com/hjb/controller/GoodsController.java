@@ -45,8 +45,8 @@ public class GoodsController {
         return Result.SUCCESS(goodsRepository.save(goodsPO));
     }
 
-    @GetMapping(value = "/good/{id}")
-    public Result get(@PathVariable("id") Long id){
+    @GetMapping(value = "/good")
+    public Result get(@RequestParam(value = "id") Long id){
         GoodsPO goodsPO = goodsRepository.getOne(id);
 
         GoodsDTO goodsDTO = new GoodsDTO();

@@ -7,9 +7,19 @@
       <option name="url" value="http://nexus.dev.dtstack.cn/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="dtstack-release" />
+      <option name="name" value="dtstack-release" />
+      <option name="url" value="http://nexus.dev.dtstack.cn/nexus/content/groups/public/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
       <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="dtstack-snapshot" />
+      <option name="name" value="dtstack-snapshot" />
+      <option name="url" value="http://nexus.dev.dtstack.cn/nexus/content/groups/public/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
