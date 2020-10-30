@@ -1,0 +1,30 @@
+server:
+  port: 8093
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 让gateway从nacos中获取服务信息
+      routes:
+      - id: good-route
+        uri: lb://service-good
+        predicates: 
+        - Path=/good/**
+        filters:
+        - StripPrefix=1
+      - id: order-route
+        uri: lb://service-order
+        predicates: 
+        - Path=/order/**
+        filters:
+        - StripPrefix=1
+       
+      
+       
+      
+    
+      
