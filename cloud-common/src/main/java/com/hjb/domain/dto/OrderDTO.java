@@ -1,4 +1,4 @@
-package com.hjb.domain.DTO;
+package com.hjb.domain.dto;
 
 import lombok.Data;
 

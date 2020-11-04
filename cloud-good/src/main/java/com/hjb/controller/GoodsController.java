@@ -1,8 +1,8 @@
 package com.hjb.controller;
 
-import com.hjb.domain.DTO.GoodsDTO;
-import com.hjb.domain.PO.GoodsPO;
-import com.hjb.repository.GoodsRepository;
+import com.hjb.domain.dto.GoodsDTO;
+import com.hjb.domain.po.Goods;
+import com.hjb.service.GoodsService;
 import com.hjb.util.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,44 +13,47 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RefreshScope
 @RequestMapping(value = "/api/v1/service-good")
 public class GoodsController {
 
     @Autowired
-    private GoodsRepository goodsRepository;
+    private GoodsService goodsService;
 
 
     @GetMapping(value = "/list")
     public Result list(){
 
-        List<GoodsPO> goodsPOList = goodsRepository.findAll();
+        List<Goods> goodsList = goodsService.list();
 
-        List<GoodsDTO> goodsDTOList = goodsPOList.stream().map(e->{
+        List<GoodsDTO> goodsDTOS = goodsList.stream().map(e->{
             GoodsDTO goodsDTO = new GoodsDTO();
             BeanUtils.copyProperties(e,goodsDTO);
             return goodsDTO;
         }).collect(Collectors.toList());
-        return Result.SUCCESS(goodsDTOList);
+
+        return Result.SUCCESS(goodsDTOS);
     }
 
     @PostMapping(value = "/good")
     public Result add(@RequestBody GoodsDTO goodsDTO){
 
-        GoodsPO goodsPO = new GoodsPO();
-        BeanUtils.copyProperties(goodsDTO,goodsPO);
-        goodsPO.setCreateTime(LocalDateTime.now());
+        Goods goods = new Goods();
+        BeanUtils.copyProperties(goodsDTO,goods);
+        goods.setCreateTime(LocalDateTime.now());
 
-        return Result.SUCCESS(goodsRepository.save(goodsPO));
+        goodsService.saveOrUpdate(goods);
+        return Result.SUCCESS();
     }
 
     @GetMapping(value = "/good")
     public Result get(@RequestParam(value = "id") Long id){
-        GoodsPO goodsPO = goodsRepository.getOne(id);
+        Goods goods = goodsService.getById(id);
 
         GoodsDTO goodsDTO = new GoodsDTO();
-        BeanUtils.copyProperties(goodsPO,goodsDTO);
+        BeanUtils.copyProperties(goods,goodsDTO);
         return Result.SUCCESS(goodsDTO);
     }
 }

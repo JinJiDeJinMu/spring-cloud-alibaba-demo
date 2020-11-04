@@ -1,12 +1,11 @@
 package com.hjb.controller;
 
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSON;
-import com.hjb.domain.DTO.GoodsDTO;
-import com.hjb.domain.DTO.OrderDTO;
-import com.hjb.domain.PO.OrderPO;
-import com.hjb.service.GoodsFeignService;
-import com.hjb.service.OrderService;
+import com.hjb.domain.dto.GoodsDTO;
+import com.hjb.domain.dto.OrderDTO;
+import com.hjb.domain.po.Orders;
+import com.hjb.service.OrdersService;
+import com.hjb.service.feign.GoodsFeignService;
 import com.hjb.util.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +26,14 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     @Autowired
-    private OrderService orderService;
+    private OrdersService ordersService;
 
     @Autowired
     private GoodsFeignService goodsFeignService;
 
     @GetMapping(value = "/list")
     public Result list(){
-        List<OrderPO> orderPOList = orderService.list();
+        List<Orders> orderPOList = ordersService.list();
         List<OrderDTO> orderDTOList = orderPOList.stream().map(e->{
             OrderDTO orderDTO = new OrderDTO();
             BeanUtils.copyProperties(e,orderDTO);
@@ -58,9 +57,10 @@ public class OrderController {
         orderDTO.setMoney(goodsDTO.getMoney().multiply(new BigDecimal(2)));
         orderDTO.setCreateTime(LocalDateTime.now());
 
-        OrderPO orderPO = new OrderPO();
-        BeanUtils.copyProperties(orderDTO,orderPO);
-        orderService.save(orderPO);
+        Orders orders = new Orders();
+        BeanUtils.copyProperties(orderDTO,orders);
+
+        ordersService.save(orders);
 
         return Result.SUCCESS();
     }

@@ -1,4 +1,4 @@
-package com.hjb.service;
+package com.hjb.service.feign;
 
 import com.hjb.util.Result;
 import org.springframework.cloud.openfeign.FeignClient;
