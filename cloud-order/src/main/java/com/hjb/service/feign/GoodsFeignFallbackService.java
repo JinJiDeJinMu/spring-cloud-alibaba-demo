@@ -16,9 +16,14 @@ public class GoodsFeignFallbackService implements GoodsFeignService {
         log.info("服务容错接口启动》》》》》》");
         GoodsDTO goodsDTO = new GoodsDTO();
         goodsDTO.setId(1l);
-        goodsDTO.setGoodName("异常商品");
+        goodsDTO.setName("异常商品");
         goodsDTO.setMoney(new BigDecimal(100));
-        goodsDTO.setGoodSn("asads123");
+        goodsDTO.setGoodsSn("asads123");
         return Result.SUCCESS(goodsDTO);
+    }
+
+    @Override
+    public Integer testBalance() {
+        return 123456;
     }
 }

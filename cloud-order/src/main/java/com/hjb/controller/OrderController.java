@@ -65,5 +65,9 @@ public class OrderController {
         return Result.SUCCESS();
     }
 
+    @GetMapping("/balance")
+    public Integer balance(){
+        return goodsFeignService.testBalance();
+    }
 
 }

@@ -1,11 +1,13 @@
 package com.hjb.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hjb.domain.dto.GoodsDTO;
 import com.hjb.domain.po.Goods;
 import com.hjb.service.GoodsService;
 import com.hjb.util.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +24,14 @@ public class GoodsController {
     @Autowired
     private GoodsService goodsService;
 
+    @Value("${server.port}")
+    private Integer port;
 
     @GetMapping(value = "/list")
     public Result list(){
 
-        List<Goods> goodsList = goodsService.list();
+        List<Goods> goodsList = goodsService.list(new LambdaQueryWrapper<Goods>()
+        .eq(Goods::getName,"苹果"));
 
         List<GoodsDTO> goodsDTOS = goodsList.stream().map(e->{
             GoodsDTO goodsDTO = new GoodsDTO();
@@ -55,5 +60,11 @@ public class GoodsController {
         GoodsDTO goodsDTO = new GoodsDTO();
         BeanUtils.copyProperties(goods,goodsDTO);
         return Result.SUCCESS(goodsDTO);
+    }
+
+    @GetMapping("/balance")
+    public Integer testBalance(){
+
+        return port;
     }
 }
