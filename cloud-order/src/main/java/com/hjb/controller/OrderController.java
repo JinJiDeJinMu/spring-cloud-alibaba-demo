@@ -21,7 +21,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/api/v1/service-order")
 @RefreshScope
 public class OrderController {
 
@@ -31,7 +30,7 @@ public class OrderController {
     @Autowired
     private GoodsFeignService goodsFeignService;
 
-    @GetMapping(value = "/list")
+    @GetMapping(value = "/order/list")
     public Result list(){
         List<Orders> orderPOList = ordersService.list();
         List<OrderDTO> orderDTOList = orderPOList.stream().map(e->{
@@ -43,13 +42,11 @@ public class OrderController {
         return Result.SUCCESS(orderDTOList);
     }
 
-    @GetMapping(value = "/submit")
+    @GetMapping(value = "/order/submit")
     public Result submit(Long goodId){
         Result result = goodsFeignService.get(goodId);
-
         GoodsDTO goodsDTO = JSON.parseObject(JSON.toJSONString(result.getData()),GoodsDTO.class);
 
-        System.out.println("==="+goodsDTO);
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setGoodId(goodId);
         orderDTO.setMount(2);
@@ -63,11 +60,6 @@ public class OrderController {
         ordersService.save(orders);
 
         return Result.SUCCESS();
-    }
-
-    @GetMapping("/balance")
-    public Integer balance(){
-        return goodsFeignService.testBalance();
     }
 
 }

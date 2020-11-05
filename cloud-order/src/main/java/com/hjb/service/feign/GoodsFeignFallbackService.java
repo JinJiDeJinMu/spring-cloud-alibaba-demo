@@ -21,9 +21,4 @@ public class GoodsFeignFallbackService implements GoodsFeignService {
         goodsDTO.setGoodsSn("asads123");
         return Result.SUCCESS(goodsDTO);
     }
-
-    @Override
-    public Integer testBalance() {
-        return 123456;
-    }
 }

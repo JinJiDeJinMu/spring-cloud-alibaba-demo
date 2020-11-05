@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.*;
 public interface GoodsFeignService {
 
 
-    @RequestMapping(value = "/api/v1/service-good/good",method = RequestMethod.GET)
+    @RequestMapping(value = "/good",method = RequestMethod.GET)
     Result get(@RequestParam(value = "id") Long id);
-
-    @RequestMapping(value = "/api/v1/service-good/balance",method = RequestMethod.GET)
-    Integer testBalance();
 
 }

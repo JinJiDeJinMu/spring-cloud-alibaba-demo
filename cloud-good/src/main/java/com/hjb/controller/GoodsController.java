@@ -18,20 +18,15 @@ import java.util.stream.Collectors;
 
 @RestController
 @RefreshScope
-@RequestMapping(value = "/api/v1/service-good")
 public class GoodsController {
 
     @Autowired
     private GoodsService goodsService;
 
-    @Value("${server.port}")
-    private Integer port;
-
-    @GetMapping(value = "/list")
+    @GetMapping(value = "/good/list")
     public Result list(){
 
-        List<Goods> goodsList = goodsService.list(new LambdaQueryWrapper<Goods>()
-        .eq(Goods::getName,"苹果"));
+        List<Goods> goodsList = goodsService.list(new LambdaQueryWrapper<Goods>());
 
         List<GoodsDTO> goodsDTOS = goodsList.stream().map(e->{
             GoodsDTO goodsDTO = new GoodsDTO();
@@ -60,11 +55,5 @@ public class GoodsController {
         GoodsDTO goodsDTO = new GoodsDTO();
         BeanUtils.copyProperties(goods,goodsDTO);
         return Result.SUCCESS(goodsDTO);
-    }
-
-    @GetMapping("/balance")
-    public Integer testBalance(){
-
-        return port;
     }
 }
