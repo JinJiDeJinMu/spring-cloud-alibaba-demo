@@ -1,8 +1,7 @@
 package com.hjb.service;
 
-
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hjb.domain.po.Goods;
+import com.hjb.domain.po.Brand;
 
 /**
  * <p>
@@ -10,8 +9,8 @@ import com.hjb.domain.po.Goods;
  * </p>
  *
  * @author jinmu
- * @since 2020-11-04
+ * @since 2020-11-20
  */
-public interface GoodsService extends IService<Goods> {
+public interface BrandService extends IService<Brand> {
 
 }

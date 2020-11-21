@@ -12,9 +12,13 @@
         <module name="cloud-common" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cloud-comment" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="cloud-comment" options="-parameters" />
       <module name="cloud-common" options="-parameters" />
       <module name="cloud-gateway" options="-parameters" />
       <module name="cloud-good" options="-parameters" />

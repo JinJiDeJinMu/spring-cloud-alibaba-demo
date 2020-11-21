@@ -1,9 +1,6 @@
 package com.hjb.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.hjb.domain.dto.GoodsDTO;
-import com.hjb.domain.dto.OrderDTO;
-import com.hjb.domain.po.Orders;
 import com.hjb.service.OrdersService;
 import com.hjb.service.feign.GoodsFeignService;
 import com.hjb.util.Result;
@@ -11,7 +8,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;

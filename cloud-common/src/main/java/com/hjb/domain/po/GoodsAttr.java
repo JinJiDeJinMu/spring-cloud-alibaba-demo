@@ -2,10 +2,12 @@ package com.hjb.domain.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -15,24 +17,30 @@ import java.util.Date;
  * </p>
  *
  * @author jinmu
- * @since 2020-11-04
+ * @since 2020-11-20
  */
 @Data
-public class Orders implements Serializable {
+@TableName("hu_goods_attr")
+public class GoodsAttr implements Serializable {
 
     private static final long serialVersionUID=1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String orderSn;
+    private Long goodsId;
 
-    private Long goodId;
+    private Long attrId;
 
-    private Integer mount;
+    private String attrName;
 
-    private BigDecimal money;
+    private String attrValue;
+
+    private String goodsAttrImg;
+
+    private Integer attrSort;
 
     private LocalDateTime createTime;
+
 
 }

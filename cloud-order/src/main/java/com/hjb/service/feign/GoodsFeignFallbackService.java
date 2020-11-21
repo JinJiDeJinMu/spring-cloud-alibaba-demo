@@ -1,7 +1,5 @@
 package com.hjb.service.feign;
 
-import com.hjb.domain.dto.GoodsDTO;
-import com.hjb.service.feign.GoodsFeignService;
 import com.hjb.util.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

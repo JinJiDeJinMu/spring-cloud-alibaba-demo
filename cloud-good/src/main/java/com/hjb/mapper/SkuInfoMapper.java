@@ -1,8 +1,7 @@
 package com.hjb.mapper;
 
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hjb.domain.po.Goods;
+import com.hjb.domain.po.SkuInfo;
 
 /**
  * <p>
@@ -10,8 +9,8 @@ import com.hjb.domain.po.Goods;
  * </p>
  *
  * @author jinmu
- * @since 2020-11-04
+ * @since 2020-11-20
  */
-public interface GoodsMapper extends BaseMapper<Goods> {
+public interface SkuInfoMapper extends BaseMapper<SkuInfo> {
 
 }

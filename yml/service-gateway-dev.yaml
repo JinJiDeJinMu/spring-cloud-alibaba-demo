@@ -1,5 +1,5 @@
 server:
-  port: 8092
+ port: 8092
 spring:
   cloud:
     nacos:
@@ -11,17 +11,17 @@ spring:
           enabled: true # 让gateway从nacos中获取服务信息
       routes:
       - id: good-route
-          uri: lb://service-good
-          predicates:
-          - Path=/service-good/**
-          filters:
-          - RewritePath=/service-good/(?<segment>.*), /$\{segment}
+        uri: lb://service-good
+        predicates:
+        - Path=/service-good/**
+        filters:
+        - RewritePath=/service-good/(?<segment>.*), /$\{segment}
       - id: order-route
-          uri: lb://service-order
-          predicates:
-          - Path=/service-order/**
-          filters:
-          - RewritePath=/service-order/(?<segment>.*), /$\{segment}
+        uri: lb://service-order
+        predicates:
+        - Path=/service-order/**
+        filters:
+        - RewritePath=/service-order/(?<segment>.*), /$\{segment}
        
       
        

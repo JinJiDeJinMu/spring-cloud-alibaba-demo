@@ -8,15 +8,16 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 import java.sql.Driver;
 
+
 public class Generator {
-    public final static String DB_CONNECTION = "jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
+    public final static String DB_CONNECTION = "jdbc:mysql://localhost:3306/hu_shop?serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
     public final static String DB_USER_NAME = "root";
     public final static String DB_PWD = "123456";
     public final static String SYS_PACKAGE_NAME = "com.hjb";
     public final static String SYS_AHURTOR = "jinmu";
 
     public static void main(String[] args) {
-        String[] tableNames = new String[]{"goods"};
+        String[] tableNames = new String[]{"hu_goods_attr"};
         String[] modules = new String[]{"service", "web"};//项目模块名，需自定义
         for (String module : modules) {
             moduleGenerator(module, tableNames);
@@ -28,14 +29,40 @@ public class Generator {
         DataSourceConfig dataSourceConfig = getDataSourceConfig();// 数据源配置
         PackageConfig packageConfig = getPackageConfig(module);// 包配置
         StrategyConfig strategyConfig = getStrategyConfig(tableNames);// 策略配置
-
+        TemplateConfig templateConfig = getTemplateConfig(module);// 配置模板
+        //InjectionConfig cfg= genCustomerTemplate();
         new AutoGenerator()
                 .setGlobalConfig(globalConfig)
                 .setDataSource(dataSourceConfig)
                 .setPackageInfo(packageConfig)
                 .setStrategy(strategyConfig)
+                .setTemplate(templateConfig)
+               // .setCfg(cfg)
                 .execute();
 
+    }
+
+    private static TemplateConfig getTemplateConfig(String module) {
+        TemplateConfig templateConfig = new TemplateConfig();
+        if ("service".equals(module)) {
+            templateConfig.setEntity(new TemplateConfig().getEntity(false))
+                    .setMapper(new TemplateConfig().getMapper())//mapper模板采用mybatis-plus自己模板
+                    .setXml(new TemplateConfig().getXml())
+                    .setService(new TemplateConfig().getService())
+                    .setServiceImpl(new TemplateConfig().getServiceImpl())
+                    .setController(null);//service模块不生成controller代码
+        } else if ("web".equals(module)) {//web模块只生成controller代码
+            templateConfig.setEntity(null)
+                    .setMapper(null)
+                    .setXml(null)
+                    .setService(null)
+                    .setServiceImpl(null)
+                    .setController("/template/Controller.java.vm");
+        } else {
+            throw new IllegalArgumentException("参数匹配错误，请检查");
+        }
+
+        return templateConfig;
     }
     private static StrategyConfig getStrategyConfig(String[] tableNames) {
         StrategyConfig strategyConfig = new StrategyConfig();
@@ -43,7 +70,7 @@ public class Generator {
                 .setCapitalMode(true)//驼峰命名
                 .setEntityLombokModel(true)
                 .setRestControllerStyle(false)
-                //.setTablePrefix("nideshop_")
+                .setTablePrefix("hu_")
                 .setNaming(NamingStrategy.underline_to_camel)
                 .setInclude(tableNames);
         return strategyConfig;
@@ -86,5 +113,4 @@ public class Generator {
                 .setServiceName("%sService");
         return globalConfig;
     }
-
 }
