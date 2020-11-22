@@ -10,10 +10,8 @@ import com.hjb.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +31,10 @@ import java.util.List;
 public class GoodsInfoController {
 
     @Autowired
-    public GoodsInfoService goodsInfoService;
+    private GoodsInfoService goodsInfoService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
     * 根据主键id查询单条

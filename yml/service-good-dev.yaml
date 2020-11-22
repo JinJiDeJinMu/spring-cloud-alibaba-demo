@@ -1,18 +1,23 @@
 spring:
+  redis:
+    cluster:
+      nodes: 47.95.34.220:7000,47.95.34.220:7001,47.95.34.220:7002,47.95.34.220:7003,47.95.34.220:7004,47.95.34.220:7005
   cloud:
     nacos:
-     discovery:
-       server-addr: localhost:8848
+      discovery:
+        server-addr: localhost:8848
     sentinel:
       transport:
         dashboard: localhost:7070
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/hu_shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://47.95.34.220:3306/hu_shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
 server:
   port: 8090
+elasticsearch:
+  ips: 127.0.0.1:9200
 
       

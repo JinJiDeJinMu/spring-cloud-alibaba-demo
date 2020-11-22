@@ -1,13 +1,13 @@
-package com.hjb.domain.dto;
+package com.hjb.elastic.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @Data
-public class GoodsDetailDTO {
+public class EsGoods {
 
     private Long id;
 
@@ -25,9 +25,11 @@ public class GoodsDetailDTO {
 
     private Integer isNew;
 
+    private BigDecimal price;
+
+    private Long mount;
+
+    private Long saleCount;
+
     private LocalDateTime createdTime;
-
-    private LocalDateTime updateTime;
-
-    private List<SkuInfoDTO> skuInfoDTOS;
 }
