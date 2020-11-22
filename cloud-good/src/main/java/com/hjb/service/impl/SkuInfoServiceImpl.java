@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.domain.po.SkuInfo;
 import com.hjb.mapper.SkuInfoMapper;
 import com.hjb.service.SkuInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> implements SkuInfoService {
 
+    @Autowired
+    private SkuInfoMapper skuInfoMapper;
+
+    @Override
+    public boolean deleteSKUByGoodsId(List<Long> goodsIds) {
+        return skuInfoMapper.deleteSKUByGoodsId(goodsIds);
+    }
 }

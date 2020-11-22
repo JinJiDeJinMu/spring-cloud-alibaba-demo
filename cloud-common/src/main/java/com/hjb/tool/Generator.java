@@ -10,7 +10,7 @@ import java.sql.Driver;
 
 
 public class Generator {
-    public final static String DB_CONNECTION = "jdbc:mysql://localhost:3306/hu_shop?serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
+    public final static String DB_CONNECTION = "jdbc:mysql://47.95.34.220:3306/hu_shop?serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
     public final static String DB_USER_NAME = "root";
     public final static String DB_PWD = "123456";
     public final static String SYS_PACKAGE_NAME = "com.hjb";

@@ -1,5 +1,6 @@
 package com.hjb.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hjb.domain.param.GoodsInfoParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,8 +86,8 @@ public class GoodsInfoController {
     */
     @ApiOperation(value = "批量删除数据")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result deleteGoodsInfoById(List<Long> ids){
-        return Result.SUCCESS(goodsInfoService.removeByIds(ids));
+    public Result deleteGoodsInfoById(@RequestBody List<Long> ids){
+        return Result.SUCCESS(goodsInfoService.deleteGoods(ids));
     }
 
 

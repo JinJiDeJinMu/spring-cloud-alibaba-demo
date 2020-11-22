@@ -25,6 +25,11 @@ public interface GoodsInfoService extends IService<GoodsInfo> {
      */
     Boolean save(GoodsInfoParam goodsInfoParam);
 
+    /**
+     * 查询商品详情
+     * @param id
+     * @return
+     */
     GoodsDetailDTO goodsDetail(Long id);
 
     /**
@@ -33,4 +38,11 @@ public interface GoodsInfoService extends IService<GoodsInfo> {
      * @return
      */
     String goodsAttrs(Long id);
+
+    /**
+     *
+     * @param ids
+     * @return
+     */
+    Boolean deleteGoods(List<Long> ids);
 }

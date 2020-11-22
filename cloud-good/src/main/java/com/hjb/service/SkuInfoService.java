@@ -2,6 +2,9 @@ package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hjb.domain.po.SkuInfo;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.hjb.domain.po.SkuInfo;
  */
 public interface SkuInfoService extends IService<SkuInfo> {
 
+    boolean deleteSKUByGoodsId(@Param("goodsId") List<Long> goodsIds);
 }

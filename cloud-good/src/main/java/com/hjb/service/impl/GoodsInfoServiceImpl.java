@@ -43,6 +43,7 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
     @Autowired
     private GoodsAttrService goodsAttrService;
 
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean save(GoodsInfoParam goodsInfoParam) {
@@ -109,5 +110,18 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
            result.put(attrName,list);
        });
        return JSONObject.toJSONString(result);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean deleteGoods(List<Long> ids) {
+
+        removeByIds(ids);
+        //删除商品属性
+        goodsAttrService.deleteGoodsAttrByGoodsId(ids);
+        //删除商品SKU
+        skuInfoService.deleteSKUByGoodsId(ids);
+
+        return Boolean.TRUE;
     }
 }

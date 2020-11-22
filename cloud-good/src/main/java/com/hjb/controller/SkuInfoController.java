@@ -67,8 +67,9 @@ public class SkuInfoController {
         return Result.SUCCESS(pageInfo);
     }
 
+
     /**
-    * 更新保存单条数据
+    * 更新或者保存商品SKU
     * @param skuInfo
     */
     @ApiOperation(value = "更新保存单条数据")

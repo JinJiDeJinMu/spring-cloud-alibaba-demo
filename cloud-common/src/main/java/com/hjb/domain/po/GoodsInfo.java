@@ -34,6 +34,8 @@ public class GoodsInfo implements Serializable {
 
     private String goodDesc;
 
+    private String imgUrl;
+
     private Long catalogId;
 
     private Long brandId;
