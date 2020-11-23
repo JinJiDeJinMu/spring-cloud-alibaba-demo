@@ -2,8 +2,8 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hjb.domain.po.Order;
-import com.hjb.service.OrderService;
+import com.hjb.domain.po.OrderItem;
+import com.hjb.service.OrderItemService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,19 +18,19 @@ import java.util.List;
 
 /**
  * <p>
- * Order前端控制器
+ * OrderItem前端控制器
  * </p>
  *
  * @author jinmu
  * @since 2020-11-23
  */
 @RestController
-@Api(tags = "Order")
-@RequestMapping("/order")
-public class OrderController {
+@Api(tags = "OrderItem")
+@RequestMapping("/orderItem")
+public class OrderItemController {
 
     @Autowired
-    public OrderService orderService;
+    public OrderItemService orderItemService;
 
     /**
     * 根据主键id查询单条
@@ -38,18 +38,18 @@ public class OrderController {
     */
     @ApiOperation(value = "获取单条数据")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public Result getOrderById(Long id){
-        return Result.SUCCESS(orderService.getById(id));
+    public Result getOrderItemById(Long id){
+        return Result.SUCCESS(orderItemService.getById(id));
     }
 
     /**
     * 查询全部
     * @param param 查询条件
     */
-    @ApiOperation(value = "全部查询", notes = "查询Order全部数据")
+    @ApiOperation(value = "全部查询", notes = "查询OrderItem全部数据")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public Result getOrderAll(@RequestBody HashMap<String, Object> param){
-        List<Order> result= orderService.listByMap(param);
+    public Result getOrderItemAll(@RequestBody HashMap<String, Object> param){
+        List<OrderItem> result= orderItemService.listByMap(param);
         return Result.SUCCESS(result);
     }
 
@@ -57,24 +57,24 @@ public class OrderController {
     * 分页查询
     * @param param 查询条件
     */
-    @ApiOperation(value = "分页查询", notes = "分页查询Order全部数据")
+    @ApiOperation(value = "分页查询", notes = "分页查询OrderItem全部数据")
     @RequestMapping(value = "/pageList", method = RequestMethod.POST)
-    public Result getOrderPage(@RequestBody HashMap<String, Object> param){
+    public Result getOrderItemPage(@RequestBody HashMap<String, Object> param){
         PageHelper.startPage(Integer.valueOf(param.get("pageNum").toString()), Integer.valueOf(param.get("pageSize").toString()));
         //手动构建查询条件
-        List<Order> result= orderService.list();
+        List<OrderItem> result= orderItemService.list();
         PageInfo pageInfo = new PageInfo(result);
         return Result.SUCCESS(pageInfo);
     }
 
     /**
     * 更新保存单条数据
-    * @param order
+    * @param orderItem
     */
     @ApiOperation(value = "更新保存单条数据")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result addOrUpdateOrder(@RequestBody Order order){
-        return Result.SUCCESS(orderService.saveOrUpdate(order));
+    public Result addOrUpdateOrderItem(@RequestBody OrderItem orderItem){
+        return Result.SUCCESS(orderItemService.saveOrUpdate(orderItem));
     }
 
     /**
@@ -83,8 +83,8 @@ public class OrderController {
     */
     @ApiOperation(value = "批量删除数据")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result deleteOrderById(List<Long> ids){
-        return Result.SUCCESS(orderService.removeByIds(ids));
+    public Result deleteOrderItemById(List<Long> ids){
+        return Result.SUCCESS(orderItemService.removeByIds(ids));
     }
 
 }

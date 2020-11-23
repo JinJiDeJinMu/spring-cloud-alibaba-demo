@@ -7,6 +7,8 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -93,6 +95,20 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
     }
 
     @Override
+    public DeleteResponse deleteDoc(String index, String id) {
+
+        DeleteRequest deleteRequest = new DeleteRequest(index,id);
+        DeleteResponse deleteResponse = null;
+        try {
+            deleteResponse = restHighLevelClient.delete(deleteRequest,RequestOptions.DEFAULT);
+            log.info("delete index={}, id={}, response={}", index,id, deleteResponse);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return deleteResponse;
+    }
+
+    @Override
     public BulkResponse bulkIndex(String index, List<Object> list) {
         BulkRequest request = new BulkRequest();
         list.forEach(e->{
@@ -117,6 +133,7 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
 
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
         boolQueryBuilder.must(QueryBuilders.matchQuery(source,keyword));
+        sourceBuilder.query(QueryBuilders.multiMatchQuery(keyword,source,"goodDesc"));
 
 
 
@@ -139,7 +156,7 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
 
         //高亮查询
         HighlightBuilder highlightBuilder = new HighlightBuilder();
-        highlightBuilder.field(new HighlightBuilder.Field("address"));
+        highlightBuilder.field(new HighlightBuilder.Field("goodName"));
         highlightBuilder.preTags("<span style=\"color:red;size:50px\">");   //高亮设置
         highlightBuilder.postTags("</span>");
         highlightBuilder.fragmentSize(50);

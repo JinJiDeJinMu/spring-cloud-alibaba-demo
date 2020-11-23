@@ -3,15 +3,13 @@ package com.hjb.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hjb.domain.po.SkuInfo;
+import com.hjb.elastic.EsService;
 import com.hjb.service.SkuInfoService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +28,10 @@ import java.util.List;
 public class SkuInfoController {
 
     @Autowired
-    public SkuInfoService skuInfoService;
+    private SkuInfoService skuInfoService;
+
+    @Autowired
+    private EsService esService;
 
     /**
     * 根据主键id查询单条
@@ -75,7 +76,7 @@ public class SkuInfoController {
     @ApiOperation(value = "更新保存单条数据")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result addOrUpdateSkuInfo(@RequestBody SkuInfo skuInfo){
-        return Result.SUCCESS(skuInfoService.saveOrUpdate(skuInfo));
+        return Result.SUCCESS(skuInfoService.addOrUpdateSkuInfo(skuInfo));
     }
 
     /**

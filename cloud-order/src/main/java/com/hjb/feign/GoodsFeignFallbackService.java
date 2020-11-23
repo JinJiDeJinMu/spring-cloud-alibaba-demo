@@ -1,4 +1,4 @@
-package com.hjb.service.feign;
+package com.hjb.feign;
 
 import com.hjb.util.Result;
 import lombok.extern.slf4j.Slf4j;

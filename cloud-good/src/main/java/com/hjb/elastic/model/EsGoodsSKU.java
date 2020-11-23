@@ -4,12 +4,13 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
-public class EsGoods {
+public class EsGoodsSKU {
 
     private Long id;
+
+    private Long goodsId;
 
     private String goodName;
 
@@ -24,6 +25,14 @@ public class EsGoods {
     private Integer publishStatus;
 
     private Integer isNew;
+
+    private String attrList;
+
+    private String skuImg;
+
+    private String skuDesc;
+
+    private String skuTitle;
 
     private BigDecimal price;
 

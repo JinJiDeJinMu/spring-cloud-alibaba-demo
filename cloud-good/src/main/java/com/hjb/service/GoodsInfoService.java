@@ -5,6 +5,7 @@ import com.hjb.domain.dto.GoodsDetailDTO;
 import com.hjb.domain.param.GoodsInfoParam;
 import com.hjb.domain.po.GoodsAttr;
 import com.hjb.domain.po.GoodsInfo;
+import com.hjb.elastic.model.EsGoodsSKU;
 
 import java.util.List;
 
@@ -45,4 +46,11 @@ public interface GoodsInfoService extends IService<GoodsInfo> {
      * @return
      */
     Boolean deleteGoods(List<Long> ids);
+
+    /**
+     * es查询
+     * @param keyword
+     * @return
+     */
+    List<EsGoodsSKU> query(String keyword);
 }

@@ -1,10 +1,8 @@
 package com.hjb.domain.dto;
 
-import com.hjb.domain.po.SkuAttr;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 public class SkuInfoDTO {
@@ -25,5 +23,4 @@ public class SkuInfoDTO {
 
     private Long saleCount;
 
-    private List<SkuAttr> skuAttr;
 }

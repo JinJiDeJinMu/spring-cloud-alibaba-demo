@@ -72,6 +72,16 @@ public class GoodsInfoController {
     }
 
     /**
+     * es查询
+     * @param keyword 查询条件
+     */
+    @ApiOperation(value = "分页查询", notes = "分页查询GoodsInfo全部数据")
+    @RequestMapping(value = "/query", method = RequestMethod.GET)
+    public Result query(String keyword){
+        return Result.SUCCESS(goodsInfoService.query(keyword));
+    }
+
+    /**
     * 添加商品
     * @param goodsInfoParam
     */

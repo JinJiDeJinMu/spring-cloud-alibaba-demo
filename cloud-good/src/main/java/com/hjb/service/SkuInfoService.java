@@ -17,4 +17,6 @@ import java.util.List;
 public interface SkuInfoService extends IService<SkuInfo> {
 
     boolean deleteSKUByGoodsId(@Param("goodsId") List<Long> goodsIds);
+
+    boolean addOrUpdateSkuInfo(SkuInfo skuInfo);
 }

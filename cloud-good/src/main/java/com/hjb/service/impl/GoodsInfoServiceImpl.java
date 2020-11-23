@@ -1,5 +1,6 @@
 package com.hjb.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -8,22 +9,22 @@ import com.hjb.domain.dto.SkuInfoDTO;
 import com.hjb.domain.param.GoodsInfoParam;
 import com.hjb.domain.po.GoodsAttr;
 import com.hjb.domain.po.GoodsInfo;
-import com.hjb.domain.po.SkuAttr;
 import com.hjb.domain.po.SkuInfo;
+import com.hjb.elastic.EsService;
+import com.hjb.elastic.model.EsGoodsSKU;
 import com.hjb.mapper.GoodsInfoMapper;
 import com.hjb.service.GoodsAttrService;
 import com.hjb.service.GoodsInfoService;
-import com.hjb.service.SkuInfoService; 
+import com.hjb.service.SkuInfoService;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +43,9 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
 
     @Autowired
     private GoodsAttrService goodsAttrService;
+
+    @Autowired
+    private EsService esService;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -121,7 +125,26 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
         goodsAttrService.deleteGoodsAttrByGoodsId(ids);
         //删除商品SKU
         skuInfoService.deleteSKUByGoodsId(ids);
-
+        //删除es
+        ids.forEach(e->{
+            esService.deleteDoc("goodsku",String.valueOf(e));
+        });
         return Boolean.TRUE;
+    }
+
+    @Override
+    public List<EsGoodsSKU> query(String keyword) {
+        List<EsGoodsSKU> esGoodsSKUS = new ArrayList<>();
+        SearchResponse response = esService.search("goodsku","goodName",keyword);
+        if(response.status().getStatus() == 200){
+            SearchHit[] hits = response.getHits().getHits();
+            for (SearchHit hit : hits) {
+                Map<String, Object> map = hit.getSourceAsMap();
+                EsGoodsSKU esGoodsSKU = JSON.parseObject(JSONObject.toJSONString(map),EsGoodsSKU.class);
+                esGoodsSKUS.add(esGoodsSKU);
+            }
+
+        }
+        return esGoodsSKUS;
     }
 }

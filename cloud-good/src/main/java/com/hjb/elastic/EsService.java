@@ -2,6 +2,7 @@ package com.hjb.elastic;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 
@@ -34,6 +35,14 @@ public interface EsService {
      * @return
      */
     IndexResponse insertIndex(String index, String type , String id, Object object);
+
+    /**
+     * 删除文档
+     * @param index
+     * @param id
+     * @return
+     */
+    DeleteResponse deleteDoc(String index , String id);
 
     /**
     * 批量插入文档
