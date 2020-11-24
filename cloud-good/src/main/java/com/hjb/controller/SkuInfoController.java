@@ -24,14 +24,11 @@ import java.util.List;
  */
 @RestController
 @Api(tags = "SkuInfo")
-@RequestMapping("/skuInfo")
+@RequestMapping(value = "/skuInfo")
 public class SkuInfoController {
 
     @Autowired
     private SkuInfoService skuInfoService;
-
-    @Autowired
-    private EsService esService;
 
     /**
     * 根据主键id查询单条
@@ -39,7 +36,7 @@ public class SkuInfoController {
     */
     @ApiOperation(value = "获取单条数据")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public Result getSkuInfoById(Long id){
+    public Result getSkuInfoById(@RequestParam(value = "id") Long id){
         return Result.SUCCESS(skuInfoService.getById(id));
     }
 

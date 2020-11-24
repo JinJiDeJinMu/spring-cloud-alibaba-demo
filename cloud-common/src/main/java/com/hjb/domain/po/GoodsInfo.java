@@ -20,8 +20,6 @@ import java.util.Date;
  * @since 2020-11-20
  */
 @Data
-  @EqualsAndHashCode(callSuper = false)
-  @Accessors(chain = true)
 @TableName("hu_goods_info")
 public class GoodsInfo implements Serializable {
 
@@ -33,6 +31,10 @@ public class GoodsInfo implements Serializable {
     private String goodName;
 
     private String goodDesc;
+
+    private String keyword;
+
+    private String goodDetail;
 
     private String imgUrl;
 

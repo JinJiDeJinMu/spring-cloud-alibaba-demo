@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 public interface GoodsFeignService {
 
 
-    @RequestMapping(value = "/good",method = RequestMethod.GET)
-    Result get(@RequestParam(value = "id") Long id);
+    @RequestMapping(value = "goodsInfo/detail",method = RequestMethod.GET)
+    Result goodsDetail(@RequestParam(value = "id") Long id);
 
+    @RequestMapping(value = "skuInfo/get", method = RequestMethod.GET)
+    Result getSkuInfoById(@RequestParam(value = "id") Long id);
 }

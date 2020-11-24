@@ -5,6 +5,7 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 
 import java.util.List;
 
@@ -60,4 +61,6 @@ public interface EsService {
      * @return
      */
     SearchResponse search(String index, String source,String keyword);
+
+    SearchResponse query(String index, BoolQueryBuilder boolQueryBuilder);
 }

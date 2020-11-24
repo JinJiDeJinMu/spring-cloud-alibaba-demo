@@ -109,7 +109,7 @@ public class GoodsInfoController {
      */
     @ApiOperation(value = "查询商品详情")
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    public Result goodsDetail(Long id){
+    public Result goodsDetail(@RequestParam(value = "id") Long id){
         return Result.SUCCESS(goodsInfoService.goodsDetail(id));
     }
 

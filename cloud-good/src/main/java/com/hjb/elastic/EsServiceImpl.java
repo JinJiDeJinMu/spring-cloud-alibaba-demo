@@ -175,4 +175,23 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
         }
         return searchResponse;
     }
+
+    @Override
+    public SearchResponse query(String index, BoolQueryBuilder boolQueryBuilder) {
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        sourceBuilder.query(boolQueryBuilder);
+        searchRequest.source(sourceBuilder);
+
+        searchRequest.indices(index);
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            log.info("search index={}, response={}",index, searchResponse);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
 }

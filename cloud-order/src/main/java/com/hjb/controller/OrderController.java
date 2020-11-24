@@ -3,15 +3,14 @@ package com.hjb.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hjb.domain.po.Order;
+import com.hjb.feign.GoodsFeignService;
 import com.hjb.service.OrderService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,10 +26,14 @@ import java.util.List;
 @RestController
 @Api(tags = "Order")
 @RequestMapping("/order")
+@RefreshScope
 public class OrderController {
 
     @Autowired
     public OrderService orderService;
+
+    @Autowired
+    private GoodsFeignService goodsFeignService;
 
     /**
     * 根据主键id查询单条
@@ -68,23 +71,13 @@ public class OrderController {
     }
 
     /**
-    * 更新保存单条数据
+    *
     * @param order
     */
-    @ApiOperation(value = "更新保存单条数据")
+    @ApiOperation(value = "订单提交")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result addOrUpdateOrder(@RequestBody Order order){
+    public Result submit(@RequestBody Order order){
         return Result.SUCCESS(orderService.saveOrUpdate(order));
-    }
-
-    /**
-    * 批量删除
-    * @param ids
-    */
-    @ApiOperation(value = "批量删除数据")
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result deleteOrderById(List<Long> ids){
-        return Result.SUCCESS(orderService.removeByIds(ids));
     }
 
 }
