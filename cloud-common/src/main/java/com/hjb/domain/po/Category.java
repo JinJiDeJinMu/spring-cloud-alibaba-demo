@@ -4,10 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+
 
 /**
  * <p>
@@ -18,8 +17,6 @@ import java.io.Serializable;
  * @since 2020-11-20
  */
 @Data
-  @EqualsAndHashCode(callSuper = false)
-  @Accessors(chain = true)
 @TableName("hu_category")
 public class Category implements Serializable {
 
@@ -67,9 +64,8 @@ public class Category implements Serializable {
       private String productUnit;
 
       /**
-     * 商品数量
+     * 可选商品属性
      */
-      private Integer productCount;
-
+      private String productCategory;
 
 }

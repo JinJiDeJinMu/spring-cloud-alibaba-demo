@@ -4,36 +4,45 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * <p>
- * 
+ * 商品属性
  * </p>
  *
  * @author jinmu
- * @since 2020-11-20
+ * @since 2020-11-25
  */
 @Data
-@TableName("hu_goods_attr")
-public class GoodsAttr implements Serializable {
+@TableName("hu_goods_attribute")
+public class GoodsAttribute implements Serializable {
 
     private static final long serialVersionUID=1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+     @TableId(value = "id", type = IdType.AUTO)
+     private Long id;
 
-    private Long goodsId;
+      /**
+     * 分类ID
+     */
+      private Long categoryId;
 
-    private Long attrId;
+      /**
+     * 商品ID
+     */
+      private Long goodsId;
 
-    private String attrName;
+      /**
+     * 属性ID
+     */
+      private Long attrId;
 
+    /**
+     * 例如{"key":"颜色","value":["白色","黑色","绿色"]}
+     */
     private String attrValue;
 
     private String goodsAttrImg;
@@ -41,6 +50,5 @@ public class GoodsAttr implements Serializable {
     private Integer attrSort;
 
     private LocalDateTime createTime;
-
 
 }

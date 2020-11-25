@@ -1,11 +1,10 @@
 package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hjb.domain.dto.GoodsDetailDTO;
 import com.hjb.domain.param.GoodsInfoParam;
-import com.hjb.domain.po.GoodsAttr;
 import com.hjb.domain.po.GoodsInfo;
-import com.hjb.elastic.model.EsGoodsSKU;
+import com.hjb.elastic.model.EsGoods;
+import com.hjb.util.Result;
 
 import java.util.List;
 
@@ -19,26 +18,20 @@ import java.util.List;
  */
 public interface GoodsInfoService extends IService<GoodsInfo> {
 
+
     /**
-     * 添加商品
+     * 创建商品
      * @param goodsInfoParam
      * @return
      */
-    Boolean save(GoodsInfoParam goodsInfoParam);
+    Result save(GoodsInfoParam goodsInfoParam);
 
     /**
      * 查询商品详情
      * @param id
      * @return
      */
-    GoodsDetailDTO goodsDetail(Long id);
-
-    /**
-     * 查询指定商品的所有规格属性
-     * @param id
-     * @return
-     */
-    String goodsAttrs(Long id);
+    Result detail(Long id);
 
     /**
      *
@@ -52,5 +45,5 @@ public interface GoodsInfoService extends IService<GoodsInfo> {
      * @param keyword
      * @return
      */
-    List<EsGoodsSKU> query(String keyword);
+    List<EsGoods> query(String keyword);
 }

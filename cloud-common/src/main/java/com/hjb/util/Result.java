@@ -40,7 +40,6 @@ public class Result {
 
     }
 
-
     public Result(Integer code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
@@ -52,33 +51,4 @@ public class Result {
         this.msg = "OK";
         this.data = data;
     }
-
-    public Boolean isSUCCESS() {
-        return this.code == 200;
-    }
-
-    public Integer getStatus() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
 }

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.domain.po.GoodsInfo;
 import com.hjb.domain.po.SkuInfo;
 import com.hjb.elastic.EsService;
-import com.hjb.elastic.model.EsGoodsSKU;
+import com.hjb.elastic.model.EsGoods;
 import com.hjb.mapper.SkuInfoMapper;
 import com.hjb.service.GoodsInfoService;
 import com.hjb.service.SkuInfoService;
@@ -12,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -44,7 +43,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     public boolean addOrUpdateSkuInfo(SkuInfo skuInfo) {
         saveOrUpdate(skuInfo);
         //插入更新es
-        EsGoodsSKU esGoodsSKU = new EsGoodsSKU();
+        EsGoods esGoodsSKU = new EsGoods();
 
         GoodsInfo goodsInfo = goodsInfoService.getById(skuInfo.getGoodsId());
 

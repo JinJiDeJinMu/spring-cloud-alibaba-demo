@@ -1,9 +1,9 @@
 package com.hjb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hjb.domain.po.GoodsAttr;
-import com.hjb.mapper.GoodsAttrMapper;
-import com.hjb.service.GoodsAttrService;
+import com.hjb.domain.po.GoodsAttribute;
+import com.hjb.mapper.GoodsAttributeMapper;
+import com.hjb.service.GoodsAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +15,16 @@ import java.util.List;
  * </p>
  *
  * @author jinmu
- * @since 2020-11-20
+ * @since 2020-11-25
  */
 @Service
-public class GoodsAttrServiceImpl extends ServiceImpl<GoodsAttrMapper, GoodsAttr> implements GoodsAttrService {
+public class GoodsAttributeServiceImpl extends ServiceImpl<GoodsAttributeMapper, GoodsAttribute> implements GoodsAttributeService {
 
     @Autowired
-    private GoodsAttrMapper goodsAttrMapper;
+    private GoodsAttributeMapper goodsAttributeMapper;
 
     @Override
     public Boolean deleteGoodsAttrByGoodsId(List<Long> goodsIds) {
-
-        return goodsAttrMapper.deleteGoodsAttrByGoodsId(goodsIds);
+        return goodsAttributeMapper.deleteGoodsAttrByGoodsId(goodsIds);
     }
 }

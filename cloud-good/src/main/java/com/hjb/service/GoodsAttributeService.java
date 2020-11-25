@@ -1,7 +1,7 @@
 package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hjb.domain.po.GoodsAttr;
+import com.hjb.domain.po.GoodsAttribute;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import java.util.List;
  * </p>
  *
  * @author jinmu
- * @since 2020-11-20
+ * @since 2020-11-25
  */
-public interface GoodsAttrService extends IService<GoodsAttr> {
+public interface GoodsAttributeService extends IService<GoodsAttribute> {
 
     Boolean deleteGoodsAttrByGoodsId(List<Long> goodsIds);
 }

@@ -3,13 +3,13 @@ package com.hjb.domain.param;
 import lombok.Data;
 
 @Data
-public class GoodsAttrParam {
+public class GoodsAttributeParam {
+
+    private Long categoryId;
 
     private Long goodsId;
 
     private Long attrId;
-
-    private String attrName;
 
     private String attrValue;
 

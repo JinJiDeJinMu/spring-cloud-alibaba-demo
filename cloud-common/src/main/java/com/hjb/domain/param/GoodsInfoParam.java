@@ -7,19 +7,33 @@ import java.util.List;
 @Data
 public class GoodsInfoParam {
 
-    private String goodName;
+    private String goodsName;
 
-    private String goodDesc;
+    private String keyword;
 
-    private String imgUrl;
+    private String goodsDesc;
 
-    private Long catalogId;
+    private String goodsDetail;
+
+    private String mainImgUrl;
+
+    private String carouselImgUrl;
+
+    private Long categoryId;
+
+    private String categoryName;
 
     private Long brandId;
 
-    private Integer publishStatus;
+    private String brandName;
+
+    private Integer isPublish;
 
     private Integer isNew;
 
-    private List<GoodsAttrParam> goodsAttrParams;
+    private Integer isRecommend;
+
+    List<GoodsAttributeParam> goodsAttributeParamList;
+
+    List<SkuInfoParam> skuInfoParamList;
 }

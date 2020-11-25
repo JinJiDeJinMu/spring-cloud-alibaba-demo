@@ -33,9 +33,6 @@ public class GoodsInfoController {
     @Autowired
     private GoodsInfoService goodsInfoService;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-
     /**
     * 根据主键id查询单条
     * @param id
@@ -87,7 +84,7 @@ public class GoodsInfoController {
     */
     @ApiOperation(value = "保存单条数据")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result save(@RequestBody GoodsInfoParam goodsInfoParam){
+    public Result create(@RequestBody GoodsInfoParam goodsInfoParam){
         return Result.SUCCESS(goodsInfoService.save(goodsInfoParam));
     }
 
@@ -110,18 +107,6 @@ public class GoodsInfoController {
     @ApiOperation(value = "查询商品详情")
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public Result goodsDetail(@RequestParam(value = "id") Long id){
-        return Result.SUCCESS(goodsInfoService.goodsDetail(id));
+        return goodsInfoService.detail(id);
     }
-
-    /**
-     * 获取商品规格属性
-     * @param id
-     * @return
-     */
-    @ApiOperation(value = "查询商品规格属性")
-    @RequestMapping(value = "/attrs", method = RequestMethod.GET)
-    public Result goodsAttrs(Long id){
-        return Result.SUCCESS(goodsInfoService.goodsAttrs(id));
-    }
-
 }

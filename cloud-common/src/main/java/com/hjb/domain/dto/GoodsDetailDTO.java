@@ -3,7 +3,6 @@ package com.hjb.domain.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -11,23 +10,33 @@ public class GoodsDetailDTO {
 
     private Long id;
 
-    private String goodName;
+    private String goodsName;
 
-    private String goodDesc;
+    private String keyword;
 
-    private String imgUrl;
+    private String goodsDesc;
 
-    private Long catalogId;
+    private String goodsDetail;
 
-    private Long brandId;
+    private String mainImgUrl;
 
-    private Integer publishStatus;
+    private String carouselImgUrl;
+
+    private String categoryName;
+
+    private String brandName;
+
+    private Integer isPublish;
 
     private Integer isNew;
+
+    private Integer isRecommend;
 
     private LocalDateTime createdTime;
 
     private LocalDateTime updateTime;
+
+    private List<String> attrs;
 
     private List<SkuInfoDTO> skuInfoDTOS;
 }

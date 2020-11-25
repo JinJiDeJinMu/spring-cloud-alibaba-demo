@@ -7,15 +7,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.domain.dto.GoodsDetailDTO;
 import com.hjb.domain.dto.SkuInfoDTO;
 import com.hjb.domain.param.GoodsInfoParam;
-import com.hjb.domain.po.GoodsAttr;
+import com.hjb.domain.po.GoodsAttribute;
 import com.hjb.domain.po.GoodsInfo;
 import com.hjb.domain.po.SkuInfo;
 import com.hjb.elastic.EsService;
-import com.hjb.elastic.model.EsGoodsSKU;
+import com.hjb.elastic.model.EsGoods;
 import com.hjb.mapper.GoodsInfoMapper;
-import com.hjb.service.GoodsAttrService;
-import com.hjb.service.GoodsInfoService;
-import com.hjb.service.SkuInfoService;
+import com.hjb.service.*;
+import com.hjb.util.Result;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.BeanUtils;
@@ -23,13 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * <p>
- *  服务实现类
+ *  商品服务实现类
  * </p>
  *
  * @author jinmu
@@ -42,78 +42,92 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
     private SkuInfoService skuInfoService;
 
     @Autowired
-    private GoodsAttrService goodsAttrService;
+    private GoodsAttributeService goodsAttributeService;
 
     @Autowired
     private EsService esService;
 
-
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean save(GoodsInfoParam goodsInfoParam) {
+    public Result save(GoodsInfoParam goodsInfoParam) {
+
+        //保存商品信息
         GoodsInfo goodsInfo = new GoodsInfo();
-        BeanUtils.copyProperties(goodsInfoParam,goodsInfo);
+        BeanUtils.copyProperties(goodsInfo,goodsInfoParam);
         goodsInfo.setCreatedTime(LocalDateTime.now());
         goodsInfo.setUpdateTime(LocalDateTime.now());
 
-        save(goodsInfo);
+        //保存商品属性
+        List<GoodsAttribute> goodsAttributes = goodsInfoParam.getGoodsAttributeParamList()
+                .stream().map(e->{
+                    GoodsAttribute goodsAttribute = new GoodsAttribute();
+                    BeanUtils.copyProperties(e,goodsAttribute);
+                    goodsAttribute.setCreateTime(LocalDateTime.now());
 
-        List<GoodsAttr> goodsAttrs = goodsInfoParam.getGoodsAttrParams().stream()
-                .map(e->{
-                    GoodsAttr goodsAttr = new GoodsAttr();
-                    BeanUtils.copyProperties(e,goodsAttr);
-                    goodsAttr.setCreateTime(LocalDateTime.now());
-                    goodsAttr.setGoodsId(goodsInfo.getId());
-
-                    return goodsAttr;
+                    return goodsAttribute;
                 }).collect(Collectors.toList());
-        goodsAttrService.saveBatch(goodsAttrs);
+        goodsAttributeService.saveBatch(goodsAttributes);
 
-        return Boolean.TRUE;
+        //保存商品SKU
+        List<SkuInfo> skuInfos = goodsInfoParam.getSkuInfoParamList()
+                .stream().map(e->{
+                    SkuInfo skuInfo = new SkuInfo();
+                    BeanUtils.copyProperties(e,skuInfo);
+
+                    return skuInfo;
+                }).collect(Collectors.toList());
+        skuInfoService.saveBatch(skuInfos);
+
+        //添加到es中
+        EsGoods esGoods = new EsGoods();
+        BeanUtils.copyProperties(goodsInfo,esGoods);
+
+        BigDecimal min_price = skuInfos.stream().
+                map(SkuInfo::getPrice).
+                min(Comparator.naturalOrder())
+                .orElse(BigDecimal.ZERO);
+        esGoods.setPrice(min_price);
+        esGoods.setSaleCount(0l);
+        esService.insertIndex("goodsku",null,String.valueOf(esGoods.getId()),esGoods);
+
+        return Result.SUCCESS();
     }
 
     @Override
-    public GoodsDetailDTO goodsDetail(Long id) {
-
+    public Result detail(Long id) {
         GoodsInfo goodsInfo = getById(id);
 
+        if(goodsInfo == null){
+            return Result.FAILURE("查询商品不存在");
+        }
+        GoodsDetailDTO goodsDetailDTO = new GoodsDetailDTO();
+
+        BeanUtils.copyProperties(goodsInfo,goodsDetailDTO);
+
+        List<GoodsAttribute> goodsAttributes = goodsAttributeService.list(new LambdaQueryWrapper<GoodsAttribute>()
+                .eq(GoodsAttribute::getGoodsId,id)
+                .orderByAsc(GoodsAttribute::getAttrSort));
+
+        //查询商品属性
+        List<String> attrs = goodsAttributes.stream().map(e->{
+            return e.getAttrValue();
+        }).collect(Collectors.toList());
+        goodsDetailDTO.setAttrs(attrs);
+
+        //查询商品SKU
         List<SkuInfo> skuInfos = skuInfoService.list(new LambdaQueryWrapper<SkuInfo>()
                 .eq(SkuInfo::getGoodsId,id));
 
-        GoodsDetailDTO goodsDetailDTO = new GoodsDetailDTO();
-        if(goodsInfo != null){
-            BeanUtils.copyProperties(goodsInfo,goodsDetailDTO);
-        }
         List<SkuInfoDTO> skuInfoDTOS = skuInfos.stream().map(e->{
             SkuInfoDTO skuInfoDTO = new SkuInfoDTO();
             BeanUtils.copyProperties(e,skuInfoDTO);
 
             return skuInfoDTO;
         }).collect(Collectors.toList());
-
         goodsDetailDTO.setSkuInfoDTOS(skuInfoDTOS);
 
-        return goodsDetailDTO;
-    }
 
-    @Override
-    public String goodsAttrs(Long id) {
-       List<GoodsAttr> goodsAttrs = goodsAttrService.list(new LambdaQueryWrapper<GoodsAttr>()
-               .eq(GoodsAttr::getGoodsId,id));
-
-       Map<String, List<GoodsAttr>> map = goodsAttrs.stream()
-               .sorted(Comparator.comparing(GoodsAttr::getAttrSort))
-               .collect(Collectors.groupingBy(GoodsAttr::getAttrName));
-
-       HashMap<String,List<String>> result = new HashMap<>();
-       map.entrySet().forEach(e->{
-           String attrName = e.getKey();
-           List<String> list = e.getValue().stream().map(x->{
-               return x.getAttrValue();
-           }).collect(Collectors.toList());
-           result.put(attrName,list);
-       });
-       return JSONObject.toJSONString(result);
+        return Result.SUCCESS(goodsDetailDTO);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -122,7 +136,7 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
 
         removeByIds(ids);
         //删除商品属性
-        goodsAttrService.deleteGoodsAttrByGoodsId(ids);
+        goodsAttributeService.deleteGoodsAttrByGoodsId(ids);
         //删除商品SKU
         skuInfoService.deleteSKUByGoodsId(ids);
         //删除es
@@ -133,14 +147,14 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
     }
 
     @Override
-    public List<EsGoodsSKU> query(String keyword) {
-        List<EsGoodsSKU> esGoodsSKUS = new ArrayList<>();
+    public List<EsGoods> query(String keyword) {
+        List<EsGoods> esGoodsSKUS = new ArrayList<>();
         SearchResponse response = esService.search("goodsku","goodName",keyword);
         if(response.status().getStatus() == 200){
             SearchHit[] hits = response.getHits().getHits();
             for (SearchHit hit : hits) {
                 Map<String, Object> map = hit.getSourceAsMap();
-                EsGoodsSKU esGoodsSKU = JSON.parseObject(JSONObject.toJSONString(map),EsGoodsSKU.class);
+                EsGoods esGoodsSKU = JSON.parseObject(JSONObject.toJSONString(map), EsGoods.class);
                 esGoodsSKUS.add(esGoodsSKU);
             }
 

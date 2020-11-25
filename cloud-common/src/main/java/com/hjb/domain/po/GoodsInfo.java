@@ -4,12 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * <p>
@@ -17,7 +14,7 @@ import java.util.Date;
  * </p>
  *
  * @author jinmu
- * @since 2020-11-20
+ * @since 2020-11-25
  */
 @Data
 @TableName("hu_goods_info")
@@ -25,29 +22,72 @@ public class GoodsInfo implements Serializable {
 
     private static final long serialVersionUID=1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+      @TableId(value = "id", type = IdType.AUTO)
+      private Long id;
 
-    private String goodName;
+      /**
+     * 商品名称
+     */
+      private String goodsName;
 
-    private String goodDesc;
+      /**
+     * 关键字
+     */
+      private String keyword;
 
-    private String keyword;
+      /**
+     * 商品描述
+     */
+      private String goodsDesc;
 
-    private String goodDetail;
+      /**
+     * 商品详情介绍（富文本标签）
+     */
+      private String goodsDetail;
 
-    private String imgUrl;
+      /**
+     * 主图
+     */
+      private String mainImgUrl;
 
-    private Long catalogId;
+      /**
+     * 轮播图
+     */
+      private String carouselImgUrl;
 
-    private Long brandId;
+      /**
+     * 分类
+     */
+      private Long categoryId;
 
-    private Integer publishStatus;
+      private String categoryName;
 
-    private Integer isNew;
+      /**
+     * 品牌
+     */
+      private Long brandId;
 
-    private LocalDateTime createdTime;
+      private String brandName;
+      /**
+     * 是否上架，0:上架,1:下架
+     */
+      private Integer isPublish;
 
-    private LocalDateTime updateTime;
+      /**
+     * 是否新品，0是新品，1:不是
+     */
+      private Integer isNew;
+
+      /**
+     * 是否推荐，0是不推荐，1是推荐
+     */
+      private Integer isRecommend;
+
+
+      private LocalDateTime createdTime;
+
+
+      private LocalDateTime updateTime;
+
 
 }

@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -27,20 +25,44 @@ public class SkuInfo implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    /**
+     * 商品ID
+     */
     private Long goodsId;
 
+    /**
+     * 属性组合json
+     */
     private String attrList;
 
+    /**
+     * sku规格图
+     */
     private String skuImg;
 
+    /**
+     * sku描述
+     */
     private String skuDesc;
 
+    /**
+     * sku标题
+     */
     private String skuTitle;
 
+    /**
+     * 价格
+     */
     private BigDecimal price;
 
+    /**
+     * 库存
+     */
     private Long mount;
 
+    /**
+     * 销售量
+     */
     private Long saleCount;
 
 

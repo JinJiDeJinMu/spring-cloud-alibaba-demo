@@ -1,13 +1,11 @@
-package com.hjb.domain.dto;
+package com.hjb.domain.param;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class SkuInfoDTO {
-
-    private Long id;
+public class SkuInfoParam {
 
     private Long goodsId;
 
@@ -22,7 +20,5 @@ public class SkuInfoDTO {
     private BigDecimal price;
 
     private Long mount;
-
-    private Long saleCount;
 
 }
