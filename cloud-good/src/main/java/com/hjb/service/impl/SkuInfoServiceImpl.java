@@ -54,4 +54,32 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
         return Boolean.TRUE;
     }
+
+    @Override
+    public boolean reduceSKUCount(Long id) {
+        SkuInfo skuInfo = getById(id);
+        if(skuInfo == null){
+            return Boolean.FALSE;
+        }
+
+        //加锁
+        if(skuInfo.getMount() >=1){
+            skuInfo.setMount(skuInfo.getMount()-1);
+            skuInfo.setSaleCount(skuInfo.getSaleCount()+1);
+        }
+        return  saveOrUpdate(skuInfo);
+    }
+
+    @Override
+    public boolean addSKUCount(Long id) {
+        SkuInfo skuInfo = getById(id);
+        if(skuInfo == null){
+            return Boolean.FALSE;
+        }
+        //加锁
+        skuInfo.setSaleCount(skuInfo.getSaleCount()-1);
+        skuInfo.setMount(skuInfo.getMount()+1);
+
+        return saveOrUpdate(skuInfo);
+    }
 }

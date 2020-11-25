@@ -19,4 +19,18 @@ public interface SkuInfoService extends IService<SkuInfo> {
     boolean deleteSKUByGoodsId(@Param("goodsId") List<Long> goodsIds);
 
     boolean addOrUpdateSkuInfo(SkuInfo skuInfo);
+
+    /**
+     * 扣库存
+     * @param id
+     * @return
+     */
+    boolean reduceSKUCount(Long id);
+
+    /**
+     * 加库存
+     * @param id
+     * @return
+     */
+    boolean addSKUCount(Long id);
 }

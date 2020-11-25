@@ -12,6 +12,7 @@ import com.hjb.domain.po.GoodsInfo;
 import com.hjb.domain.po.SkuInfo;
 import com.hjb.elastic.EsService;
 import com.hjb.elastic.model.EsGoods;
+import com.hjb.elastic.model.Query;
 import com.hjb.mapper.GoodsInfoMapper;
 import com.hjb.service.*;
 import com.hjb.util.Result;
@@ -147,18 +148,10 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
     }
 
     @Override
-    public List<EsGoods> query(String keyword) {
+    public List<EsGoods> query(Query query) {
         List<EsGoods> esGoodsSKUS = new ArrayList<>();
-        SearchResponse response = esService.search("goodsku","goodName",keyword);
-        if(response.status().getStatus() == 200){
-            SearchHit[] hits = response.getHits().getHits();
-            for (SearchHit hit : hits) {
-                Map<String, Object> map = hit.getSourceAsMap();
-                EsGoods esGoodsSKU = JSON.parseObject(JSONObject.toJSONString(map), EsGoods.class);
-                esGoodsSKUS.add(esGoodsSKU);
-            }
 
-        }
+
         return esGoodsSKUS;
     }
 }

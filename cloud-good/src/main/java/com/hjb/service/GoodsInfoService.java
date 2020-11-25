@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hjb.domain.param.GoodsInfoParam;
 import com.hjb.domain.po.GoodsInfo;
 import com.hjb.elastic.model.EsGoods;
+import com.hjb.elastic.model.Query;
 import com.hjb.util.Result;
 
 import java.util.List;
@@ -42,8 +43,8 @@ public interface GoodsInfoService extends IService<GoodsInfo> {
 
     /**
      * es查询
-     * @param keyword
+     * @param query
      * @return
      */
-    List<EsGoods> query(String keyword);
+    List<EsGoods> query(Query query);
 }
