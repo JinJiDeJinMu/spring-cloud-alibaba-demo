@@ -41,10 +41,4 @@ public interface GoodsInfoService extends IService<GoodsInfo> {
      */
     Boolean deleteGoods(List<Long> ids);
 
-    /**
-     * es查询
-     * @param query
-     * @return
-     */
-    List<EsGoods> query(Query query);
 }

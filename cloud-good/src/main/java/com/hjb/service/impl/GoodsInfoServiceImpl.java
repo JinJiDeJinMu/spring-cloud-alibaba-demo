@@ -8,6 +8,7 @@ import com.hjb.domain.param.GoodsInfoParam;
 import com.hjb.domain.po.GoodsAttribute;
 import com.hjb.domain.po.GoodsInfo;
 import com.hjb.domain.po.SkuInfo;
+import com.hjb.elastic.ElasticDocument;
 import com.hjb.elastic.EsService;
 import com.hjb.elastic.model.EsGoods;
 import com.hjb.elastic.model.Query;
@@ -150,38 +151,9 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
         skuInfoService.deleteSKUByGoodsId(ids);
         //删除es
         ids.forEach(e->{
-            esService.deleteData("goodsku",e);
+            esService.deleteData(ElasticDocument.INDEX,e);
         });
         return Boolean.TRUE;
     }
 
-    @Override
-    public List<EsGoods> query(Query query) {
-        List<EsGoods> esGoodsSKUS = new ArrayList<>();
-
-        /*BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        if(query.getBrandId() != null){
-            boolQueryBuilder.filter(QueryBuilders.termQuery("brandId",query.getBrandId()));
-        }
-        if(query.getCategoryId() != null){
-            boolQueryBuilder.filter(QueryBuilders.termQuery("category",query.getCategoryId()));
-        }
-
-        if(query.getPrice_min() != null && query.getPrice_max() != null){
-            boolQueryBuilder.filter(QueryBuilders.rangeQuery("price").from(query.getPrice_min()).to(query.getPrice_max()));
-        }
-
-        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-        sourceBuilder.query(boolQueryBuilder);
-        //排序
-        if(query.getSort() == 1){//按商品id升序
-            sourceBuilder.sort(new FieldSortBuilder("id").order(SortOrder.ASC));
-        }
-        if(query.getSort() == 2){//按商品id降序
-            sourceBuilder.sort(new FieldSortBuilder("id").order(SortOrder.DESC));
-        }
-*/
-
-        return esGoodsSKUS;
-    }
 }
