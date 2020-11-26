@@ -1,19 +1,17 @@
 package com.hjb.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hjb.domain.param.GoodsInfoParam;
 import com.hjb.domain.po.GoodsInfo;
+import com.hjb.elastic.model.Query;
 import com.hjb.service.GoodsInfoService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,12 +68,12 @@ public class GoodsInfoController {
 
     /**
      * es查询
-     * @param keyword 查询条件
+     * @param query 查询条件
      */
     @ApiOperation(value = "分页查询", notes = "分页查询GoodsInfo全部数据")
-    @RequestMapping(value = "/query", method = RequestMethod.GET)
-    public Result query(String keyword){
-        return Result.SUCCESS(goodsInfoService.query(keyword));
+    @RequestMapping(value = "/query", method = RequestMethod.POST)
+    public Result query(Query query){
+        return Result.SUCCESS(goodsInfoService.query(query));
     }
 
     /**

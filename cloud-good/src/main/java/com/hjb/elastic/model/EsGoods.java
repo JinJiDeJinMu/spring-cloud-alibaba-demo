@@ -1,18 +1,22 @@
 package com.hjb.elastic.model;
 
+import com.hjb.domain.po.GoodsAttribute;
+import com.hjb.domain.po.SkuInfo;
 import lombok.Data;
 
+import java.lang.annotation.Documented;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class EsGoods {
 
     private Long id;
 
-    private String goodName;
+    private String goodsName;
 
-    private String goodDesc;
+    private String goodsDesc;
 
     private String mainImgUrl;
 
@@ -20,7 +24,11 @@ public class EsGoods {
 
     private Long categoryId;
 
+    private String categoryName;
+
     private Long brandId;
+
+    private String brandName;
 
     private BigDecimal price;
 
@@ -33,4 +41,8 @@ public class EsGoods {
     private Integer isRecommend;
 
     private LocalDateTime createdTime;
+
+    List<GoodsAttribute> goodsAttributes;
+
+    List<SkuInfo> skuInfos;
 }

@@ -1,7 +1,5 @@
 package com.hjb.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.domain.dto.GoodsDetailDTO;
@@ -16,8 +14,13 @@ import com.hjb.elastic.model.Query;
 import com.hjb.mapper.GoodsInfoMapper;
 import com.hjb.service.*;
 import com.hjb.util.Result;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit;
+import org.apache.commons.lang.StringUtils;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,9 +57,10 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
 
         //保存商品信息
         GoodsInfo goodsInfo = new GoodsInfo();
-        BeanUtils.copyProperties(goodsInfo,goodsInfoParam);
+        BeanUtils.copyProperties(goodsInfoParam,goodsInfo);
         goodsInfo.setCreatedTime(LocalDateTime.now());
         goodsInfo.setUpdateTime(LocalDateTime.now());
+        save(goodsInfo);
 
         //保存商品属性
         List<GoodsAttribute> goodsAttributes = goodsInfoParam.getGoodsAttributeParamList()
@@ -64,7 +68,8 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
                     GoodsAttribute goodsAttribute = new GoodsAttribute();
                     BeanUtils.copyProperties(e,goodsAttribute);
                     goodsAttribute.setCreateTime(LocalDateTime.now());
-
+                    goodsAttribute.setGoodsId(goodsInfo.getId());
+                    goodsAttribute.setCategoryId(goodsInfo.getCategoryId());
                     return goodsAttribute;
                 }).collect(Collectors.toList());
         goodsAttributeService.saveBatch(goodsAttributes);
@@ -74,7 +79,7 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
                 .stream().map(e->{
                     SkuInfo skuInfo = new SkuInfo();
                     BeanUtils.copyProperties(e,skuInfo);
-
+                    skuInfo.setGoodsId(goodsInfo.getId());
                     return skuInfo;
                 }).collect(Collectors.toList());
         skuInfoService.saveBatch(skuInfos);
@@ -89,7 +94,10 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
                 .orElse(BigDecimal.ZERO);
         esGoods.setPrice(min_price);
         esGoods.setSaleCount(0l);
-        esService.insertIndex("goodsku",null,String.valueOf(esGoods.getId()),esGoods);
+        esGoods.setGoodsAttributes(goodsAttributes);
+        esGoods.setSkuInfos(skuInfos);
+        System.out.println("esGoods=" + esGoods);
+        esService.insertData("goodsku",esGoods.getId(),esGoods);
 
         return Result.SUCCESS();
     }
@@ -142,7 +150,7 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
         skuInfoService.deleteSKUByGoodsId(ids);
         //删除es
         ids.forEach(e->{
-            esService.deleteDoc("goodsku",String.valueOf(e));
+            esService.deleteData("goodsku",e);
         });
         return Boolean.TRUE;
     }
@@ -151,6 +159,28 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
     public List<EsGoods> query(Query query) {
         List<EsGoods> esGoodsSKUS = new ArrayList<>();
 
+        /*BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        if(query.getBrandId() != null){
+            boolQueryBuilder.filter(QueryBuilders.termQuery("brandId",query.getBrandId()));
+        }
+        if(query.getCategoryId() != null){
+            boolQueryBuilder.filter(QueryBuilders.termQuery("category",query.getCategoryId()));
+        }
+
+        if(query.getPrice_min() != null && query.getPrice_max() != null){
+            boolQueryBuilder.filter(QueryBuilders.rangeQuery("price").from(query.getPrice_min()).to(query.getPrice_max()));
+        }
+
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        sourceBuilder.query(boolQueryBuilder);
+        //排序
+        if(query.getSort() == 1){//按商品id升序
+            sourceBuilder.sort(new FieldSortBuilder("id").order(SortOrder.ASC));
+        }
+        if(query.getSort() == 2){//按商品id降序
+            sourceBuilder.sort(new FieldSortBuilder("id").order(SortOrder.DESC));
+        }
+*/
 
         return esGoodsSKUS;
     }

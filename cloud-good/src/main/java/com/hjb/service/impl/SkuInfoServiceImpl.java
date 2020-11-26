@@ -50,7 +50,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         BeanUtils.copyProperties(skuInfo,esGoodsSKU);
         BeanUtils.copyProperties(goodsInfo,esGoodsSKU);
         esGoodsSKU.setId(skuInfo.getId());
-        esService.insertIndex("goodsku",null,String.valueOf(esGoodsSKU.getId()),esGoodsSKU);
+        esService.insertData("goodsku",esGoodsSKU.getId(),esGoodsSKU);
 
         return Boolean.TRUE;
     }
