@@ -5,7 +5,6 @@ import com.hjb.elastic.model.Query;
 
 
 import java.util.List;
-import java.util.Map;
 
 public interface EsService {
 
@@ -19,8 +18,10 @@ public interface EsService {
 
     Boolean bulkIndex(String index, List<Object> list);
 
-    List<Map<String, Object>> search(Query query);
+    List<EsGoods> search(Query query);
 
     List<EsGoods> recommend(Long id);
+
+    List<EsGoods> query(String keyword);
 
 }

@@ -18,11 +18,11 @@ import java.util.List;
 
 /**
  * <p>
- * ${entity}前端控制器
+ * ${entity}controller
  * </p>
  *
  * @author ${author}
- * @since ${date}
+ * @date ${date}
  */
 @RestController
 @Api(tags = "${entity}")

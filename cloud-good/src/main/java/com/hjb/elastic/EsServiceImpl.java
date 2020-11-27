@@ -6,6 +6,7 @@ import com.hjb.elastic.model.EsGoods;
 import com.hjb.elastic.model.Query;
 import com.hjb.service.GoodsInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
@@ -14,6 +15,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.elasticsearch.search.sort.FieldSortBuilder;
@@ -23,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -70,26 +72,26 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
     }
 
     @Override
-    public List<Map<String, Object>> search(Query query) {
-        List<Map<String, Object>> result = new ArrayList<>();
+    public List<EsGoods> search(Query query) {
+        List<EsGoods> result = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
         if(query.getBrandId() != null){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("brandId",query.getBrandId()));
+            boolQueryBuilder.must(QueryBuilders.termQuery("brandId",query.getBrandId()));
 
         }
         if(query.getCategoryId() != null){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("categroyId",query.getCategoryId()));
+            boolQueryBuilder.must(QueryBuilders.termQuery("categroyId",query.getCategoryId()));
 
         }
         List filterFunctionBuilders = new ArrayList<>();
-        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("goodsName", query.getContent()),
+        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("goodsNames", "goodsName"),
                 ScoreFunctionBuilders.weightFactorFunction(10)));
-        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("goodsDesc", query.getContent()),
+        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("goodsDescs", "goodsDesc"),
                 ScoreFunctionBuilders.weightFactorFunction(5)));
-        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("keyword", query.getContent()),
+        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("keywords", "keyword"),
                 ScoreFunctionBuilders.weightFactorFunction(2)));
         FunctionScoreQueryBuilder.FilterFunctionBuilder[] builders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[filterFunctionBuilders.size()];
         filterFunctionBuilders.toArray(builders);
@@ -116,7 +118,7 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
 
         SearchHit[] hits = response.getHits().getHits();
         for (SearchHit hit : hits) {
-            result.add(hit.getSourceAsMap());
+            result.add(JSON.parseObject(hit.getSourceAsString(),EsGoods.class));
         }
         return result;
     }
@@ -164,5 +166,32 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
             result.add(esGoods);
         }
         return result;
+    }
+
+    @Override
+    public List<EsGoods> query(String keyword) {
+
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        if(StringUtils.isEmpty(keyword)){
+            boolQueryBuilder.must(QueryBuilders.matchAllQuery());
+        }else{
+            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"goodsName","goodsDesc","keyword"));
+        }
+        // 品牌聚合（取命中最多的前500个品牌）
+        TermsAggregationBuilder brandAggBuilder = AggregationBuilders.terms(keyword).field("brandName").size(20);
+        // 分类聚合（取命中最多的前20个）
+        TermsAggregationBuilder categoryAggBuilder = AggregationBuilders.terms(keyword).field("categoryName").size(20);
+        SearchSourceBuilder searchQuery = new SearchSourceBuilder();
+
+        searchQuery.query(boolQueryBuilder);// 过滤条件
+        searchQuery.aggregation(brandAggBuilder); // 品牌聚合
+        //searchQuery.aggregation(categoryAggBuilder);// 分类聚合
+
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.source(searchQuery);
+        searchRequest.indices(ElasticDocument.INDEX);
+        SearchResponse response = esTools.query(searchRequest);
+        System.out.println("结果="+response);
+        return null;
     }
 }

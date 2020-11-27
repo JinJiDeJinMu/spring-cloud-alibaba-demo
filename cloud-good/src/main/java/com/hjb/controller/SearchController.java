@@ -5,16 +5,11 @@ import com.hjb.elastic.EsService;
 import com.hjb.elastic.EsTools;
 import com.hjb.elastic.model.Query;
 import com.hjb.util.Result;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * 商品查询接口
@@ -23,6 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("search")
+@Api("商品查询相关接口")
 public class SearchController {
 
     @Autowired
@@ -31,28 +27,36 @@ public class SearchController {
     @Autowired
     private EsTools esTools;
     /**
-     * 查询商品
+     * 简单查询商品
      * @param query
      * @return
      */
+    @ApiOperation("简单查询接口")
     @RequestMapping(value = "/query", method = RequestMethod.POST)
-    public Result query(Query query){
+    public Result query(@RequestBody Query query){
         return Result.SUCCESS(esService.search(query));
     }
 
-    @GetMapping(value = "/test")
-    public Result test(String keyword){
 
-        return Result.SUCCESS(esTools.search("goodsku","goodsDesc",keyword));
+    /**
+     * 查询指定商品的推荐商品
+     * @param id
+     * @return
+     */
+    @ApiOperation("查询指定商品的相关商品")
+    @RequestMapping(value = "/recommend", method = RequestMethod.GET)
+    public Result queryRecommend(Long id){
+        return Result.SUCCESS(esService.recommend(id));
     }
 
-    public static void main(String[] args) {
-        HashMap<String,Object> hashMap = new HashMap<>();
-        List<String> list = new ArrayList<>();
-        list.add("白色");
-        list.add("黑色");
-        hashMap.put("颜色",list);
-        System.out.println(JSONObject.toJSONString(hashMap));
-        System.out.println("{\"颜色\":[\"白色\",\"黑色\"]}");
+    /**
+     * 查询相关商品
+     * @param keyword
+     * @return
+     */
+    @RequestMapping(value = "/relation", method = RequestMethod.GET)
+    public Result queryRelation(String keyword){
+        return Result.SUCCESS(esService.query(keyword));
     }
+
 }
