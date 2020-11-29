@@ -1,7 +1,13 @@
 spring:
   redis:
+    jedis:
+      pool:
+        max-active: 16
+        max-idle: 16
+        min-idle: 16
     cluster:
       nodes: 47.95.34.220:7000,47.95.34.220:7001,47.95.34.220:7002,47.95.34.220:7003,47.95.34.220:7004,47.95.34.220:7005
+      max-redirects: 3
   cloud:
     nacos:
       discovery:
@@ -9,15 +15,18 @@ spring:
     sentinel:
       transport:
         dashboard: localhost:7070
-
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://47.95.34.220:3306/hu_shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://localhost:3306/hu_shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
 server:
   port: 8090
 elasticsearch:
   ips: 127.0.0.1:9200
+
+
+
+
 
       
