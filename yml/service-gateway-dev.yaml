@@ -1,5 +1,8 @@
 server:
- port: 8092
+ port: 8090
+feign:
+  sentinel:
+    enabled: true
 spring:
   cloud:
     nacos:
@@ -22,6 +25,17 @@ spring:
         - Path=/service-order/**
         filters:
         - RewritePath=/service-order/(?<segment>.*), /$\{segment}
+      - id: user-route
+        uri: lb://service-user
+        predicates:
+        - Path=/service-user/**
+        filters:
+        - RewritePath=/service-user/(?<segment>.*), /$\{segment}
+
+#url不进行鉴权白名单,多个以,隔开
+gateway:
+ white:
+  url: /service-user/login
        
       
        

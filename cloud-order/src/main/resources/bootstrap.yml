@@ -9,3 +9,4 @@ spring:
     active: dev
   application:
     name: service-order
+

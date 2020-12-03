@@ -21,12 +21,10 @@ spring:
     username: root
     password: 123456
 server:
-  port: 8090
+  port: 8092
 elasticsearch:
   ips: 127.0.0.1:9200
 
-
-
-
+      
 
       

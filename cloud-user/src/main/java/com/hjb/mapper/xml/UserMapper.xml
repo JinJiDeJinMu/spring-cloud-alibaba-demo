@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hjb.domain.po.User">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="password" property="password" />
+        <result column="nick_name" property="nickName" />
+        <result column="avater" property="avater" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="register_time" property="registerTime" />
+        <result column="level" property="level" />
+        <result column="scoure" property="scoure" />
+        <result column="growth" property="growth" />
+        <result column="status" property="status" />
+        <result column="last_login_ip" property="lastLoginIp" />
+        <result column="last_login_time" property="lastLoginTime" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_name, password, nick_name, avater, phone, email, register_time, level, scoure, growth, status, last_login_ip, last_login_time, create_time
+    </sql>
+
+</mapper>

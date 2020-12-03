@@ -1,5 +1,6 @@
-package com.hjb.feign;
+package com.hjb.feign.fallback;
 
+import com.hjb.feign.GoodsFeignService;
 import com.hjb.util.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

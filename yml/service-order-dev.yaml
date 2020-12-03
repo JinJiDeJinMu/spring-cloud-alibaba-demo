@@ -1,20 +1,55 @@
 server:
-  port: 8091
-feign:
-  sentinel:
-    enabled: true
+  port: 8093
 spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hu_shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+  redis:
+#   集群配置
+#    cluster:
+#      nodes: 47.95.34.220:7000,47.95.34.220:7001,47.95.34.220:7002,47.95.34.220:7003,47.95.34.220:7004,47.95.34.220:7005
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 500
+        min-idle: 0
   cloud:
     nacos:
-     discovery:
-       server-addr: localhost:8848
+      discovery:
+        server-addr: localhost:8848
     sentinel:
       transport:
         dashboard: localhost:7070
+feign:
+  sentinel:
+    enabled: true
 
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 123456
+elasticsearch:
+  ips: 127.0.0.1:9200
+
+
+rocketmq:
+  producer:
+    isOnOff: on
+    groupName: order_MQ
+    namesrvAddr: 127.0.0.1:9876
+    maxMessageSize: 4096
+    sendMsgTimeout: 3000
+    retryTimesWhenSendFailed: 2
+
+  consumer:
+    isOnOff: on
+    groupName: order_MQ
+    namesrvAddr: 127.0.0.1:9876
+    #该消费者订阅的主题和tags("*"号表示订阅该主题下所有的tags),格式：topic~tag1||tag2||tag3;topic2~*;
+    topics: topic1~tag1;order_submit~*;
+    consumeThreadMin: 20
+    consumeThreadMax: 64
+    #设置一次消费消息的条数，默认为1条
+    consumeMessageBatchMaxSize: 10
  

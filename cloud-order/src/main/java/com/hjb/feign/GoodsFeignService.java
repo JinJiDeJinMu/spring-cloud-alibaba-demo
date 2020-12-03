@@ -1,5 +1,6 @@
 package com.hjb.feign;
 
+import com.hjb.feign.fallback.GoodsFeignFallbackService;
 import com.hjb.util.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;

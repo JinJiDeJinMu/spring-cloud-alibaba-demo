@@ -17,7 +17,7 @@ public class Generator {
     public final static String SYS_AHURTOR = "jinmu";
 
     public static void main(String[] args) {
-        String[] tableNames = new String[]{"hu_sku_info"};
+        String[] tableNames = new String[]{"hu_user","hu_receive_address"};
         String[] modules = new String[]{"service", "web"};//项目模块名，需自定义
         for (String module : modules) {
             moduleGenerator(module, tableNames);
@@ -80,8 +80,8 @@ public class Generator {
         PackageConfig packageConfig = new PackageConfig();
         String packageName = SYS_PACKAGE_NAME;
         packageConfig.setParent(packageName)
-                .setEntity("bean")
-                .setMapper("dao")
+                .setEntity("domain.po")
+                .setMapper("mapper")
                 .setService("service")
                 .setController("controller");
         return packageConfig;

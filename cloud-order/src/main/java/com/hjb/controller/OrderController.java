@@ -11,13 +11,20 @@ import com.hjb.service.OrderService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -38,6 +45,12 @@ public class OrderController {
 
     @Autowired
     private GoodsFeignService goodsFeignService;
+
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
+
+    @Autowired
+    private DefaultMQProducer producer;
 
     /**
     * 根据主键id查询单条
@@ -84,4 +97,17 @@ public class OrderController {
         return Result.SUCCESS(orderService.saveOrUpdate(order));
     }
 
+    @GetMapping("test")
+    public void test() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("goodsId",2);
+        map.put("orderId",1);
+
+        Message message = new Message("order_submit","*",JSONObject.toJSONString(map).getBytes());
+
+        producer.send(new Message("topic1","tag1",("1").getBytes()));
+        producer.send(new Message("topic1","tag1",("2").getBytes()));
+        producer.send(new Message("topic1","tag1",("3").getBytes()));
+    }
 }
