@@ -1,5 +1,8 @@
 spring:
   cloud:
+    alibaba:
+      seata:
+        tx-service-group: service-order
     nacos:
       config:
         server-addr: localhost:8848
@@ -9,4 +12,30 @@ spring:
     active: dev
   application:
     name: service-order
+
+seata:
+  enabled: true
+  application-id: service-order
+  tx-service-group: my_test_tx_group
+  enable-auto-data-source-proxy: true
+  config:
+    type: nacos
+    nacos:
+      namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
+      serverAddr: 127.0.0.1:8848
+      group: DEFAULT_GROUP
+      userName: "nacos"
+      password: "nacos"
+  client:
+    undo:
+      log-serialization: kryo
+registry:
+  type: nacos
+  nacos:
+    application: seata-server
+    server-addr: 127.0.0.1:8848
+    namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
+    userName: "nacos"
+    password: "nacos"
+
 

@@ -1,5 +1,9 @@
 package com.hjb.config;
 
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -11,7 +15,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
+    @Value("${spring.redis.host}")
+    private String host;
 
+    @Value("${spring.redis.port}")
+    private String port;
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
@@ -28,6 +36,15 @@ public class RedisConfig {
         template.afterPropertiesSet();
 
         return template;
+    }
+
+    //单机版本
+    @Bean
+    public RedissonClient getRedissClient(){
+        Config config = new Config();
+        config.useSingleServer().setAddress("redis://" + host + ":" + port);
+
+        return Redisson.create(config);
     }
 
 }

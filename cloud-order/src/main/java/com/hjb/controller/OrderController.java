@@ -1,12 +1,18 @@
 package com.hjb.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hjb.domain.param.OrderParam;
+import com.hjb.domain.param.OrderTrade;
 import com.hjb.domain.po.Order;
+import com.hjb.domain.po.ReceiveAddress;
 import com.hjb.feign.GoodsFeignService;
+import com.hjb.feign.UserFeignService;
 import com.hjb.service.OrderService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
@@ -16,6 +22,9 @@ import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -47,10 +57,16 @@ public class OrderController {
     private GoodsFeignService goodsFeignService;
 
     @Autowired
+    private UserFeignService userFeignService;
+
+    @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
     @Autowired
     private DefaultMQProducer producer;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     /**
     * 根据主键id查询单条
@@ -93,21 +109,15 @@ public class OrderController {
     */
     @ApiOperation(value = "订单提交")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result submit(@RequestBody Order order){
-        return Result.SUCCESS(orderService.saveOrUpdate(order));
+    public Result submit(@RequestBody OrderParam order){
+        return Result.SUCCESS(orderService.submit(order));
     }
 
     @GetMapping("test")
-    public void test() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("goodsId",2);
-        map.put("orderId",1);
-
-        Message message = new Message("order_submit","*",JSONObject.toJSONString(map).getBytes());
-
-        producer.send(new Message("topic1","tag1",("1").getBytes()));
-        producer.send(new Message("topic1","tag1",("2").getBytes()));
-        producer.send(new Message("topic1","tag1",("3").getBytes()));
+    public ReceiveAddress test(){
+       Result result = userFeignService.getReceiveAddressById(1l);
+       HashMap<String,Object> hashMap = (HashMap<String, Object>) result.getData();
+       BeanUtil.mapToBean(hashMap,ReceiveAddress.class,false, CopyOptions.create());
+       return null;
     }
 }

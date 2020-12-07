@@ -6,6 +6,7 @@ import com.hjb.domain.po.GoodsInfo;
 import com.hjb.elastic.model.EsGoods;
 import com.hjb.elastic.model.Query;
 import com.hjb.util.Result;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @author jinmu
  * @since 2020-11-20
  */
+@Transactional(rollbackFor = Exception.class)
 public interface GoodsInfoService extends IService<GoodsInfo> {
 
 

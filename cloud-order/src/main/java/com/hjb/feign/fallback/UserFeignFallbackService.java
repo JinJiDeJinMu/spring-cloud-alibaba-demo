@@ -17,4 +17,9 @@ public class UserFeignFallbackService implements UserFeignService {
     public Result getReceiveAddressByUserId(Long userId) {
         return Result.FAILURE("用户服务调用出错");
     }
+
+    @Override
+    public Result getReceiveAddressById(Long id) {
+        return Result.FAILURE("用户服务调用出错");
+    }
 }

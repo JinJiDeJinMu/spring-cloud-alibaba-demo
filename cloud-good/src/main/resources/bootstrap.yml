@@ -1,5 +1,8 @@
 spring:
   cloud:
+    alibaba:
+      seata:
+        tx-service-group: service-good
     nacos:
       config:
         server-addr: localhost:8848
@@ -10,6 +13,7 @@ spring:
     name: service-good
   profiles:
     active: dev
-# nacos对应的配置文件名为 {application}-{active}.{file-extension}   =》service-good-dev.yaml
-# 注意好像application.yml启动会报错，不知道是不是只支持bootstrap.yml
+
+
+
 

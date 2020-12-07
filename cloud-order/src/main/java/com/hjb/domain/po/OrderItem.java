@@ -56,7 +56,7 @@ public class OrderItem implements Serializable {
       /**
      * 品牌
      */
-      private String brandId;
+      private Long brandId;
 
       /**
      * 分类id

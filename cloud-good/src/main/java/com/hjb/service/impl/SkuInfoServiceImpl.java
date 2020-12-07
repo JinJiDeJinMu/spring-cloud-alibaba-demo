@@ -11,6 +11,7 @@ import com.hjb.service.SkuInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -55,30 +56,27 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         return Boolean.TRUE;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean reduceSKUCount(Long id) {
-        SkuInfo skuInfo = getById(id);
+    public boolean reduceSKUCount(SkuInfo skuInfo, Long number) {
         if(skuInfo == null){
             return Boolean.FALSE;
         }
-
-        //加锁
-        if(skuInfo.getMount() >=1){
-            skuInfo.setMount(skuInfo.getMount()-1);
-            skuInfo.setSaleCount(skuInfo.getSaleCount()+1);
+        if(skuInfo.getMount() >= number){
+            skuInfo.setMount(skuInfo.getMount()- number);
+            skuInfo.setSaleCount(skuInfo.getSaleCount() + number);
         }
         return  saveOrUpdate(skuInfo);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean addSKUCount(Long id) {
-        SkuInfo skuInfo = getById(id);
+    public boolean addSKUCount(SkuInfo skuInfo, Long number) {
         if(skuInfo == null){
             return Boolean.FALSE;
         }
-        //加锁
-        skuInfo.setSaleCount(skuInfo.getSaleCount()-1);
-        skuInfo.setMount(skuInfo.getMount()+1);
+        skuInfo.setSaleCount((skuInfo.getSaleCount() - number) <0 ? 0 : skuInfo.getSaleCount() - number);
+        skuInfo.setMount(skuInfo.getMount() + number);
 
         return saveOrUpdate(skuInfo);
     }

@@ -86,4 +86,30 @@ public class SkuInfoController {
         return Result.SUCCESS(skuInfoService.removeByIds(ids));
     }
 
+
+    /**
+     * 库存释放
+     * @param skuInfo
+     * @param number
+     * @return
+     */
+    @ApiOperation(value = "释放库存")
+    @RequestMapping(value = "/addCount",method = RequestMethod.POST)
+    public Result addSkuCount(@RequestBody SkuInfo skuInfo, Long number){
+        return Result.SUCCESS(skuInfoService.addSKUCount(skuInfo, number));
+    }
+
+
+    /**
+     * 扣除库存
+     * @param skuInfo
+     * @param number
+     * @return
+     */
+    @ApiOperation(value = "扣除库存")
+    @RequestMapping(value = "/reduceCount",method = RequestMethod.POST)
+    public Result reduceSkuCount(@RequestBody SkuInfo skuInfo, Long number){
+        return Result.SUCCESS(skuInfoService.reduceSKUCount(skuInfo,number));
+    }
+
 }
