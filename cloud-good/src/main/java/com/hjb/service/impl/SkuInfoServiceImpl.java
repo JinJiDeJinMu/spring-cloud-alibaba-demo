@@ -58,7 +58,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean reduceSKUCount(SkuInfo skuInfo, Long number) {
+    public boolean reduceSKUCount(Long skuId, Long number) {
+        SkuInfo skuInfo = getById(skuId);
         if(skuInfo == null){
             return Boolean.FALSE;
         }
@@ -71,7 +72,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean addSKUCount(SkuInfo skuInfo, Long number) {
+    public boolean addSKUCount(Long skuId, Long number) {
+        SkuInfo skuInfo = getById(skuId);
         if(skuInfo == null){
             return Boolean.FALSE;
         }

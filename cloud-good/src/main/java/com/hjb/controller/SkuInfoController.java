@@ -2,8 +2,8 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hjb.domain.param.SkuChange;
 import com.hjb.domain.po.SkuInfo;
-import com.hjb.elastic.EsService;
 import com.hjb.service.SkuInfoService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
@@ -89,27 +89,25 @@ public class SkuInfoController {
 
     /**
      * 库存释放
-     * @param skuInfo
-     * @param number
+     * @param skuId
      * @return
      */
     @ApiOperation(value = "释放库存")
-    @RequestMapping(value = "/addCount",method = RequestMethod.POST)
-    public Result addSkuCount(@RequestBody SkuInfo skuInfo, Long number){
-        return Result.SUCCESS(skuInfoService.addSKUCount(skuInfo, number));
+    @RequestMapping(value = "/addCount",method = RequestMethod.GET)
+    public Result addSkuCount(Long skuId, Long  number){
+        return Result.SUCCESS(skuInfoService.addSKUCount(skuId, number));
     }
 
 
     /**
      * 扣除库存
-     * @param skuInfo
-     * @param number
+     * @param skuId
      * @return
      */
     @ApiOperation(value = "扣除库存")
-    @RequestMapping(value = "/reduceCount",method = RequestMethod.POST)
-    public Result reduceSkuCount(@RequestBody SkuInfo skuInfo, Long number){
-        return Result.SUCCESS(skuInfoService.reduceSKUCount(skuInfo,number));
+    @RequestMapping(value = "/reduceCount",method = RequestMethod.GET)
+    public Result reduceSkuCount(Long skuId, Long  number){
+        return Result.SUCCESS(skuInfoService.reduceSKUCount(skuId, number));
     }
 
 }

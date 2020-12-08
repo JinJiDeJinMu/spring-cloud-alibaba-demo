@@ -3,10 +3,13 @@ package com.hjb.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.IdUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.constant.CommonConstants;
+import com.hjb.constant.OrderStatusConstans;
 import com.hjb.domain.param.OrderParam;
 import com.hjb.domain.param.OrderTrade;
+import com.hjb.domain.param.SkuChange;
 import com.hjb.domain.po.*;
 import com.hjb.execption.order.OrderException;
 import com.hjb.feign.GoodsFeignService;
@@ -17,6 +20,13 @@ import com.hjb.service.OrderService;
 import com.hjb.util.Result;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +63,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private RedissonClient redissonClient;
 
-    @GlobalTransactional
+    @Autowired
+    private DefaultMQProducer producer;
+
+    //@GlobalTransactional
+    @Transactional
     @Override
     public Result submit(OrderParam orderParam) {
 
@@ -69,10 +83,36 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderItemService.save(orderItem);
 
         //减库存
-       // reduceSkuInfo(orderTrade.getSkuInfo(), orderParam);
+        reduceSkuInfo(orderTrade.getSkuInfo(), orderParam);
 
         //扣除优惠券
+
+        //发送到消息队列
+        sendMQ(order.getId());
+
         return Result.SUCCESS();
+    }
+
+    public boolean sendMQ(long orderId){
+        Message message = new Message();
+        message.setBody(JSONObject.toJSONString(orderId).getBytes());
+        message.setTopic("order_cancel");
+        message.setTags("*");
+        message.setDelayTimeLevel(16);
+        SendResult send = null;
+        try {
+            send = producer.send(message);
+        } catch (MQClientException e) {
+            e.printStackTrace();
+        } catch (RemotingException e) {
+            e.printStackTrace();
+        } catch (MQBrokerException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+       return send.getSendStatus() == SendStatus.SEND_OK;
     }
 
     /**
@@ -86,7 +126,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         try {
             lock.lock(1, TimeUnit.SECONDS);
 
-            Result result = goodsFeignService.reduceSkuCount(skuInfo, orderParam.getNumber());
+
+            Result result = goodsFeignService.reduceSkuCount(skuInfo.getId(), orderParam.getNumber());
             if (result == null || "false".equals(result.getData())) {
                 throw new OrderException("库存扣除失败", CommonConstants.ORDER_SKU_MOUNT);
             }
@@ -124,16 +165,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderItem.setGoodsPic(goodsInfo.getMainImgUrl());
         orderItem.setBrandId(goodsInfo.getBrandId());
         orderItem.setCategoryId(goodsInfo.getCategoryId());
-        orderItem.setCouponAmount(order.getCouponAmount());
+        orderItem.setCouponAmount(order.getCouponMoney());
         orderItem.setSkuId(skuInfo.getId());
         orderItem.setSkuAttrsVals(skuInfo.getAttrList());
         orderItem.setSkuName(skuInfo.getSkuTitle());
         orderItem.setSkuPic(skuInfo.getSkuImg());
         orderItem.setSkuPrice(skuInfo.getPrice());
         orderItem.setSkuQuantity(orderParam.getNumber().intValue());
-        orderItem.setIntegrationAmount(order.getIntegrationAmount());
-        orderItem.setPromotionAmount(order.getPromotionAmount());
-        orderItem.setRealAmount(order.getPayAmount());
+        orderItem.setIntegrationAmount(order.getIntegrationMoney());
+        orderItem.setPromotionAmount(order.getPromotionMoney());
+        orderItem.setRealAmount(order.getPayMoney());
 
         log.info("生成订单明细成功 orderItem: {}", orderItem);
 
@@ -157,26 +198,26 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setCreateTime(now);
         order.setUsername(orderTrade.getUser().getUserName());
         //订单总金额
-        order.setTotalAmount(orderParam.getPrice());
+        order.setTotalMoney(orderParam.getPrice());
         //邮费
-        order.setFreightAmount(BigDecimal.ZERO);
+        order.setFreightMoney(BigDecimal.ZERO);
         //优惠券
-        order.setCouponAmount(BigDecimal.ZERO);
+        order.setCouponMoney(BigDecimal.ZERO);
         //促销优惠
-        order.setPromotionAmount(BigDecimal.ZERO);
+        order.setPromotionMoney(BigDecimal.ZERO);
         //积分抵扣
-        order.setIntegrationAmount(BigDecimal.ZERO);
+        order.setIntegrationMoney(BigDecimal.ZERO);
         //后台调整优惠
-        order.setDiscountAmount(BigDecimal.ZERO);
+        order.setDiscountMoney(BigDecimal.ZERO);
 
-        BigDecimal payMoney = order.getTotalAmount().subtract(order.getFreightAmount())
-                .subtract(order.getCouponAmount()).subtract(order.getPromotionAmount())
-                .subtract(order.getIntegrationAmount()).subtract(order.getDiscountAmount());
+        BigDecimal payMoney = order.getTotalMoney().subtract(order.getFreightMoney())
+                .subtract(order.getCouponMoney()).subtract(order.getPromotionMoney())
+                .subtract(order.getIntegrationMoney()).subtract(order.getDiscountMoney());
 
-        order.setPayAmount(payMoney.intValue() < 0 ? BigDecimal.ZERO : payMoney);
+        order.setPayMoney(payMoney.intValue() < 0 ? BigDecimal.ZERO : payMoney);
         order.setPayType(1);
         order.setSourceType(0);
-        order.setStatus(0);
+        order.setStatus(OrderStatusConstans.WAIT_PAY.getCode());
         ReceiveAddress address = orderTrade.getAddress();
         order.setReceiverName(address.getName());
         order.setReceiverPhone(address.getPhone());

@@ -19,10 +19,10 @@ public interface GoodsFeignService {
     @RequestMapping(value = "skuInfo/get", method = RequestMethod.GET)
     Result getSkuInfoById(@RequestParam(value = "id") Long id);
 
-    @RequestMapping(value = "/addCount",method = RequestMethod.POST)
-    Result addSkuCount(@RequestBody SkuInfo skuInfo, @RequestParam(value = "number") Long number);
+    @RequestMapping(value = "skuInfo/addCount",method = RequestMethod.GET)
+    Result addSkuCount(@RequestParam(value = "skuId") Long skuId, @RequestParam(value = "number") Long number);
 
-    @RequestMapping(value = "/reduceCount",method = RequestMethod.POST)
-    Result reduceSkuCount(@RequestBody SkuInfo skuInfo, @RequestParam(value = "number") Long number);
+    @RequestMapping(value = "skuInfo/reduceCount",method = RequestMethod.GET)
+    Result reduceSkuCount(@RequestParam(value = "skuId") Long skuId, @RequestParam(value = "number") Long number);
 
 }

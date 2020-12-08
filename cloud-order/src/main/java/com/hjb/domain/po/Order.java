@@ -58,37 +58,37 @@ public class Order implements Serializable {
       /**
      * 订单总额
      */
-      private BigDecimal totalAmount;
+      private BigDecimal totalMoney;
 
       /**
      * 应付总额
      */
-      private BigDecimal payAmount;
+      private BigDecimal payMoney;
 
       /**
      * 运费金额
      */
-      private BigDecimal freightAmount;
+      private BigDecimal freightMoney;
 
       /**
      * 促销优化金额（促销价、满减、阶梯价）
      */
-      private BigDecimal promotionAmount;
+      private BigDecimal promotionMoney;
 
       /**
      * 积分抵扣金额
      */
-      private BigDecimal integrationAmount;
+      private BigDecimal integrationMoney;
 
       /**
      * 优惠券抵扣金额
      */
-      private BigDecimal couponAmount;
+      private BigDecimal couponMoney;
 
       /**
      * 后台调整订单使用的折扣金额
      */
-      private BigDecimal discountAmount;
+      private BigDecimal discountMoney;
 
       /**
      * 支付方式【1->支付宝；2->微信；3->银联； 4->货到付款；】

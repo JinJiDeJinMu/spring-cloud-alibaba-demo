@@ -1,5 +1,6 @@
 package com.hjb.feign.fallback;
 
+import com.hjb.domain.param.SkuChange;
 import com.hjb.domain.po.SkuInfo;
 import com.hjb.feign.GoodsFeignService;
 import com.hjb.util.Result;
@@ -28,12 +29,12 @@ public class GoodsFeignFallbackService implements GoodsFeignService {
     }
 
     @Override
-    public Result addSkuCount(SkuInfo skuInfo, Long number) {
+    public Result addSkuCount(Long skuId, Long number) {
         return Result.FAILURE("服务调用出错");
     }
 
     @Override
-    public Result reduceSkuCount(SkuInfo skuInfo, Long number) {
+    public Result reduceSkuCount(Long skuId, Long number) {
         return Result.FAILURE("服务调用出错");
     }
 
