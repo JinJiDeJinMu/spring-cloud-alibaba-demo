@@ -1,12 +1,34 @@
 spring:
   cloud:
+    seata:
+      tx-service-group: my_test_tx_group
     nacos:
       config:
         server-addr: localhost:8848
         namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
         file-extension: yaml
-        cluster-name: nacos_cluster
+        cluster : default
   application:
     name: service-user
   profiles:
     active: dev
+
+
+seata:
+  enabled: true
+  application-id: service-user
+  tx-service-group: my_test_tx_group
+  enable-auto-data-source-proxy: true
+  config:
+    type: nacos
+    nacos:
+      serverAddr: 127.0.0.1:8848
+      group: DEFAULT_GROUP
+      namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
+
+registry:
+  type: nacos
+  nacos:
+    application: seata-server
+    server-addr: 127.0.0.1:8848
+    namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
