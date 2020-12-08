@@ -15,7 +15,7 @@ import com.hjb.mapper.OrderMapper;
 import com.hjb.service.OrderItemService;
 import com.hjb.service.OrderService;
 import com.hjb.util.Result;
-//import io.seata.spring.annotation.GlobalTransactional;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -52,8 +53,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private RedissonClient redissonClient;
 
-    //@GlobalTransactional
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional
     @Override
     public Result submit(OrderParam orderParam) {
 
@@ -69,7 +69,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderItemService.save(orderItem);
 
         //减库存
-        reduceSkuInfo(orderTrade.getSkuInfo(), orderParam);
+       // reduceSkuInfo(orderTrade.getSkuInfo(), orderParam);
 
         //扣除优惠券
         return Result.SUCCESS();
@@ -150,10 +150,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         Order order = new Order();
 
+        Date now = new Date();
         order.setOrderSn(String.valueOf(IdUtil.getSnowflake(1, 1).nextId()));
         order.setUserId(orderParam.getUserId());
         order.setCouponId(orderParam.getCouponId());
-        order.setCreateTime(LocalDateTime.now());
+        order.setCreateTime(now);
         order.setUsername(orderTrade.getUser().getUserName());
         //订单总金额
         order.setTotalAmount(orderParam.getPrice());

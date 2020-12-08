@@ -15,6 +15,7 @@ import com.hjb.elastic.model.Query;
 import com.hjb.mapper.GoodsInfoMapper;
 import com.hjb.service.*;
 import com.hjb.util.Result;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
@@ -103,6 +104,7 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
         return Result.SUCCESS();
     }
 
+    //@GlobalTransactional(rollbackFor = Exception.class)
     @Override
     public Result detail(Long id) {
         GoodsInfo goodsInfo = getById(id);

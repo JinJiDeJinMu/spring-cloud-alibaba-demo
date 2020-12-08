@@ -48,7 +48,7 @@ public class Order implements Serializable {
       /**
      * create_time
      */
-      private LocalDateTime createTime;
+      private Date createTime;
 
       /**
      * 用户名
@@ -213,27 +213,27 @@ public class Order implements Serializable {
       /**
      * 支付时间
      */
-      private LocalDateTime paymentTime;
+      private Date paymentTime;
 
       /**
      * 发货时间
      */
-      private LocalDateTime deliveryTime;
+      private Date deliveryTime;
 
       /**
      * 确认收货时间
      */
-      private LocalDateTime receiveTime;
+      private Date receiveTime;
 
       /**
      * 评价时间
      */
-      private LocalDateTime commentTime;
+      private Date commentTime;
 
       /**
      * 修改时间
      */
-      private LocalDateTime modifyTime;
+      private Date modifyTime;
 
 
 }

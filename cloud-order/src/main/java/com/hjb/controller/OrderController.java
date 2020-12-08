@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hjb.domain.dto.GoodsDetailDTO;
 import com.hjb.domain.param.OrderParam;
 import com.hjb.domain.param.OrderTrade;
 import com.hjb.domain.po.Order;
@@ -15,6 +16,7 @@ import com.hjb.feign.GoodsFeignService;
 import com.hjb.feign.UserFeignService;
 import com.hjb.service.OrderService;
 import com.hjb.util.Result;
+import io.seata.spring.annotation.GlobalTransactional;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.rocketmq.client.exception.MQBrokerException;
@@ -73,6 +75,7 @@ public class OrderController {
     * @param id
     */
     @ApiOperation(value = "获取单条数据")
+    @GlobalTransactional
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public Result getOrderById(Long id){
         return Result.SUCCESS(orderService.getById(id));
@@ -114,10 +117,10 @@ public class OrderController {
     }
 
     @GetMapping("test")
-    public ReceiveAddress test(){
-       Result result = userFeignService.getReceiveAddressById(1l);
+    public GoodsDetailDTO test(){
+       Result result = goodsFeignService.goodsDetail(2l);
        HashMap<String,Object> hashMap = (HashMap<String, Object>) result.getData();
-       BeanUtil.mapToBean(hashMap,ReceiveAddress.class,false, CopyOptions.create());
-       return null;
+
+       return  BeanUtil.mapToBean(hashMap, GoodsDetailDTO.class,false, CopyOptions.create());
     }
 }

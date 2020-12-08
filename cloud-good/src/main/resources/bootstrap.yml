@@ -2,18 +2,36 @@ spring:
   cloud:
     alibaba:
       seata:
-        tx-service-group: service-good
+        tx-service-group: my_test_tx_group
     nacos:
       config:
         server-addr: localhost:8848
         namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
         file-extension: yaml
-        cluster-name: nacos_cluster
+        cluster : default
   application:
     name: service-good
   profiles:
     active: dev
 
+seata:
+  enabled: true
+  application-id: service-good
+  tx-service-group: my_test_tx_group
+  enable-auto-data-source-proxy: true
+  config:
+    type: nacos
+    nacos:
+      namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
+      serverAddr: 192.168.102.74:8848
+      group: SEATA_GROUP
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 192.168.102.74:8848
+      group: SEATA_GROUP
+      namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
 
 
 

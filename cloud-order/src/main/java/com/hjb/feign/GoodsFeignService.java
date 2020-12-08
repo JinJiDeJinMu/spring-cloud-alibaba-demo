@@ -20,9 +20,9 @@ public interface GoodsFeignService {
     Result getSkuInfoById(@RequestParam(value = "id") Long id);
 
     @RequestMapping(value = "/addCount",method = RequestMethod.POST)
-    Result addSkuCount(@RequestBody SkuInfo skuInfo, Long number);
+    Result addSkuCount(@RequestBody SkuInfo skuInfo, @RequestParam(value = "number") Long number);
 
     @RequestMapping(value = "/reduceCount",method = RequestMethod.POST)
-    Result reduceSkuCount(@RequestBody SkuInfo skuInfo, Long number);
+    Result reduceSkuCount(@RequestBody SkuInfo skuInfo, @RequestParam(value = "number") Long number);
 
 }
