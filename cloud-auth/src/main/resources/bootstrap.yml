@@ -10,13 +10,17 @@ spring:
     name: service-auth
   profiles:
     active: dev
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 500
+        min-idle: 0
   main:
     allow-bean-definition-overriding: true
-
-  security:
-    oauth2:
-      resource:
-        filter-order: 3
 
 mybatis:
   type-aliases-package: com.funtl.oauth2.server.domain
@@ -24,8 +28,8 @@ mybatis:
 
 auth:
   ttl: 3600  #token存储到redis的过期时间
-  clientId: changgou
-  clientSecret: changgou
+  clientId: client
+  clientSecret: secret
   cookieDomain: localhost
   cookieMaxAge: -1
 encrypt:

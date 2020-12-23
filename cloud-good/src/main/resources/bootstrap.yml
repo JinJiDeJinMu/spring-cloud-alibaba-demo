@@ -23,13 +23,14 @@ seata:
     type: nacos
     nacos:
       namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
-      serverAddr: 192.168.102.74:8848
+      serverAddr: 127.0.0.1
       group: SEATA_GROUP
+
   registry:
     type: nacos
     nacos:
-      application: seata-server
-      server-addr: 192.168.102.74:8848
+      application: seata-good
+      server-addr: 127.0.0.1
       group: SEATA_GROUP
       namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
 

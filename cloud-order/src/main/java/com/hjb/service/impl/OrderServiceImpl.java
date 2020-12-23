@@ -6,6 +6,7 @@ import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.constant.CommonConstants;
+import com.hjb.constant.MQTopicConstants;
 import com.hjb.constant.OrderStatusConstans;
 import com.hjb.domain.param.OrderParam;
 import com.hjb.domain.param.OrderTrade;
@@ -30,6 +31,7 @@ import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,38 +68,49 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private DefaultMQProducer producer;
 
-    //@GlobalTransactional
-    @Transactional
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Override
+    public Result buyConfirm(OrderParam orderParam) {
+        OrderTrade orderTrade = new OrderTrade();
+        checkOrder(orderParam, orderTrade);
+
+        redisTemplate.opsForValue().set("USER_BUY_" + orderParam.getUserId(),JSONObject.toJSONString(orderTrade));
+        return null;
+    }
+
+    @GlobalTransactional
+    //@Transactional
     @Override
     public Result submit(OrderParam orderParam) {
-
         OrderTrade orderTrade = new OrderTrade();
-        //校验合法性
+
         checkOrder(orderParam, orderTrade);
-        //生成预订单
+
         Order order = createOrder(orderParam, orderTrade);
         save(order);
 
-        //生成订单明细
         OrderItem orderItem = createOrderItem(order, orderTrade, orderParam);
         orderItemService.save(orderItem);
 
-        //减库存
         reduceSkuInfo(orderTrade.getSkuInfo(), orderParam);
 
-        //扣除优惠券
-
-        //发送到消息队列
         sendMQ(order.getId());
 
         return Result.SUCCESS();
     }
 
-    public boolean sendMQ(long orderId){
+    /**
+     * 订单超时取消(topic=order_cancel)
+     * @param orderId
+     * @return
+     */
+    public boolean sendMQ(Long orderId){
         Message message = new Message();
         message.setBody(JSONObject.toJSONString(orderId).getBytes());
-        message.setTopic("order_cancel");
-        message.setTags("*");
+        message.setTopic(MQTopicConstants.ORDER_CANCEL_TOPIC.getTopic());
+        message.setTags(MQTopicConstants.ORDER_CANCEL_TOPIC.getTags());
         message.setDelayTimeLevel(16);
         SendResult send = null;
         try {
@@ -122,7 +135,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @param orderParam
      */
     public void reduceSkuInfo(SkuInfo skuInfo, OrderParam orderParam) {
-        RLock lock = redissonClient.getLock(String.valueOf(skuInfo.getId()));
+        RLock lock = redissonClient.getLock("SKU-COUNT-LOCK-" + String.valueOf(skuInfo.getId()));
         try {
             lock.lock(1, TimeUnit.SECONDS);
 
@@ -248,7 +261,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
 
         HashMap<String, Object> hashMap_1 = (HashMap<String, Object>) userResult.getData();
-
         User user = BeanUtil.mapToBean(hashMap_1, User.class, false, CopyOptions.create());
         if (user == null || user.getStatus() == 1) {
             throw new OrderException("用户不存在", CommonConstants.ORDER_CHECK_UN_RIGHT);
@@ -261,7 +273,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new OrderException("用户服务出错", CommonConstants.ORDER_CHECK_UN_RIGHT);
         }
         HashMap<String, Object> hashMap_2 = (HashMap<String, Object>) addressReulst.getData();
-
         ReceiveAddress address = BeanUtil.mapToBean(hashMap_2, ReceiveAddress.class, false, CopyOptions.create());
         if (address == null) {
             throw new OrderException("收货地址不存在", CommonConstants.ORDER_CHECK_UN_RIGHT);
@@ -274,7 +285,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new OrderException("商品服务出错", CommonConstants.ORDER_CHECK_UN_RIGHT);
         }
         HashMap<String, Object> hashMap_3 = (HashMap<String, Object>) goodsResult.getData();
-
         GoodsInfo goodsInfo = BeanUtil.mapToBean(hashMap_3, GoodsInfo.class, false, CopyOptions.create());
         if (goodsInfo == null || goodsInfo.getIsPublish() == 1) {
             throw new OrderException("找不到指定商品", CommonConstants.ORDER_CHECK_UN_RIGHT);
@@ -285,21 +295,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (skuResult.getSuccess() == false) {
             throw new OrderException("商品服务出错", CommonConstants.ORDER_CHECK_UN_RIGHT);
         }
-
         HashMap<String, Object> hashMap_4 = (HashMap<String, Object>) skuResult.getData();
-
         SkuInfo skuInfo = BeanUtil.mapToBean(hashMap_4, SkuInfo.class, false, CopyOptions.create());
         if (skuInfo == null || skuInfo.getMount() < orderParam.getNumber()) {
             throw new OrderException("商品库存不足", CommonConstants.ORDER_CHECK_UN_RIGHT);
         }
         orderTrade.setSkuInfo(skuInfo);
 
-
         BigDecimal money = new BigDecimal(orderParam.getNumber()).multiply(skuInfo.getPrice());
-
         if (money.compareTo(orderParam.getPrice()) != 0) {
             throw new OrderException("商品价格出错", CommonConstants.ORDER_CHECK_UN_RIGHT);
         }
-
     }
 }

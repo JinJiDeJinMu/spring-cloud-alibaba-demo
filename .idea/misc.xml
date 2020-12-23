@@ -11,9 +11,12 @@
         <option value="$PROJECT_DIR$/cloud-common/pom.xml" />
         <option value="$PROJECT_DIR$/cloud-good/pom.xml" />
         <option value="$PROJECT_DIR$/cloud-order/pom.xml" />
-        <option value="$PROJECT_DIR$/cloud-gateway/pom.xml" />
-        <option value="$PROJECT_DIR$/cloud-user/pom.xml" />
         <option value="$PROJECT_DIR$/cloud-test/pom.xml" />
+        <option value="$PROJECT_DIR$/cloud-cart/pom.xml" />
+        <option value="$PROJECT_DIR$/cloud-auth/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-security/pom.xml" />
+        <option value="$PROJECT_DIR$/service-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/service-user/pom.xml" />
       </list>
     </option>
   </component>

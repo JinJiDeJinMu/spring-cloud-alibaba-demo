@@ -15,6 +15,13 @@ import com.hjb.util.Result;
  */
 public interface OrderService extends IService<Order> {
 
+
+    /**
+     * 商品购买前校验
+     * @return
+     */
+    Result buyConfirm(OrderParam orderParam);
+
     /**
      * 提交订单
      * @param orderParam

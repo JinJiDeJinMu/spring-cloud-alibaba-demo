@@ -7,26 +7,38 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="cloud-order" />
-        <module name="cloud-gateway" />
-        <module name="cloud-user" />
+        <module name="service-user" />
         <module name="cloud-common" />
         <module name="cloud-test" />
+        <module name="spring-security" />
         <module name="cloud-good" />
+        <module name="cloud-auth" />
+        <module name="cloud-cart" />
+        <module name="service-gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="cloud-comment" target="1.8" />
+      <module name="cloud-gateway" target="1.8" />
+      <module name="cloud-resource" target="1.8" />
+      <module name="cloud-user" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="cloud-auth" options="-parameters" />
+      <module name="cloud-cart" options="-parameters" />
       <module name="cloud-comment" options="-parameters" />
       <module name="cloud-common" options="-parameters" />
       <module name="cloud-gateway" options="-parameters" />
       <module name="cloud-good" options="-parameters" />
       <module name="cloud-order" options="-parameters" />
+      <module name="cloud-resource" options="-parameters" />
       <module name="cloud-test" options="-parameters" />
       <module name="cloud-user" options="-parameters" />
+      <module name="service-gateway" options="-parameters" />
+      <module name="service-user" options="-parameters" />
+      <module name="spring-security" options="-parameters" />
     </option>
   </component>
 </project>

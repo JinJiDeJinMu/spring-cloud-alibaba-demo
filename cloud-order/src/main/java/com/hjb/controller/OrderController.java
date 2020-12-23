@@ -116,6 +116,16 @@ public class OrderController {
         return Result.SUCCESS(orderService.submit(order));
     }
 
+    /**
+     * 购买校验
+     * @param orderParam
+     * @return
+     */
+    public Result buyConfirm(OrderParam orderParam){
+
+        return orderService.buyConfirm(orderParam);
+    }
+
     @GetMapping("test")
     public GoodsDetailDTO test(){
        Result result = goodsFeignService.goodsDetail(2l);

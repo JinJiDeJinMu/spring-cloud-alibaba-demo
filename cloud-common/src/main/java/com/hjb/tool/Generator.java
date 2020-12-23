@@ -2,6 +2,7 @@ package com.hjb.tool;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
@@ -10,14 +11,14 @@ import java.sql.Driver;
 
 
 public class Generator {
-    public final static String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/hu_shop?serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
+    public final static String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/hu_shop_goods?serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
     public final static String DB_USER_NAME = "root";
     public final static String DB_PWD = "123456";
     public final static String SYS_PACKAGE_NAME = "com.hjb";
     public final static String SYS_AHURTOR = "jinmu";
 
     public static void main(String[] args) {
-        String[] tableNames = new String[]{"hu_sku_info"};
+        String[] tableNames = new String[]{"hu_cart_item"};
         String[] modules = new String[]{"service", "web"};//项目模块名，需自定义
         for (String module : modules) {
             moduleGenerator(module, tableNames);
