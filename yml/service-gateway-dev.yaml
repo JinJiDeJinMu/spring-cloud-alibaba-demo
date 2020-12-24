@@ -1,42 +1,54 @@
 server:
- port: 8090
-feign:
-  sentinel:
-    enabled: true
+  port: 8090
 spring:
   cloud:
     nacos:
       discovery:
         server-addr: localhost:8848
+        namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
+        file-extension: yaml
     gateway:
       discovery:
         locator:
           enabled: true # 让gateway从nacos中获取服务信息
+      globalcors:
+        corsConfigurations:
+          '[/**]': # 匹配所有请求
+              allowedOrigins: "*" #跨域处理 允许所有的域
+              allowedMethods: # 支持的方法
+                - GET
+                - POST
+                - PUT
+                - DELETE
       routes:
-      - id: good-route
-        uri: lb://service-good
-        predicates:
-        - Path=/service-good/**
-        filters:
-        - RewritePath=/service-good/(?<segment>.*), /$\{segment}
-      - id: order-route
-        uri: lb://service-order
-        predicates:
-        - Path=/service-order/**
-        filters:
-        - RewritePath=/service-order/(?<segment>.*), /$\{segment}
-      - id: user-route
-        uri: lb://service-user
-        predicates:
-        - Path=/service-user/**
-        filters:
-        - RewritePath=/service-user/(?<segment>.*), /$\{segment}
+        - id: good-route
+          uri: lb://service-good
+          predicates:
+            - Path=/service-good/**
+          filters:
+            - RewritePath=/service-good/(?<segment>.*), /$\{segment}
+        - id: order-route
+          uri: lb://service-order
+          predicates:
+            - Path=/service-order/**
+          filters:
+            - RewritePath=/service-order/(?<segment>.*), /$\{segment}
+        - id: user-route
+          uri: lb://service-user
+          predicates:
+            - Path=/service-user/**
+          filters:
+            - RewritePath=/service-user/(?<segment>.*), /$\{segment}
 
-#url不进行鉴权白名单,多个以,隔开
-gateway:
- white:
-  url: /service-user/login
-       
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    web:
+      exposure:
+        include: true
+
       
        
       

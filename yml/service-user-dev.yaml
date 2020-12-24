@@ -3,10 +3,12 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+        namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/hu_shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://localhost:3306/hu_shop_user?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
 server:
-  port: 8091
+  port: 8094

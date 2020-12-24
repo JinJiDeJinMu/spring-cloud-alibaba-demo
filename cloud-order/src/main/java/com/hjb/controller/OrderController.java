@@ -112,11 +112,4 @@ public class OrderController {
         return orderService.buyConfirm(orderParam);
     }
 
-    @GetMapping("test")
-    public GoodsDetailDTO test(){
-       Result result = goodsFeignService.goodsDetail(2l);
-       HashMap<String,Object> hashMap = (HashMap<String, Object>) result.getData();
-
-       return  BeanUtil.mapToBean(hashMap, GoodsDetailDTO.class,false, CopyOptions.create());
-    }
 }

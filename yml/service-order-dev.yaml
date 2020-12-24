@@ -2,10 +2,11 @@ server:
   port: 8093
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/hu_shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
+    jdbc-url: jdbc:mysql://localhost:3306/hu_shop_order?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
   redis:
 #   集群配置
 #    cluster:
@@ -22,6 +23,7 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+        namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
     sentinel:
       transport:
         dashboard: localhost:7070
@@ -47,7 +49,7 @@ rocketmq:
     groupName: order_MQ
     namesrvAddr: 127.0.0.1:9876
     #该消费者订阅的主题和tags("*"号表示订阅该主题下所有的tags),格式：topic~tag1||tag2||tag3;topic2~*;
-    topics: topic1~tag1;order_submit~*;
+    topics: topic1~tag1;order_submit~*;order_cancel~*;
     consumeThreadMin: 20
     consumeThreadMax: 64
     #设置一次消费消息的条数，默认为1条
