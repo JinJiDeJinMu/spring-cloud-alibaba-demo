@@ -1,10 +1,9 @@
 package com.hjb.elastic.model;
 
-import com.hjb.domain.po.GoodsAttribute;
-import com.hjb.domain.po.SkuInfo;
+import com.hjb.domain.GoodsAttribute;
+import com.hjb.domain.SkuInfo;
 import lombok.Data;
 
-import java.lang.annotation.Documented;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;

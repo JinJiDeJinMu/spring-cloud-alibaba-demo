@@ -2,7 +2,7 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hjb.domain.po.Category;
+import com.hjb.domain.Category;
 import com.hjb.service.CategoryService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;

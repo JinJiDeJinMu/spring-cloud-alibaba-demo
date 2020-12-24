@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 @Slf4j
@@ -31,14 +29,13 @@ public class GlobalRequestFilter implements GlobalFilter, Ordered {
 
         String path = request.getURI().getPath();
 
-        if(!checkUrl(path)){
+        if (checkUrl(path)) {
             //放行
             return chain.filter(exchange);
         }
 
         String token = request.getHeaders().getFirst("Authorization");
         if (StringUtils.isEmpty(token)) {
-
             //请求头中没有token
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();
@@ -50,12 +47,12 @@ public class GlobalRequestFilter implements GlobalFilter, Ordered {
     }
 
     private boolean checkUrl(String path) {
-        if(StringUtils.isEmpty(ignoreUrl) ){
+        if (StringUtils.isEmpty(ignoreUrl)) {
             return false;
         }
-        List<String> urls = Arrays.asList(ignoreUrl.split(","));
+        String[] urls = ignoreUrl.split(",");
         for (String url : urls) {
-            if(path.startsWith(url)){
+            if (path.startsWith(url)) {
                 return true;
             }
         }

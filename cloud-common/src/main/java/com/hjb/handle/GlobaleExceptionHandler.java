@@ -2,13 +2,14 @@ package com.hjb.handle;
 
 import com.hjb.execption.BaseException;
 import com.hjb.execption.auth.UserJwtException;
+import com.hjb.execption.good.GoodsException;
 import com.hjb.util.Result;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-//@ControllerAdvice
-//@ResponseBody
+@ControllerAdvice
+@ResponseBody
 public class GlobaleExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
@@ -23,6 +24,11 @@ public class GlobaleExceptionHandler {
 
     @ExceptionHandler(UserJwtException.class)
     public Result UserJwtExceptionHandler(UserJwtException e) {
+        return Result.FAILURE(e.getMessage(),e.getCode());
+    }
+
+    @ExceptionHandler(GoodsException.class)
+    public Result GoodsExceptionHandler(GoodsException e){
         return Result.FAILURE(e.getMessage(),e.getCode());
     }
 }

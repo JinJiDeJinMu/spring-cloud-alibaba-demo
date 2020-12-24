@@ -2,7 +2,7 @@ package com.hjb.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hjb.domain.po.Attribute;
+import com.hjb.domain.Attribute;
 
 /**
  * <p>

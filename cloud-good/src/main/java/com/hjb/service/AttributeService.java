@@ -1,7 +1,7 @@
 package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hjb.domain.po.Attribute;
+import com.hjb.domain.Attribute;
 
 /**
  * <p>

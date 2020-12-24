@@ -2,7 +2,7 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hjb.domain.po.OrderItem;
+import com.hjb.domain.OrderItem;
 import com.hjb.service.OrderItemService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;

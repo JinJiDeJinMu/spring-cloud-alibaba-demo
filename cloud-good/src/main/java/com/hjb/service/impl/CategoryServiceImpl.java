@@ -1,7 +1,7 @@
 package com.hjb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hjb.domain.po.Category;
+import com.hjb.domain.Category;
 import com.hjb.mapper.CategoryMapper;
 import com.hjb.service.CategoryService;
 import org.springframework.stereotype.Service;

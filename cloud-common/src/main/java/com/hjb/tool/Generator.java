@@ -11,14 +11,14 @@ import java.sql.Driver;
 
 
 public class Generator {
-    public final static String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/hu_shop_goods?serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
+    public final static String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/hu_shop_user?serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
     public final static String DB_USER_NAME = "root";
     public final static String DB_PWD = "123456";
     public final static String SYS_PACKAGE_NAME = "com.hjb";
     public final static String SYS_AHURTOR = "jinmu";
 
     public static void main(String[] args) {
-        String[] tableNames = new String[]{"hu_cart_item"};
+        String[] tableNames = new String[]{"hu_user"};
         String[] modules = new String[]{"service", "web"};//项目模块名，需自定义
         for (String module : modules) {
             moduleGenerator(module, tableNames);
@@ -93,7 +93,7 @@ public class Generator {
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         //"com.mysql.cj.jdbc.Driver"
         dataSourceConfig.setDbType(DbType.MYSQL)
-                .setDriverName(Driver.class.getName())
+                .setDriverName("com.mysql.jdbc.Driver")
                 .setUsername(DB_USER_NAME)
                 .setPassword(DB_PWD)
                 .setUrl(dbUrl);

@@ -1,4 +1,4 @@
-package com.hjb.domain.po;
+package com.hjb.domain;
 
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;

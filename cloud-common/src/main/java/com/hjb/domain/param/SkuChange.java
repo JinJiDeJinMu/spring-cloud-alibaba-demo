@@ -1,6 +1,6 @@
 package com.hjb.domain.param;
 
-import com.hjb.domain.po.SkuInfo;
+import com.hjb.domain.SkuInfo;
 import lombok.Data;
 
 @Data

@@ -1,16 +1,13 @@
 package com.hjb.controller;
 import com.hjb.service.CartItemService;
-import com.hjb.domain.po.CartItem;
+import com.hjb.domain.CartItem;
 import com.hjb.util.Result;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +81,14 @@ public class CartItemController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result deleteCartItemById(List<Long> ids){
         return Result.SUCCESS(cartItemService.removeByIds(ids));
+    }
+
+
+
+    @RequestMapping(value = "add",method = RequestMethod.POST)
+    public Result addCar(@RequestParam(value = "skuId") Long skuId, @RequestParam(value = "number") Long number){
+
+        return Result.SUCCESS( cartItemService.addCart(skuId, number));
     }
 
 }

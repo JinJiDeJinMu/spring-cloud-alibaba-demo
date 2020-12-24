@@ -1,7 +1,7 @@
 package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hjb.domain.po.ReceiveAddress;
+import com.hjb.domain.ReceiveAddress;
 
 import java.util.List;
 

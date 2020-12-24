@@ -1,71 +1,67 @@
-package com.hjb.domain.po;
+package com.hjb.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-
+import java.util.Date;
 
 /**
  * <p>
- * 商品三级分类
+ * 
  * </p>
  *
  * @author jinmu
  * @since 2020-11-20
  */
 @Data
-@TableName("hu_category")
-public class Category implements Serializable {
+  @EqualsAndHashCode(callSuper = false)
+  @Accessors(chain = true)
+@TableName("hu_brand")
+public class Brand implements Serializable {
 
     private static final long serialVersionUID=1L;
 
       /**
-     * 分类id
+     * 品牌id
      */
         @TableId(value = "id", type = IdType.AUTO)
       private Long id;
 
       /**
-     * 分类名称
+     * 品牌名
      */
       private String name;
 
       /**
-     * 父分类id
+     * 品牌logo地址
      */
-      private Long parentCid;
+      private String logo;
 
       /**
-     * 层级
+     * 介绍
      */
-      private Integer catLevel;
+      private String descript;
 
       /**
-     * 是否显示[0-不显示，1显示]
+     * 显示状态[0-不显示；1-显示]
      */
-      private Integer showStatus;
+      private Integer isShow;
 
       /**
      * 排序
      */
       private Integer sort;
 
-      /**
-     * 图标地址
-     */
-      private String icon;
+    private String address;
 
-      /**
-     * 计量单位
-     */
-      private String productUnit;
+    private String brandImg;
 
-      /**
-     * 可选商品属性
-     */
-      private String productCategory;
+    private Date createdTime;
+
 
 }

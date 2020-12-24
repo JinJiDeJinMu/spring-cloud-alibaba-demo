@@ -10,5 +10,5 @@ spring:
         namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
         file-extension: yaml
 ignore:
-  url: /service-good/goodsInfo/get,/service-auth/au/login,/service-auth/au/logout
+  url: /service-good/goodsInfo/get,/service-auth/au/login,/service-auth/au/logout,/service-user/user/get
 

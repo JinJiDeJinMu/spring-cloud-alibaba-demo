@@ -1,7 +1,7 @@
 package com.hjb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hjb.domain.po.Brand;
+import com.hjb.domain.Brand;
 import com.hjb.mapper.BrandMapper;
 import com.hjb.service.BrandService;
 import org.springframework.stereotype.Service;

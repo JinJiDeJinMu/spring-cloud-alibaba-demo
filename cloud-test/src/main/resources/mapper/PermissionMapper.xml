@@ -19,7 +19,7 @@
         id, parent_id, name, enname, url, description, created, updated
     </sql>
 
-    <select id="getUserPermission" resultType="com.hjb.po.Permission">
+    <select id="getUserPermission" resultType="Permission">
             SELECT
               p.*
             FROM

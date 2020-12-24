@@ -12,4 +12,6 @@ public class CommonConstants {
     public static final Integer ORDER_CHECK_UN_RIGHT = 6000;//订单不合法
     public static final Integer ORDER_SKU_MOUNT = 6001;//库存不足
     public static final Integer ORDER_SUBMIT = 6002;//订单提交失败
+
+    //good
 }

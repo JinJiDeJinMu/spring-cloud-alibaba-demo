@@ -1,7 +1,7 @@
 package com.hjb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hjb.domain.po.OrderItem;
+import com.hjb.domain.OrderItem;
 import com.hjb.mapper.OrderItemMapper;
 import com.hjb.service.OrderItemService;
 import org.springframework.stereotype.Service;

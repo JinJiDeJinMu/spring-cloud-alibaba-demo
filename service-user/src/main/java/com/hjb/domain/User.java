@@ -1,4 +1,4 @@
-package com.hjb.domain.po;
+package com.hjb.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -25,7 +25,7 @@ public class User implements Serializable {
       @TableId(value = "id", type = IdType.AUTO)
       private Long id;
 
-    private String userName;
+    private String username;
 
     private String password;
 

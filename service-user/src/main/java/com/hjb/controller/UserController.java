@@ -2,19 +2,16 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hjb.domain.po.User;
+import com.hjb.domain.User;
 import com.hjb.service.UserService;
 import com.hjb.util.Result;
+import com.hjb.util.SecurityUserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -88,6 +85,13 @@ public class UserController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result deleteUserById(List<Long> ids){
         return Result.SUCCESS(userService.removeByIds(ids));
+    }
+
+    @GetMapping(value = "/current")
+    public Result getCurrentInfo(){
+
+        SecurityUserUtils securityUserUtils = new SecurityUserUtils();
+        return Result.SUCCESS(securityUserUtils.getUserInfo());
     }
 
 }

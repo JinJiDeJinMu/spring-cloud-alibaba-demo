@@ -1,7 +1,7 @@
 package com.hjb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hjb.domain.po.Attribute;
+import com.hjb.domain.Attribute;
 import com.hjb.mapper.AttributeMapper;
 import com.hjb.service.AttributeService;
 import org.springframework.stereotype.Service;

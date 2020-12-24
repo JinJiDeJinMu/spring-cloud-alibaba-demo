@@ -3,7 +3,7 @@ package com.hjb.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hjb.domain.param.GoodsInfoParam;
-import com.hjb.domain.po.GoodsInfo;
+import com.hjb.domain.GoodsInfo;
 import com.hjb.service.GoodsInfoService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
@@ -99,7 +99,7 @@ public class GoodsInfoController {
     @ApiOperation(value = "查询商品详情")
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public Result goodsDetail(@RequestParam(value = "id") Long id){
-        return goodsInfoService.detail(id);
+        return Result.SUCCESS(goodsInfoService.detail(id));
     }
 
     @GetMapping("test")

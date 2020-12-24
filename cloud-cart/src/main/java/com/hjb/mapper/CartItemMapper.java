@@ -1,6 +1,6 @@
 package com.hjb.mapper;
 
-import com.hjb.domain.po.CartItem;
+import com.hjb.domain.CartItem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

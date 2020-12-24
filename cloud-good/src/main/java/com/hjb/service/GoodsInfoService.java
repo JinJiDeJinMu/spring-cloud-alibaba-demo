@@ -1,10 +1,9 @@
 package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hjb.domain.dto.GoodsDetailDTO;
 import com.hjb.domain.param.GoodsInfoParam;
-import com.hjb.domain.po.GoodsInfo;
-import com.hjb.elastic.model.EsGoods;
-import com.hjb.elastic.model.Query;
+import com.hjb.domain.GoodsInfo;
 import com.hjb.util.Result;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +33,7 @@ public interface GoodsInfoService extends IService<GoodsInfo> {
      * @param id
      * @return
      */
-    Result detail(Long id);
+    GoodsDetailDTO detail(Long id);
 
     /**
      *

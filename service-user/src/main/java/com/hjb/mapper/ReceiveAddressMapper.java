@@ -1,6 +1,6 @@
 package com.hjb.mapper;
 
-import com.hjb.domain.po.ReceiveAddress;
+import com.hjb.domain.ReceiveAddress;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

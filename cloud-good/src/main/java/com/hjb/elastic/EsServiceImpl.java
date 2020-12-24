@@ -1,7 +1,7 @@
 package com.hjb.elastic;
 
 import com.alibaba.fastjson.JSON;
-import com.hjb.domain.po.GoodsInfo;
+import com.hjb.domain.GoodsInfo;
 import com.hjb.elastic.model.EsGoods;
 import com.hjb.elastic.model.Query;
 import com.hjb.service.GoodsInfoService;

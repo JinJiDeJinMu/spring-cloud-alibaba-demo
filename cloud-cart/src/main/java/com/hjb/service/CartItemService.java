@@ -1,7 +1,7 @@
 package com.hjb.service;
 
 import com.hjb.domain.dto.CartVo;
-import com.hjb.domain.po.CartItem;
+import com.hjb.domain.CartItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public interface CartItemService extends IService<CartItem> {
      * @param skuId
      * @return
      */
-    boolean addCart(Long userId, Long skuId, Long number);
+    boolean addCart(Long skuId, Long number);
 
     /**
      * 删除购物车商品

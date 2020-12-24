@@ -2,8 +2,7 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hjb.domain.param.SkuChange;
-import com.hjb.domain.po.SkuInfo;
+import com.hjb.domain.SkuInfo;
 import com.hjb.service.SkuInfoService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
@@ -84,30 +83,6 @@ public class SkuInfoController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result deleteSkuInfoById(List<Long> ids){
         return Result.SUCCESS(skuInfoService.removeByIds(ids));
-    }
-
-
-    /**
-     * 库存释放
-     * @param skuId
-     * @return
-     */
-    @ApiOperation(value = "释放库存")
-    @RequestMapping(value = "/addCount",method = RequestMethod.GET)
-    public Result addSkuCount(Long skuId, Long  number){
-        return Result.SUCCESS(skuInfoService.addSKUCount(skuId, number));
-    }
-
-
-    /**
-     * 扣除库存
-     * @param skuId
-     * @return
-     */
-    @ApiOperation(value = "扣除库存")
-    @RequestMapping(value = "/reduceCount",method = RequestMethod.GET)
-    public Result reduceSkuCount(Long skuId, Long  number){
-        return Result.SUCCESS(skuInfoService.reduceSKUCount(skuId, number));
     }
 
 }

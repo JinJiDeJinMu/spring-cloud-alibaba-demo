@@ -2,7 +2,7 @@ package com.hjb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import com.hjb.domain.po.User;
+import com.hjb.domain.User;
 import com.hjb.mapper.UserMapper;
 import com.hjb.service.UserService;
 import org.springframework.stereotype.Service;

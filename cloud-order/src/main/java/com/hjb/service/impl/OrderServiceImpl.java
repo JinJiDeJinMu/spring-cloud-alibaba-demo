@@ -1,17 +1,15 @@
 package com.hjb.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.constant.CommonConstants;
 import com.hjb.constant.MQTopicConstants;
 import com.hjb.constant.OrderStatusConstans;
+import com.hjb.domain.*;
 import com.hjb.domain.param.OrderParam;
 import com.hjb.domain.param.OrderTrade;
-import com.hjb.domain.param.SkuChange;
-import com.hjb.domain.po.*;
+import com.hjb.execption.good.GoodsException;
 import com.hjb.execption.order.OrderException;
 import com.hjb.feign.GoodsFeignService;
 import com.hjb.feign.UserFeignService;
@@ -33,10 +31,8 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -139,9 +135,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         try {
             lock.lock(1, TimeUnit.SECONDS);
 
-
-            Result result = goodsFeignService.reduceSkuCount(skuInfo.getId(), orderParam.getNumber());
-            if (result == null || "false".equals(result.getData())) {
+            Boolean result = goodsFeignService.reduceSkuCount(skuInfo.getId(), orderParam.getNumber());
+            if (result == null || result == false) {
                 throw new OrderException("库存扣除失败", CommonConstants.ORDER_SKU_MOUNT);
             }
             log.info("扣除库存成功, skuInfoId: {}, 扣除: {}, 还剩: {}", skuInfo.getId(), orderParam.getNumber(), skuInfo.getMount());
@@ -209,7 +204,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setUserId(orderParam.getUserId());
         order.setCouponId(orderParam.getCouponId());
         order.setCreateTime(now);
-        order.setUsername(orderTrade.getUser().getUserName());
+        order.setUsername(orderTrade.getUser().getUsername());
         //订单总金额
         order.setTotalMoney(orderParam.getPrice());
         //邮费
@@ -255,56 +250,37 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new OrderException("订单不合法", CommonConstants.ORDER_CHECK_UN_RIGHT);
         }
         //校验用户信息
-        Result userResult = userFeignService.getUserById(orderParam.getUserId());
-        if (userResult.getSuccess() == false) {
-            throw new OrderException("用户服务出错", CommonConstants.ORDER_CHECK_UN_RIGHT);
-        }
-
-        HashMap<String, Object> hashMap_1 = (HashMap<String, Object>) userResult.getData();
-        User user = BeanUtil.mapToBean(hashMap_1, User.class, false, CopyOptions.create());
+        User user = userFeignService.getUserById(orderParam.getUserId());
         if (user == null || user.getStatus() == 1) {
             throw new OrderException("用户不存在", CommonConstants.ORDER_CHECK_UN_RIGHT);
         }
         orderTrade.setUser(user);
 
         //校验收货地址
-        Result addressReulst = userFeignService.getReceiveAddressById(orderParam.getAddressId());
-        if (addressReulst.getSuccess() == false) {
-            throw new OrderException("用户服务出错", CommonConstants.ORDER_CHECK_UN_RIGHT);
-        }
-        HashMap<String, Object> hashMap_2 = (HashMap<String, Object>) addressReulst.getData();
-        ReceiveAddress address = BeanUtil.mapToBean(hashMap_2, ReceiveAddress.class, false, CopyOptions.create());
+        ReceiveAddress address = userFeignService.getReceiveAddressById(orderParam.getAddressId());
         if (address == null) {
             throw new OrderException("收货地址不存在", CommonConstants.ORDER_CHECK_UN_RIGHT);
         }
         orderTrade.setAddress(address);
 
         //商品校验
-        Result goodsResult = goodsFeignService.goods(orderParam.getGoodsId());
-        if (goodsResult.getSuccess() == false) {
-            throw new OrderException("商品服务出错", CommonConstants.ORDER_CHECK_UN_RIGHT);
-        }
-        HashMap<String, Object> hashMap_3 = (HashMap<String, Object>) goodsResult.getData();
-        GoodsInfo goodsInfo = BeanUtil.mapToBean(hashMap_3, GoodsInfo.class, false, CopyOptions.create());
+        GoodsInfo goodsInfo = goodsFeignService.goods(orderParam.getGoodsId());
         if (goodsInfo == null || goodsInfo.getIsPublish() == 1) {
-            throw new OrderException("找不到指定商品", CommonConstants.ORDER_CHECK_UN_RIGHT);
+            throw new GoodsException("商品查询出错", 500);
         }
         orderTrade.setGoodsInfo(goodsInfo);
+
         //库存校验
-        Result skuResult = goodsFeignService.getSkuInfoById(orderParam.getSkuId());
-        if (skuResult.getSuccess() == false) {
-            throw new OrderException("商品服务出错", CommonConstants.ORDER_CHECK_UN_RIGHT);
-        }
-        HashMap<String, Object> hashMap_4 = (HashMap<String, Object>) skuResult.getData();
-        SkuInfo skuInfo = BeanUtil.mapToBean(hashMap_4, SkuInfo.class, false, CopyOptions.create());
+        SkuInfo skuInfo = goodsFeignService.getSkuInfoById(orderParam.getSkuId());
+
         if (skuInfo == null || skuInfo.getMount() < orderParam.getNumber()) {
-            throw new OrderException("商品库存不足", CommonConstants.ORDER_CHECK_UN_RIGHT);
+            throw new GoodsException("商品库存不足", 500);
         }
         orderTrade.setSkuInfo(skuInfo);
 
         BigDecimal money = new BigDecimal(orderParam.getNumber()).multiply(skuInfo.getPrice());
         if (money.compareTo(orderParam.getPrice()) != 0) {
-            throw new OrderException("商品价格出错", CommonConstants.ORDER_CHECK_UN_RIGHT);
+            throw new GoodsException("商品价格出错", 500);
         }
     }
 }

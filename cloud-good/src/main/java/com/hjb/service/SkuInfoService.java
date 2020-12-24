@@ -1,7 +1,7 @@
 package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hjb.domain.po.SkuInfo;
+import com.hjb.domain.SkuInfo;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;

@@ -1,18 +1,17 @@
 package com.hjb.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hjb.domain.dto.CartItemVo;
 import com.hjb.domain.dto.CartVo;
-import com.hjb.domain.po.CartItem;
-import com.hjb.domain.po.GoodsInfo;
-import com.hjb.domain.po.SkuInfo;
+import com.hjb.domain.CartItem;
+import com.hjb.domain.GoodsInfo;
+import com.hjb.domain.SkuInfo;
+import com.hjb.execption.good.GoodsException;
 import com.hjb.feign.GoodsFeignService;
 import com.hjb.mapper.CartItemMapper;
 import com.hjb.service.CartItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hjb.util.Result;
+import com.hjb.util.SecurityUserUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,28 +33,29 @@ public class CartItemServiceImpl extends ServiceImpl<CartItemMapper, CartItem> i
     @Autowired
     private GoodsFeignService goodsFeignService;
 
+    @Autowired
+    private SecurityUserUtils securityUserUtils;
+
     @Override
-    public boolean addCart(Long userId, Long skuId,Long number) {
+    public boolean addCart(Long skuId,Long number) {
+
+        //获取当前用户
+        Map<String, String> userInfo = securityUserUtils.getUserInfo();
 
         CartItem cartItem = this.getOne(new LambdaQueryWrapper<CartItem>()
-                .eq(CartItem::getUserId, userId)
+                .eq(CartItem::getUserId,  userInfo.get("id"))
                 .eq(CartItem::getSkuId, skuId));
 
         if(cartItem == null){
-            Result result = goodsFeignService.getSkuInfoById(skuId);
-            if(result.getSuccess() == false){
-                return false;
+            SkuInfo skuInfo = goodsFeignService.getSkuInfoById(skuId);
+            if(skuInfo == null){
+                throw new GoodsException("商品不存在",500);
             }
-            HashMap<String, Object> hashMap = (HashMap<String, Object>) result.getData();
-            SkuInfo skuInfo = BeanUtil.mapToBean(hashMap, SkuInfo.class, false, CopyOptions.create());
 
-            Result goods = goodsFeignService.goods(skuInfo.getGoodsId());
-            if(goods.getSuccess() == false){
-                return false;
+            GoodsInfo goodsInfo = goodsFeignService.goods(skuInfo.getGoodsId());
+            if(goodsInfo == null){
+                throw new GoodsException("商品不存在",500);
             }
-            HashMap<String, Object> map = (HashMap<String, Object>) goods.getData();
-            GoodsInfo goodsInfo = BeanUtil.mapToBean(map, GoodsInfo.class, false, CopyOptions.create());
-
             cartItem = new CartItem();
 
             cartItem.setCreateTime(new Date());
@@ -69,7 +69,7 @@ public class CartItemServiceImpl extends ServiceImpl<CartItemMapper, CartItem> i
             cartItem.setPrice(skuInfo.getPrice());
             cartItem.setNumber(number);
             cartItem.setIsSelect(0);
-            cartItem.setUserId(userId);
+            cartItem.setUserId(Long.valueOf(userInfo.get("id")));
             cartItem.setGoodsName(goodsInfo.getGoodsName());
 
         }else {

@@ -5,24 +5,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.domain.dto.GoodsDetailDTO;
 import com.hjb.domain.dto.SkuInfoDTO;
 import com.hjb.domain.param.GoodsInfoParam;
-import com.hjb.domain.po.GoodsAttribute;
-import com.hjb.domain.po.GoodsInfo;
-import com.hjb.domain.po.SkuInfo;
+import com.hjb.domain.GoodsAttribute;
+import com.hjb.domain.GoodsInfo;
+import com.hjb.domain.SkuInfo;
 import com.hjb.elastic.ElasticDocument;
 import com.hjb.elastic.EsService;
 import com.hjb.elastic.model.EsGoods;
-import com.hjb.elastic.model.Query;
+import com.hjb.execption.BaseException;
+import com.hjb.execption.good.GoodsException;
 import com.hjb.mapper.GoodsInfoMapper;
 import com.hjb.service.*;
 import com.hjb.util.Result;
-import io.seata.spring.annotation.GlobalTransactional;
-import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.Operator;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,11 +99,11 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
 
     //@GlobalTransactional(rollbackFor = Exception.class)
     @Override
-    public Result detail(Long id) {
+    public GoodsDetailDTO detail(Long id) {
         GoodsInfo goodsInfo = getById(id);
 
         if(goodsInfo == null){
-            return Result.FAILURE("查询商品不存在");
+            throw new GoodsException("商品不存在",500);
         }
         GoodsDetailDTO goodsDetailDTO = new GoodsDetailDTO();
 
@@ -138,8 +131,7 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
         }).collect(Collectors.toList());
         goodsDetailDTO.setSkuInfoDTOS(skuInfoDTOS);
 
-
-        return Result.SUCCESS(goodsDetailDTO);
+        return goodsDetailDTO;
     }
 
     @Transactional(rollbackFor = Exception.class)

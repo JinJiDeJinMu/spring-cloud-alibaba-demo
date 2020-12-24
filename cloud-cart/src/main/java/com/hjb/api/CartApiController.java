@@ -1,4 +1,4 @@
-package com.hjb.controller;
+package com.hjb.api;
 
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020-12-09
  */
 @RestController
-@Api(tags = "CartApi")
 @RequestMapping(value = "/api/cart")
 public class CartApiController {
 

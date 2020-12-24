@@ -1,27 +1,19 @@
 package com.hjb.controller;
 
 import cn.hutool.crypto.digest.DigestUtil;
-import cn.hutool.http.HttpUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hjb.annotation.IgnoreAuth;
-import com.hjb.domain.dto.TokenResult;
 import com.hjb.domain.param.UserParam;
-import com.hjb.domain.po.User;
+import com.hjb.domain.User;
 import com.hjb.execption.auth.UserJwtException;
-import com.hjb.jwt.JwtUtils;
 import com.hjb.service.UserService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
 
 /**
@@ -64,7 +56,7 @@ public class LoginController {
     public Result register(@RequestBody UserParam userParam){
 
         User user = userService.getOne(new LambdaQueryWrapper<User>()
-        .eq(User::getUserName,userParam.getUsername()));
+        .eq(User::getUsername,userParam.getUsername()));
 
         if(user != null){
             return Result.FAILURE("用户名已存在");
@@ -75,7 +67,7 @@ public class LoginController {
             return Result.FAILURE("手机号已被注册");
         }
         user = new User();
-        user.setUserName(userParam.getUsername());
+        user.setUsername(userParam.getUsername());
         user.setPassword(DigestUtil.bcrypt(userParam.getPassword()));
         user.setCreateTime(LocalDateTime.now());
         user.setPhone(userParam.getPhone());

@@ -2,7 +2,6 @@ package com.hjb.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hjb.domain.TbUser;
-import com.hjb.domain.po.User;
 import org.apache.ibatis.annotations.Param;
 
 /**

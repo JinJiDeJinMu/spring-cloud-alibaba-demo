@@ -1,8 +1,8 @@
 package com.hjb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hjb.domain.po.GoodsInfo;
-import com.hjb.domain.po.SkuInfo;
+import com.hjb.domain.GoodsInfo;
+import com.hjb.domain.SkuInfo;
 import com.hjb.elastic.EsService;
 import com.hjb.elastic.model.EsGoods;
 import com.hjb.mapper.SkuInfoMapper;

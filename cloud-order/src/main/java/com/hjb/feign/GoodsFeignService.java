@@ -1,8 +1,9 @@
 package com.hjb.feign;
 
-import com.hjb.domain.po.SkuInfo;
+import com.hjb.domain.GoodsInfo;
+import com.hjb.domain.SkuInfo;
+import com.hjb.domain.dto.GoodsDetailDTO;
 import com.hjb.feign.fallback.GoodsFeignFallbackService;
-import com.hjb.util.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,19 +11,19 @@ import org.springframework.web.bind.annotation.*;
 public interface GoodsFeignService {
 
 
-    @RequestMapping(value = "goodsInfo/detail",method = RequestMethod.GET)
-    Result goodsDetail(@RequestParam(value = "id") Long id);
+    @RequestMapping(value = "/api/goods/detail",method = RequestMethod.GET)
+    GoodsDetailDTO goodsDetail(@RequestParam(value = "id") Long id);
 
-    @RequestMapping(value = "goodsInfo/get",method = RequestMethod.GET)
-    Result goods(@RequestParam(value = "id") Long id);
+    @RequestMapping(value = "/api/goods/get",method = RequestMethod.GET)
+    GoodsInfo goods(@RequestParam(value = "id") Long id);
 
-    @RequestMapping(value = "skuInfo/get", method = RequestMethod.GET)
-    Result getSkuInfoById(@RequestParam(value = "id") Long id);
+    @RequestMapping(value = "/api/sku/get", method = RequestMethod.GET)
+    SkuInfo getSkuInfoById(@RequestParam(value = "id") Long id);
 
-    @RequestMapping(value = "skuInfo/addCount",method = RequestMethod.GET)
-    Result addSkuCount(@RequestParam(value = "skuId") Long skuId, @RequestParam(value = "number") Long number);
+    @RequestMapping(value = "/api/sku/addCount",method = RequestMethod.GET)
+    Boolean addSkuCount(@RequestParam(value = "skuId") Long skuId, @RequestParam(value = "number") Long number);
 
-    @RequestMapping(value = "skuInfo/reduceCount",method = RequestMethod.GET)
-    Result reduceSkuCount(@RequestParam(value = "skuId") Long skuId, @RequestParam(value = "number") Long number);
+    @RequestMapping(value = "/api/sku/reduceCount",method = RequestMethod.GET)
+    Boolean reduceSkuCount(@RequestParam(value = "skuId") Long skuId, @RequestParam(value = "number") Long number);
 
 }

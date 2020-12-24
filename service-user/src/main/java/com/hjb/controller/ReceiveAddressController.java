@@ -2,7 +2,7 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hjb.domain.po.ReceiveAddress;
+import com.hjb.domain.ReceiveAddress;
 import com.hjb.service.ReceiveAddressService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;

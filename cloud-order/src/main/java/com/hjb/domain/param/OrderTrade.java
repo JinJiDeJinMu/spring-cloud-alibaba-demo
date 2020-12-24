@@ -1,9 +1,9 @@
 package com.hjb.domain.param;
 
-import com.hjb.domain.po.GoodsInfo;
-import com.hjb.domain.po.ReceiveAddress;
-import com.hjb.domain.po.SkuInfo;
-import com.hjb.domain.po.User;
+import com.hjb.domain.GoodsInfo;
+import com.hjb.domain.ReceiveAddress;
+import com.hjb.domain.SkuInfo;
+import com.hjb.domain.User;
 import lombok.Data;
 
 @Data

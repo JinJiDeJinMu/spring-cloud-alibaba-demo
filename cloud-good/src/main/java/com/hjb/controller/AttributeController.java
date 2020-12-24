@@ -2,7 +2,7 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hjb.domain.po.Attribute;
+import com.hjb.domain.Attribute;
 import com.hjb.service.AttributeService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
