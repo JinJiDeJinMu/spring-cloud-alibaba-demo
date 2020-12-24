@@ -1,11 +1,9 @@
-package com.hjb.domain.po;
+package com.hjb.domain;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -40,10 +38,10 @@ public class SecurityUser implements UserDetails {
 
     }
 
-    public SecurityUser(TbUser userDTO,Collection<GrantedAuthority> authorities) {
-        this.setId(userDTO.getId());
-        this.setUsername(userDTO.getUsername());
-        this.setPassword(userDTO.getPassword());
+    public SecurityUser(User user,Collection<GrantedAuthority> authorities) {
+        this.setId(user.getId());
+        this.setUsername(user.getUsername());
+        this.setPassword(user.getPassword());
         this.setEnabled(true);
         this.setAuthorities(authorities);
 

@@ -1,12 +1,9 @@
 package com.hjb.config;
 
-import com.hjb.domain.po.Details;
-import com.hjb.domain.po.SecurityUser;
-import com.hjb.domain.po.UserJWT;
+import com.hjb.domain.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;

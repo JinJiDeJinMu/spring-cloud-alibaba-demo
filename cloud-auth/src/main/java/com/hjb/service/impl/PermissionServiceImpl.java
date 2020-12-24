@@ -1,9 +1,9 @@
 package com.hjb.service.impl;
 
-import com.hjb.domain.po.Permission;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hjb.domain.Permission;
 import com.hjb.mapper.PermissionMapper;
 import com.hjb.service.PermissionService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * </p>
  *
  * @author jinmu
- * @since 2020-12-11
+ * @since 2020-12-24
  */
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements PermissionService {

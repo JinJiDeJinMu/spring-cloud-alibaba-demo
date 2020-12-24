@@ -1,8 +1,7 @@
 package com.hjb.mapper;
 
-import com.hjb.domain.po.Permission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
+import com.hjb.domain.Permission;
 
 import java.util.List;
 
@@ -12,10 +11,9 @@ import java.util.List;
  * </p>
  *
  * @author jinmu
- * @since 2020-12-11
+ * @since 2020-12-24
  */
 public interface PermissionMapper extends BaseMapper<Permission> {
 
-
-    List<Permission> getUserPermission(@Param("userId") Long userId);
+    List<Permission> getUserPermission(Long userId);
 }

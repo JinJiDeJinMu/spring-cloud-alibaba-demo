@@ -1,7 +1,7 @@
 package com.hjb.service;
 
-import com.hjb.domain.po.Permission;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hjb.domain.Permission;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import java.util.List;
  * </p>
  *
  * @author jinmu
- * @since 2020-12-11
+ * @since 2020-12-24
  */
 public interface PermissionService extends IService<Permission> {
 
-    List<Permission> getUserPermission(Long userId);
+    List<Permission>  getUserPermission(Long userId);
 }

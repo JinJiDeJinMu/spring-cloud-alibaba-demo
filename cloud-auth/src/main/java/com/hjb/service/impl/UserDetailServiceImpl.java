@@ -1,11 +1,10 @@
 package com.hjb.service.impl;
 
 import com.google.common.collect.Lists;
-import com.hjb.domain.po.Permission;
-import com.hjb.domain.po.SecurityUser;
-import com.hjb.domain.po.TbUser;
+import com.hjb.domain.Permission;
+import com.hjb.domain.SecurityUser;
 import com.hjb.service.PermissionService;
-import com.hjb.service.TbUserService;
+import com.hjb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +26,7 @@ import java.util.List;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
-    private TbUserService userService;
+    private UserService userService;
 
     @Autowired
     private PermissionService permissionService;
@@ -55,7 +54,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
 
         List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
-        TbUser user = userService.getByUsername(username);
+        com.hjb.domain.User user = userService.getByUsername(username);
 
         if(user != null){
             List<Permission> userPermission = permissionService.getUserPermission(user.getId());

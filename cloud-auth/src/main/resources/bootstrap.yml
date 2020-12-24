@@ -1,40 +1,15 @@
 spring:
+  application:
+    name: service-auth
+  profiles:
+    active: dev
   cloud:
     nacos:
       config:
         server-addr: localhost:8848
         namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
         file-extension: yaml
-        cluster : default
-  application:
-    name: service-auth
-  profiles:
-    active: dev
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    jedis:
-      pool:
-        max-active: 8
-        max-wait: -1
-        max-idle: 500
-        min-idle: 0
-  main:
-    allow-bean-definition-overriding: true
 
-mybatis:
-  type-aliases-package: com.funtl.oauth2.server.domain
-  mapper-locations: classpath:mapper/*.xml
 
-auth:
-  ttl: 3600  #token存储到redis的过期时间
-  clientId: client
-  clientSecret: secret
-  cookieDomain: localhost
-  cookieMaxAge: -1
-encrypt:
-  key-store:
-    location: classpath:/changgou.jks
-    secret: changgou
-    alias: changgou
-    password: changgou
+
+

@@ -1,13 +1,14 @@
-package com.hjb.domain.po;
+package com.hjb.domain;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -15,12 +16,12 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author jinmu
- * @since 2020-12-11
+ * @since 2020-12-24
  */
 @Data
   @EqualsAndHashCode(callSuper = false)
   @Accessors(chain = true)
-@TableName("tb_permission")
+@TableName("hu_permission")
 public class Permission implements Serializable {
 
     private static final long serialVersionUID=1L;

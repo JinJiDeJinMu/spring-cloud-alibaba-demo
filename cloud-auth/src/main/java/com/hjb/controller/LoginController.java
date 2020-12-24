@@ -53,4 +53,5 @@ public class LoginController {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         CookieUtil.addCookie(response,cookieDomain,"/","Authorization",token,cookieMaxAge,false);
     }
+
 }
