@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.mapper.SeckillGoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hjb.domain.po.SeckillGoods">
+        <id column="id" property="id" />
+        <result column="activity_id" property="activityId" />
+        <result column="sku_id" property="skuId" />
+        <result column="skill_price" property="skillPrice" />
+        <result column="skill_count" property="skillCount" />
+        <result column="skill_limit_count" property="skillLimitCount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, activity_id, sku_id, skill_price, skill_count, skill_limit_count
+    </sql>
+
+</mapper>

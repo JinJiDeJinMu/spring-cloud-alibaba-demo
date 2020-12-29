@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.mapper.SeckillActivityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hjb.domain.po.SeckillActivity">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user_id" property="createUserId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, start_time, end_time, status, create_time, create_user_id
+    </sql>
+    <select id="sillList" resultType="com.hjb.domain.dto.SeckillActivityDTO">
+        SELECT
+        ac.id AS activityId,
+        ac.title,
+        ac.start_time AS startTime,
+        ac.end_time AS endTime,
+        gd.sku_id AS skuId,
+        gd.skill_price AS skillPrice,
+        gd.skill_limit_count AS skillLimitCount
+        FROM
+        hu_seckill_activity ac
+        LEFT JOIN hu_seckill_goods gd ON ac.id = gd.activity_id
+        WHERE
+        ac.STATUS = 0
+        AND now( ) &lt;= ac.end_time;
+    </select>
+
+
+</mapper>
