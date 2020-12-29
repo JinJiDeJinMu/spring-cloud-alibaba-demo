@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    alibaba:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
+        file-extension: yaml
+        cluster : default
+  application:
+    name: service-coupon
+  profiles:
+    active: dev
+mybatis:
+  mapper-locations: classpath:xml/*.xml

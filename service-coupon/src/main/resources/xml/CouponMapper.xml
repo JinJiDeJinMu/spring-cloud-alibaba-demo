@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.mapper.CouponMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hjb.domain.Coupon">
+        <id column="id" property="id" />
+        <result column="coupon_name" property="couponName" />
+        <result column="coupon_img" property="couponImg" />
+        <result column="coupon_type" property="couponType" />
+        <result column="amount" property="amount" />
+        <result column="point_amount" property="pointAmount" />
+        <result column="code" property="code" />
+        <result column="use_type" property="useType" />
+        <result column="limit_count" property="limitCount" />
+        <result column="publish_count" property="publishCount" />
+        <result column="use_count" property="useCount" />
+        <result column="receive_count" property="receiveCount" />
+        <result column="time_type" property="timeType"></result>
+        <result column="time_day" property="timeDay"></result>
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="user_level" property="userLevel" />
+        <result column="status" property="status" />
+        <result column="remark" property="remark" />
+        <result column="created_time" property="createdTime" />
+        <result column="created_user_id" property="createdUserId" />
+        <result column="created_user_name" property="createdUserName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, coupon_name, coupon_img, coupon_type, amount, point_amount, code, use_type, limit_count, publish_count, use_count, receive_count,time_type,time_day, start_time, end_time, user_level, status, remark, created_time, created_user_id, created_user_name
+    </sql>
+
+</mapper>
