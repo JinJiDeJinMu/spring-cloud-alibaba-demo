@@ -3,8 +3,6 @@ package com.hjb.mq.consume;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hjb.constant.OrderStatusConstans;
-import com.hjb.domain.Order;
-import com.hjb.domain.OrderItem;
 import com.hjb.feign.GoodsFeignService;
 import com.hjb.mq.annotation.MQConsumeService;
 import com.hjb.mq.common.MQConsumeResult;
@@ -23,7 +21,7 @@ import java.util.List;
  * 订单超时自动取消
  */
 @Slf4j
-@MQConsumeService(topic = "order_cancel", tags = "*")
+@MQConsumeService(topic = "order-cancel", tags = "*")
 @Component
 public class OrderCancelConsumeMsgProcessor extends AbstractMQMsgProcessor {
 

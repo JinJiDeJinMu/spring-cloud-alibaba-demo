@@ -2,7 +2,7 @@ package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hjb.domain.param.OrderParam;
-import com.hjb.domain.Order;
+import com.hjb.domain.po.Order;
 import com.hjb.util.Result;
 
 /**

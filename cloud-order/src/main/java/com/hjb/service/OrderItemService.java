@@ -1,7 +1,7 @@
 package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hjb.domain.OrderItem;
+import com.hjb.domain.po.OrderItem;
 
 /**
  * <p>

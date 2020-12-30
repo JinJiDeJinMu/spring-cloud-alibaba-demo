@@ -1,6 +1,7 @@
 package com.hjb.mq.consume;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hjb.domain.dto.GoodsDetailDTO;
 import com.hjb.feign.GoodsFeignService;
 import com.hjb.mq.annotation.MQConsumeService;
 import com.hjb.mq.common.MQConsumeResult;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
  * 订单提交队列消费端处理
  */
 @Slf4j
-@MQConsumeService(topic = "order_submit", tags = "*")
+@MQConsumeService(topic = "order-submit", tags = "*")
 @Component
 public class OrderConsumeMsgProcessor extends AbstractMQMsgProcessor {
 
@@ -29,12 +30,10 @@ public class OrderConsumeMsgProcessor extends AbstractMQMsgProcessor {
 
         JSONObject msg = JSONObject.parseObject(new String(messageExt.getBody()));
         long goodsId = msg.getLong("goodsId");
-        Result goodsDetail =goodsFeignService.goodsDetail(goodsId);
+        GoodsDetailDTO goodsDetail =goodsFeignService.goodsDetail(goodsId);
 
         System.out.println("sssss="+goodsDetail);
-        if(goodsDetail.getSuccess() == true){
-            System.out.println("查询结果=" + goodsDetail.getData());
-        }
+
         MQConsumeResult result = new MQConsumeResult();
         result.setSuccess(true);
         return result;

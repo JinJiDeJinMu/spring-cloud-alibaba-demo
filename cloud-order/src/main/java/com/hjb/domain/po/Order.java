@@ -1,4 +1,4 @@
-package com.hjb.domain;
+package com.hjb.domain.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,7 +7,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -49,6 +48,12 @@ public class Order implements Serializable {
      * create_time
      */
       private Date createTime;
+
+
+    /**
+     * 订单类型
+     */
+      private Integer orderType;
 
       /**
      * 用户名

@@ -1,12 +1,9 @@
 package com.hjb.controller;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hjb.domain.dto.GoodsDetailDTO;
 import com.hjb.domain.param.OrderParam;
-import com.hjb.domain.Order;
+import com.hjb.domain.po.Order;
 import com.hjb.feign.GoodsFeignService;
 import com.hjb.feign.UserFeignService;
 import com.hjb.service.OrderService;

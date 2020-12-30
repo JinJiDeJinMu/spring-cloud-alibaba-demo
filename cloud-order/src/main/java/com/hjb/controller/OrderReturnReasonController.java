@@ -2,8 +2,8 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hjb.domain.po.OrderItem;
-import com.hjb.service.OrderItemService;
+import com.hjb.domain.po.OrderReturnReason;
+import com.hjb.service.OrderReturnReasonService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,19 +18,19 @@ import java.util.List;
 
 /**
  * <p>
- * OrderItem前端控制器
+ * OrderReturnReasoncontroller
  * </p>
  *
  * @author jinmu
- * @since 2020-11-23
+ * @date 2020-12-30
  */
 @RestController
-@Api(tags = "OrderItem")
-@RequestMapping("/orderItem")
-public class OrderItemController {
+@Api(tags = "OrderReturnReason")
+@RequestMapping("/orderReturnReason")
+public class OrderReturnReasonController {
 
     @Autowired
-    public OrderItemService orderItemService;
+    public OrderReturnReasonService orderReturnReasonService;
 
     /**
     * 根据主键id查询单条
@@ -38,18 +38,18 @@ public class OrderItemController {
     */
     @ApiOperation(value = "获取单条数据")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public Result getOrderItemById(Long id){
-        return Result.SUCCESS(orderItemService.getById(id));
+    public Result getOrderReturnReasonById(Long id){
+        return Result.SUCCESS(orderReturnReasonService.getById(id));
     }
 
     /**
     * 查询全部
     * @param param 查询条件
     */
-    @ApiOperation(value = "全部查询", notes = "查询OrderItem全部数据")
+    @ApiOperation(value = "全部查询", notes = "查询OrderReturnReason全部数据")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public Result getOrderItemAll(@RequestBody HashMap<String, Object> param){
-        List<OrderItem> result= orderItemService.listByMap(param);
+    public Result getOrderReturnReasonAll(@RequestBody HashMap<String, Object> param){
+        List<OrderReturnReason> result= orderReturnReasonService.listByMap(param);
         return Result.SUCCESS(result);
     }
 
@@ -57,24 +57,24 @@ public class OrderItemController {
     * 分页查询
     * @param param 查询条件
     */
-    @ApiOperation(value = "分页查询", notes = "分页查询OrderItem全部数据")
+    @ApiOperation(value = "分页查询", notes = "分页查询OrderReturnReason全部数据")
     @RequestMapping(value = "/pageList", method = RequestMethod.POST)
-    public Result getOrderItemPage(@RequestBody HashMap<String, Object> param){
+    public Result getOrderReturnReasonPage(@RequestBody HashMap<String, Object> param){
         PageHelper.startPage(Integer.valueOf(param.get("pageNum").toString()), Integer.valueOf(param.get("pageSize").toString()));
         //手动构建查询条件
-        List<OrderItem> result= orderItemService.list();
+        List<OrderReturnReason> result= orderReturnReasonService.list();
         PageInfo pageInfo = new PageInfo(result);
         return Result.SUCCESS(pageInfo);
     }
 
     /**
     * 更新保存单条数据
-    * @param orderItem
+    * @param orderReturnReason
     */
     @ApiOperation(value = "更新保存单条数据")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result addOrUpdateOrderItem(@RequestBody OrderItem orderItem){
-        return Result.SUCCESS(orderItemService.saveOrUpdate(orderItem));
+    public Result addOrUpdateOrderReturnReason(@RequestBody OrderReturnReason orderReturnReason){
+        return Result.SUCCESS(orderReturnReasonService.saveOrUpdate(orderReturnReason));
     }
 
     /**
@@ -83,8 +83,8 @@ public class OrderItemController {
     */
     @ApiOperation(value = "批量删除数据")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result deleteOrderItemById(List<Long> ids){
-        return Result.SUCCESS(orderItemService.removeByIds(ids));
+    public Result deleteOrderReturnReasonById(List<Long> ids){
+        return Result.SUCCESS(orderReturnReasonService.removeByIds(ids));
     }
 
 }

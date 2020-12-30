@@ -1,4 +1,5 @@
 package com.hjb.controller;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.hjb.domain.dto.SeckillActivityDTO;
 import com.hjb.domain.param.ActivityParam;
 import com.hjb.service.SeckillActivityService;

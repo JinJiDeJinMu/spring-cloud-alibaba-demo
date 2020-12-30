@@ -2,6 +2,7 @@ package com.hjb.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hjb.constant.SkillRedisConstant;
@@ -171,7 +172,12 @@ public class SeckillActivityServiceImpl extends ServiceImpl<SeckillActivityMappe
                                 message.setSkillPrice(activityDTO.getSkillPrice());
                                 message.setSkuId(skuId);
 
-                                producer.send(new Message("skill-order", JSONObject.toJSONBytes(message)));
+                                Message msg = new Message();
+                                msg.setTopic("order-kill");
+                                msg.setTags("*");
+                                msg.setBody(JSONObject.toJSONBytes(message));
+
+                                producer.send(msg);
 
                                 return String.valueOf(id);
                             }

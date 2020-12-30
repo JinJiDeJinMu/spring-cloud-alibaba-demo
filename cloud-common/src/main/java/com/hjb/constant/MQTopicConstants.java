@@ -1,7 +1,8 @@
 package com.hjb.constant;
 
 public enum MQTopicConstants {
-    ORDER_CANCEL_TOPIC("order-cancel","*")
+    ORDER_CANCEL_TOPIC("order-cancel","*"),
+    ORDER_KILL_TOPIC("order-kill","*")
     ;
 
     private String topic;

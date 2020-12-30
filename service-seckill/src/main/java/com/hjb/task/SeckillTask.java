@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@Component
+//@Component
 @Slf4j
 public class SeckillTask {
 
@@ -85,7 +85,7 @@ public class SeckillTask {
     }
 
 
-    @Scheduled(cron = "0 * */1 * * ?")
+    @Scheduled(cron = "0 */30 * * * ?")
     public void changeStatus(){
 
         log.info("change status time={}",LocalDateTime.now());

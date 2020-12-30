@@ -9,6 +9,8 @@ import com.hjb.constant.OrderStatusConstans;
 import com.hjb.domain.*;
 import com.hjb.domain.param.OrderParam;
 import com.hjb.domain.param.OrderTrade;
+import com.hjb.domain.po.Order;
+import com.hjb.domain.po.OrderItem;
 import com.hjb.execption.good.GoodsException;
 import com.hjb.execption.order.OrderException;
 import com.hjb.feign.GoodsFeignService;
