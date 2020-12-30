@@ -1,7 +1,7 @@
 package com.hjb.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hjb.po.Permission;
+import com.hjb.domain.po.Permission;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

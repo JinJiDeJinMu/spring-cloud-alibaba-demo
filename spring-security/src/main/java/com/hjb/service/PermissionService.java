@@ -1,7 +1,7 @@
 package com.hjb.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hjb.po.Permission;
+import com.hjb.domain.po.Permission;
 
 import java.util.List;
 

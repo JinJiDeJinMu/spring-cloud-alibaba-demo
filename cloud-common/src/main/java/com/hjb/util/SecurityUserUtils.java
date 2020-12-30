@@ -35,7 +35,7 @@ public class SecurityUserUtils {
      *
      * @return
      */
-    public Map<String, String> getUserInfo() {
+    public Map<String, Object> getUserInfo() {
         //1.获取令牌
         String token = getToken();
 
@@ -46,7 +46,7 @@ public class SecurityUserUtils {
         String claims = jwt.getClaims();//{}
 
         //3.返回
-        Map<String,String> map = JSON.parseObject(claims, Map.class);
+        Map<String,Object> map = JSON.parseObject(claims, Map.class);
         return map;
     }
 

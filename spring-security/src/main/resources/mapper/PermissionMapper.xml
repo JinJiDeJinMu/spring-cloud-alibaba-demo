@@ -3,7 +3,7 @@
 <mapper namespace="com.hjb.mapper.PermissionMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.hjb.po.Permission">
+    <resultMap id="BaseResultMap" type="com.hjb.domain.po.Permission">
         <id column="id" property="id" />
         <result column="parent_id" property="parentId" />
         <result column="name" property="name" />
@@ -19,7 +19,7 @@
         id, parent_id, name, enname, url, description, created, updated
     </sql>
 
-    <select id="getUserPermission" resultType="com.hjb.po.Permission">
+    <select id="getUserPermission" resultType="com.hjb.domain.po.Permission">
             SELECT
               p.*
             FROM

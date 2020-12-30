@@ -36,6 +36,8 @@ public class SeckillActivity implements Serializable {
 
     private Integer status;
 
+    private Integer isCache;
+
     private Date createTime;
 
     private Long createUserId;

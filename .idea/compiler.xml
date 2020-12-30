@@ -10,10 +10,12 @@
         <module name="service-user" />
         <module name="cloud-common" />
         <module name="cloud-test" />
+        <module name="service-seckill" />
         <module name="spring-security" />
-        <module name="cloud-good" />
+        <module name="service-coupon" />
         <module name="cloud-auth" />
         <module name="cloud-cart" />
+        <module name="cloud-good" />
         <module name="service-gateway" />
       </profile>
     </annotationProcessing>
@@ -36,7 +38,9 @@
       <module name="cloud-resource" options="-parameters" />
       <module name="cloud-test" options="-parameters" />
       <module name="cloud-user" options="-parameters" />
+      <module name="service-coupon" options="-parameters" />
       <module name="service-gateway" options="-parameters" />
+      <module name="service-seckill" options="-parameters" />
       <module name="service-user" options="-parameters" />
       <module name="spring-security" options="-parameters" />
     </option>

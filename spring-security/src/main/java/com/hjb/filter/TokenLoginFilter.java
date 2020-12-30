@@ -1,9 +1,9 @@
 package com.hjb.filter;
 
-import com.hjb.po.SecurityUser;
+import com.hjb.domain.po.SecurityUser;
 import com.hjb.security.TokenManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hjb.po.TbUser;
+import com.hjb.domain.po.TbUser;
 import com.hjb.utils.R;
 import com.hjb.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;

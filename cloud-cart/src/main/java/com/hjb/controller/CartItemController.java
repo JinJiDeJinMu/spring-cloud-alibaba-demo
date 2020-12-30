@@ -84,10 +84,14 @@ public class CartItemController {
     }
 
 
-
+    /**
+     * 添加到购物车
+     * @param skuId
+     * @param number
+     * @return
+     */
     @RequestMapping(value = "add",method = RequestMethod.POST)
     public Result addCar(@RequestParam(value = "skuId") Long skuId, @RequestParam(value = "number") Long number){
-
         return Result.SUCCESS( cartItemService.addCart(skuId, number));
     }
 

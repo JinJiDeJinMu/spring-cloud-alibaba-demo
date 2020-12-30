@@ -1,7 +1,6 @@
 package com.hjb.controller;
 
-import com.hjb.po.TbUser;
-import com.hjb.service.UserService;
+import com.hjb.domain.po.TbUser;
 import com.hjb.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

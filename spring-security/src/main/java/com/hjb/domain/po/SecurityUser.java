@@ -1,4 +1,4 @@
-package com.hjb.po;
+package com.hjb.domain.po;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

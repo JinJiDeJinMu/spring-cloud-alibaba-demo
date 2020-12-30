@@ -2,7 +2,7 @@ package com.hjb.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hjb.po.TbUser;
+import com.hjb.domain.po.TbUser;
 import com.hjb.mapper.UserMapper;
 import com.hjb.service.UserService;
 import org.springframework.stereotype.Service;

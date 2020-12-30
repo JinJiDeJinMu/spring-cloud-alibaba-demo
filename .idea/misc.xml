@@ -17,6 +17,8 @@
         <option value="$PROJECT_DIR$/spring-security/pom.xml" />
         <option value="$PROJECT_DIR$/service-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/service-user/pom.xml" />
+        <option value="$PROJECT_DIR$/service-coupon/pom.xml" />
+        <option value="$PROJECT_DIR$/service-seckill/pom.xml" />
       </list>
     </option>
   </component>

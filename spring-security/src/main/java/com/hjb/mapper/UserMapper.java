@@ -1,7 +1,7 @@
 package com.hjb.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hjb.po.TbUser;
+import com.hjb.domain.po.TbUser;
 
 /**
  * <p>

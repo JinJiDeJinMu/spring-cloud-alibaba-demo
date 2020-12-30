@@ -3,7 +3,6 @@ package com.hjb.feign.fallback;
 import com.hjb.domain.ReceiveAddress;
 import com.hjb.domain.User;
 import com.hjb.feign.UserFeignService;
-import com.hjb.util.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

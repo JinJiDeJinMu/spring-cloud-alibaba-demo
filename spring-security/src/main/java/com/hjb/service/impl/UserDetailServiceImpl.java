@@ -1,7 +1,7 @@
 package com.hjb.service.impl;
 
-import com.hjb.po.Permission;
-import com.hjb.po.TbUser;
+import com.hjb.domain.po.Permission;
+import com.hjb.domain.po.TbUser;
 import com.hjb.service.PermissionService;
 import com.hjb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

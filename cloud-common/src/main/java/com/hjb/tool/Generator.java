@@ -11,14 +11,14 @@ import java.sql.Driver;
 
 
 public class Generator {
-    public final static String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/hu_shop_user?serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
+    public final static String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/hu_shop_seckill?serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true";
     public final static String DB_USER_NAME = "root";
     public final static String DB_PWD = "123456";
     public final static String SYS_PACKAGE_NAME = "com.hjb";
     public final static String SYS_AHURTOR = "jinmu";
 
     public static void main(String[] args) {
-        String[] tableNames = new String[]{"hu_user"};
+        String[] tableNames = new String[]{"hu_seckill_activity","hu_seckill_goods"};
         String[] modules = new String[]{"service", "web"};//项目模块名，需自定义
         for (String module : modules) {
             moduleGenerator(module, tableNames);
@@ -58,7 +58,7 @@ public class Generator {
                     .setXml(null)
                     .setService(null)
                     .setServiceImpl(null)
-                    .setController("/template/Controller.java.vm");
+                    .setController("/Controller.java.vm");
         } else {
             throw new IllegalArgumentException("参数匹配错误，请检查");
         }

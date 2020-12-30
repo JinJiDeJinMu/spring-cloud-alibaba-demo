@@ -40,7 +40,7 @@ public class CartItemServiceImpl extends ServiceImpl<CartItemMapper, CartItem> i
     public boolean addCart(Long skuId,Long number) {
 
         //获取当前用户
-        Map<String, String> userInfo = securityUserUtils.getUserInfo();
+        Map<String, Object> userInfo = securityUserUtils.getUserInfo();
 
         CartItem cartItem = this.getOne(new LambdaQueryWrapper<CartItem>()
                 .eq(CartItem::getUserId,  userInfo.get("id"))
@@ -69,7 +69,7 @@ public class CartItemServiceImpl extends ServiceImpl<CartItemMapper, CartItem> i
             cartItem.setPrice(skuInfo.getPrice());
             cartItem.setNumber(number);
             cartItem.setIsSelect(0);
-            cartItem.setUserId(Long.valueOf(userInfo.get("id")));
+            cartItem.setUserId(Long.valueOf(userInfo.get("id").toString()));
             cartItem.setGoodsName(goodsInfo.getGoodsName());
 
         }else {

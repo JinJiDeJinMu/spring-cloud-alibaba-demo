@@ -1,7 +1,7 @@
 package com.hjb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hjb.po.Permission;
+import com.hjb.domain.po.Permission;
 import com.hjb.mapper.PermissionMapper;
 import com.hjb.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
