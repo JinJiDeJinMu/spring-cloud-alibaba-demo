@@ -78,6 +78,7 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
+        //全文检索字段推荐使用match，精确字段推荐term
         if(query.getBrandId() != null){
             boolQueryBuilder.must(QueryBuilders.termQuery("brandId",query.getBrandId()));
 
@@ -86,13 +87,14 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
             boolQueryBuilder.must(QueryBuilders.termQuery("categoryId",query.getCategoryId()));
 
         }
+        //FunctionScoreQueryBuilder会在查询结束后对每一个匹配的文档进行一系列的重打分操作，最后以生成的最终分数进行排序
         List filterFunctionBuilders = new ArrayList<>();
-        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("goodsNames", "goodsName"),
+        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("goodsNames", query.getContent()),
                 ScoreFunctionBuilders.weightFactorFunction(10)));
-        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("goodsDescs", "goodsDesc"),
+        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("goodsDesc", query.getContent()),
                 ScoreFunctionBuilders.weightFactorFunction(5)));
-        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("keywords", "keyword"),
-                ScoreFunctionBuilders.weightFactorFunction(2)));
+        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("keywords", query.getContent()),
+                ScoreFunctionBuilders.weightFactorFunction(3)));
         FunctionScoreQueryBuilder.FilterFunctionBuilder[] builders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[filterFunctionBuilders.size()];
         filterFunctionBuilders.toArray(builders);
         FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(builders)
@@ -139,9 +141,9 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
                 ScoreFunctionBuilders.weightFactorFunction(2)));
         filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("keyword", goodsName),
                 ScoreFunctionBuilders.weightFactorFunction(2)));
-        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("brandId", brandId),
+        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.termQuery("brandId", brandId),
                 ScoreFunctionBuilders.weightFactorFunction(5)));
-        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("categoryId", categoryId),
+        filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.termQuery("categoryId", categoryId),
                 ScoreFunctionBuilders.weightFactorFunction(3)));
         FunctionScoreQueryBuilder.FilterFunctionBuilder[] builders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[filterFunctionBuilders.size()];
         filterFunctionBuilders.toArray(builders);
@@ -178,7 +180,7 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
         }else{
             boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"goodsName","goodsDesc","keyword"));
         }
-        // 品牌聚合（前20个品牌）
+        // 品牌聚合（前20个）
         TermsAggregationBuilder brandAggBuilder = AggregationBuilders.terms(keyword).field("brandName").size(20);
         // 分类聚合（前20个）
         TermsAggregationBuilder categoryAggBuilder = AggregationBuilders.terms(keyword).field("categoryName").size(20);
@@ -186,7 +188,7 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
 
         searchQuery.query(boolQueryBuilder);// 过滤条件
         searchQuery.aggregation(brandAggBuilder); // 品牌聚合
-        //searchQuery.aggregation(categoryAggBuilder);// 分类聚合
+        searchQuery.aggregation(categoryAggBuilder);// 分类聚合
 
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.source(searchQuery);
