@@ -5,7 +5,7 @@ import com.hjb.domain.po.OrderReturnApply;
 
 /**
  * <p>
- * �����˻����� Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author jinmu

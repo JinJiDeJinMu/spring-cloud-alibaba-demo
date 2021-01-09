@@ -3,6 +3,8 @@ package com.hjb.mq.consume;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hjb.constant.OrderStatusConstans;
+import com.hjb.domain.po.Order;
+import com.hjb.domain.po.OrderItem;
 import com.hjb.feign.GoodsFeignService;
 import com.hjb.mq.annotation.MQConsumeService;
 import com.hjb.mq.common.MQConsumeResult;

@@ -3,12 +3,14 @@ package com.hjb.domain.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -17,7 +19,7 @@ import java.util.Date;
  * </p>
  *
  * @author jinmu
- * @since 2020-12-30
+ * @since 2021-01-02
  */
 @Data
   @EqualsAndHashCode(callSuper = false)
@@ -38,135 +40,78 @@ public class OrderReturnApply implements Serializable {
      */
       private Long orderId;
 
-      /**
-     * �˻���Ʒid
-     */
-      private Long skuId;
+    private String orderSn;
 
       /**
-     * �������
+     * 0;退款，1退款退货，2换货
      */
-      private String orderSn;
+      private Integer type;
+
+      private Integer status;
+
+    private Long userId;
 
       /**
-     * ����ʱ��
+     * 退款金额
      */
-      private Date createTime;
+      private BigDecimal returnMoney;
 
       /**
-     * ��Ա�û���
+     * 退货原因
      */
-      private String memberUsername;
+      private String returnReason;
 
       /**
-     * �˿���
+     * 问题描述
      */
-      private BigDecimal returnAmount;
+      private String description;
 
       /**
-     * �˻�������
-     */
-      private String returnName;
-
-      /**
-     * �˻��˵绰
-     */
-      private String returnPhone;
-
-      /**
-     * ����״̬[0->�������1->�˻��У�2->����ɣ�3->�Ѿܾ�]
-     */
-      private Boolean status;
-
-      /**
-     * ����ʱ��
-     */
-      private Date handleTime;
-
-      /**
-     * ��ƷͼƬ
-     */
-      private String skuImg;
-
-      /**
-     * ��Ʒ����
-     */
-      private String skuName;
-
-      /**
-     * ��ƷƷ��
-     */
-      private String skuBrand;
-
-      /**
-     * ��Ʒ��������(JSON)
-     */
-      private String skuAttrsVals;
-
-      /**
-     * �˻�����
-     */
-      private Integer skuCount;
-
-      /**
-     * ��Ʒ����
-     */
-      private BigDecimal skuPrice;
-
-      /**
-     * ��Ʒʵ��֧������
-     */
-      private BigDecimal skuRealPrice;
-
-      /**
-     * ԭ��
-     */
-      private String reason;
-
-      /**
-     * ����
-     */
-      private String description��;
-
-      /**
-     * ƾ֤ͼƬ���Զ��Ÿ��
+     * 图片描述
      */
       private String descPics;
 
       /**
-     * �����ע
+     * 退换收货人地址
+     */
+      private String returnAddress;
+
+      /**
+     * 退换收货人
+     */
+      private String returnName;
+
+      /**
+     * 退换收货人电话
+     */
+      private String returnPhone;
+
+      /**
+     * 快递号
+     */
+      private String expressCode;
+
+      /**
+     * 处理时间
+     */
+      private LocalDateTime handleTime;
+
+      /**
+     * 处理记录
      */
       private String handleNote;
 
       /**
-     * ������Ա
+     * 处理人
      */
-      private String handleMan;
+      private String handleUserId;
 
       /**
-     * �ջ���
+     * 创建时间
      */
-      private String receiveMan;
+      private LocalDateTime createTime;
 
-      /**
-     * �ջ�ʱ��
-     */
-      private Date receiveTime;
-
-      /**
-     * �ջ���ע
-     */
-      private String receiveNote;
-
-      /**
-     * �ջ��绰
-     */
-      private String receivePhone;
-
-      /**
-     * ��˾�ջ���ַ
-     */
-      private String companyAddress;
+    private LocalDateTime updateTime;
 
 
 }

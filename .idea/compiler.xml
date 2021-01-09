@@ -8,13 +8,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="cloud-order" />
         <module name="service-user" />
-        <module name="cloud-common" />
+        <module name="cloud-cart" />
         <module name="cloud-test" />
         <module name="service-seckill" />
+        <module name="cloud-common" />
         <module name="spring-security" />
         <module name="service-coupon" />
+        <module name="service-hystrix" />
         <module name="cloud-auth" />
-        <module name="cloud-cart" />
+        <module name="service-pay" />
         <module name="cloud-good" />
         <module name="service-gateway" />
       </profile>
@@ -40,6 +42,8 @@
       <module name="cloud-user" options="-parameters" />
       <module name="service-coupon" options="-parameters" />
       <module name="service-gateway" options="-parameters" />
+      <module name="service-hystrix" options="-parameters" />
+      <module name="service-pay" options="-parameters" />
       <module name="service-seckill" options="-parameters" />
       <module name="service-user" options="-parameters" />
       <module name="spring-security" options="-parameters" />

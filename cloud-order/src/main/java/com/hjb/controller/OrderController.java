@@ -105,8 +105,18 @@ public class OrderController {
      * @return
      */
     public Result buyConfirm(OrderParam orderParam){
-
         return orderService.buyConfirm(orderParam);
+    }
+
+    /**
+     * 订单发货
+     * @param id
+     * @param deliveryCompany
+     * @param deliverySn
+     * @return
+     */
+    public Result orderSendGoods(Long id, String deliveryCompany, String deliverySn){
+        return Result.SUCCESS(orderService.orderSendGoods(id,deliveryCompany,deliverySn));
     }
 
 }

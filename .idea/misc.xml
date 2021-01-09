@@ -19,6 +19,8 @@
         <option value="$PROJECT_DIR$/service-user/pom.xml" />
         <option value="$PROJECT_DIR$/service-coupon/pom.xml" />
         <option value="$PROJECT_DIR$/service-seckill/pom.xml" />
+        <option value="$PROJECT_DIR$/service-pay/pom.xml" />
+        <option value="$PROJECT_DIR$/service-hystrix/pom.xml" />
       </list>
     </option>
   </component>

@@ -10,17 +10,19 @@ public enum  OrderStatusConstans {
     SHIPPED_ORDER(202, "已发货"),
 
 
-
-
     CONFIRM_GOODS(301, "确认收货"),
-    REFUND_ORDER(401, "已退款"),
-    COMPLETED_ORDER(402, "已完成"),
-    PINGLUN_ORDER(403, "已评价"),
 
+    COMPLETED_ORDER(400, "已完成"),
+    PINGJIA_ORDER(401, "已评价"),
+
+    APPLY_RETURN_MONEY(500,"申请退款"),
     APPLY_REFUND_GOODS(501, "申请退货"),
-    GOOD_SENDING(502, "退货寄回中"),
-    STORM_GET_GOODS(503, "仓库已收退货"),
-    STORM_REJECT_GOODS(504, "仓库拒绝退货");
+    APPLY_RETURN_MONEY_GOODS(502,"申请退款退货"),
+    GOOD_SENDING(503, "退货寄回中"),
+    ORDER_RETURN_MONEY(504,"已退款"),
+    ORDER_RETURN_GOODS(505,"已换货"),
+    STORM_GET_GOODS(506, "仓库已收退货"),
+    STORM_REJECT_GOODS(507, "仓库拒绝退货");
 
 
     public String getDesc() {

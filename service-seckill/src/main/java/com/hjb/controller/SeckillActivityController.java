@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -121,8 +118,15 @@ public class SeckillActivityController {
 
 
     @ApiOperation(value = "秒杀商品")
-    @RequestMapping(value = "/skill", method = RequestMethod.POST)
-    public Result kill(Long activityId, Long skuId, Integer num){
-        return Result.SUCCESS(seckillActivityService.kill(activityId, skuId, num));
+    @RequestMapping(value = "/{path}/skill", method = RequestMethod.POST)
+    public Result kill(Long activityId, Long skuId, Integer num,@PathVariable("path") String path){
+        return Result.SUCCESS(seckillActivityService.kill(activityId, skuId, num,path));
+    }
+
+    @ApiOperation(value = "获取秒杀地址")
+    @RequestMapping(value = "/skill-url", method = RequestMethod.GET)
+    public Result getKillUrl(Long activityId){
+
+        return Result.SUCCESS(seckillActivityService.killUrl(activityId));
     }
 }

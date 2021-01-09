@@ -87,11 +87,4 @@ public class UserController {
         return Result.SUCCESS(userService.removeByIds(ids));
     }
 
-    @GetMapping(value = "/current")
-    public Result getCurrentInfo(){
-
-        SecurityUserUtils securityUserUtils = new SecurityUserUtils();
-        return Result.SUCCESS(securityUserUtils.getUserInfo());
-    }
-
 }

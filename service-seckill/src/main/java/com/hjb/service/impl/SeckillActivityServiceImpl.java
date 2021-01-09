@@ -2,9 +2,10 @@ package com.hjb.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
 import com.hjb.constant.SkillRedisConstant;
 import com.hjb.domain.dto.SeckillActivityDTO;
 import com.hjb.domain.dto.SkillMessage;
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +140,10 @@ public class SeckillActivityServiceImpl extends ServiceImpl<SeckillActivityMappe
      * @return
      */
     @Override
-    public String kill(Long activityId, Long skuId, Integer num) {
+    public String kill(Long activityId, Long skuId, Integer num,String path) {
+        if(!redisTemplate.opsForValue().get("kill-url" + activityId).toString().equals(path)){
+            return null;
+        }
         String hashKey = SkillRedisConstant.KILL + SkillRedisConstant.ACTIVITY_ID + activityId + SkillRedisConstant.SKU_ID + skuId;
         if(!redisTemplate.hasKey(hashKey)){
             return null;
@@ -196,4 +201,14 @@ public class SeckillActivityServiceImpl extends ServiceImpl<SeckillActivityMappe
         }
         return null;
     }
+
+    @Override
+    public String killUrl(Long activityId) {
+        String url = Hashing.md5().newHasher().putString(activityId.toString(), Charsets.UTF_8).hash().toString();
+
+        redisTemplate.opsForValue().set("kill-url-" + activityId, url,6000,TimeUnit.SECONDS);
+
+        return url;
+    }
+
 }

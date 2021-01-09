@@ -18,7 +18,7 @@ public class Generator {
     public final static String SYS_AHURTOR = "jinmu";
 
     public static void main(String[] args) {
-        String[] tableNames = new String[]{"hu_order_return_apply","hu_order_return_reason"};
+        String[] tableNames = new String[]{"hu_order_return_apply"};
         String[] modules = new String[]{"service", "web"};//项目模块名，需自定义
         for (String module : modules) {
             moduleGenerator(module, tableNames);

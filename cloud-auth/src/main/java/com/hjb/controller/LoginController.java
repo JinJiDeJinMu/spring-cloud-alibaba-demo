@@ -15,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 
+
 @RestController
 @RequestMapping(value = "/au")
 public class LoginController {
@@ -38,6 +39,8 @@ public class LoginController {
     @Value("${auth.cookieMaxAge}")
     private int cookieMaxAge;
 
+    private static String TOKEN = "Authorization";
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Result login(@RequestParam("username") String username,
                         @RequestParam("password") String password){
@@ -51,7 +54,13 @@ public class LoginController {
 
     private void saveCookie(String token){
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-        CookieUtil.addCookie(response,cookieDomain,"/","Authorization",token,cookieMaxAge,false);
+        CookieUtil.addCookie(response,cookieDomain,"/",TOKEN,token,cookieMaxAge,false);
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public Result logout(){
+        saveCookie(null);
+        return Result.SUCCESS();
     }
 
 }

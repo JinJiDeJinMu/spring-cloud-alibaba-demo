@@ -28,4 +28,16 @@ public interface OrderService extends IService<Order> {
      * @return
      */
     Result submit(OrderParam orderParam);
+
+
+    boolean orderPaySuccess(Order order);
+
+    /**
+     * 订单发货
+     * @param id
+     * @param deliveryCompany
+     * @param deliverySn
+     * @return
+     */
+    boolean orderSendGoods(Long id, String deliveryCompany, String deliverySn);
 }

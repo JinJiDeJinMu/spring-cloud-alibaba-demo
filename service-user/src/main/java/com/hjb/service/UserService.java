@@ -13,6 +13,7 @@ import com.hjb.domain.User;
  */
 public interface UserService extends IService<User> {
 
-    User getLongin();
+    boolean addUserScore(Long socre);
 
+    boolean reduceUserScore(Long socre);
 }

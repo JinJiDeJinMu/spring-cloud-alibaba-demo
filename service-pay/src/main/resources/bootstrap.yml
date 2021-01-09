@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        namespace: 51b1f0f7-8a62-4b43-8be9-42892b02bb10
+        file-extension: yaml
+        cluster : default
+  application:
+    name: service-pay
+  profiles:
+    active: dev
+
+weixin:
+  appid: wx8397f8696b538317
+  partner: 1473426802
+  partnerkey: T6m9iK73b0kn9g5v426MKfHQH7X8rKwb
+  notifyurl:
+  unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+
+
+
+
+

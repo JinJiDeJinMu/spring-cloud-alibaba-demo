@@ -83,7 +83,7 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
 
         }
         if(query.getCategoryId() != null){
-            boolQueryBuilder.must(QueryBuilders.termQuery("categroyId",query.getCategoryId()));
+            boolQueryBuilder.must(QueryBuilders.termQuery("categoryId",query.getCategoryId()));
 
         }
         List filterFunctionBuilders = new ArrayList<>();
@@ -171,15 +171,16 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
     @Override
     public List<EsGoods> query(String keyword) {
 
+        List<EsGoods> result = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
         if(StringUtils.isEmpty(keyword)){
             boolQueryBuilder.must(QueryBuilders.matchAllQuery());
         }else{
             boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"goodsName","goodsDesc","keyword"));
         }
-        // 品牌聚合（取命中最多的前500个品牌）
+        // 品牌聚合（前20个品牌）
         TermsAggregationBuilder brandAggBuilder = AggregationBuilders.terms(keyword).field("brandName").size(20);
-        // 分类聚合（取命中最多的前20个）
+        // 分类聚合（前20个）
         TermsAggregationBuilder categoryAggBuilder = AggregationBuilders.terms(keyword).field("categoryName").size(20);
         SearchSourceBuilder searchQuery = new SearchSourceBuilder();
 
@@ -191,7 +192,11 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
         searchRequest.source(searchQuery);
         searchRequest.indices(ElasticDocument.INDEX);
         SearchResponse response = esTools.query(searchRequest);
-        System.out.println("结果="+response);
-        return null;
+
+        for (SearchHit hit : response.getHits().getHits()) {
+            EsGoods esGoods = JSON.parseObject(hit.getSourceAsString(),EsGoods.class);
+            result.add(esGoods);
+        }
+        return result;
     }
 }

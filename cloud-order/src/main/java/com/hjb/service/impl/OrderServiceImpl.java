@@ -28,6 +28,7 @@ import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.aspectj.weaver.ast.Or;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,31 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         sendMQ(order.getId());
 
         return Result.SUCCESS();
+    }
+
+    @Override
+    public boolean orderPaySuccess(Order order) {
+        order.setStatus(OrderStatusConstans.WAIT_SEND_GOODS.getCode());
+        order.setModifyTime(new Date());
+
+        this.saveOrUpdate(order);
+
+        return false;
+    }
+
+    @Override
+    public boolean orderSendGoods(Long id, String deliveryCompany, String deliverySn) {
+        Order order = this.getById(id);
+        if(order == null){
+            throw new OrderException("订单不存在",500);
+        }
+
+        order.setStatus(OrderStatusConstans.SHIPPED_ORDER.getCode());
+        order.setModifyTime(new Date());
+
+        this.saveOrUpdate(order);
+
+        return true;
     }
 
     /**

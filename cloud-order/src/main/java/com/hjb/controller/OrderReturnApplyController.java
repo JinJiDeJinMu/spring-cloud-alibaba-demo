@@ -2,12 +2,14 @@ package com.hjb.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hjb.domain.param.OrderReturnParam;
 import com.hjb.domain.po.OrderReturnApply;
 import com.hjb.service.OrderReturnApplyService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -85,6 +87,39 @@ public class OrderReturnApplyController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result deleteOrderReturnApplyById(List<Long> ids){
         return Result.SUCCESS(orderReturnApplyService.removeByIds(ids));
+    }
+
+    /**
+     *订单售后
+     * @param orderReturnParam
+     * @return
+     */
+    @ApiOperation(value = "订单售后")
+    @RequestMapping(value = "/return", method = RequestMethod.POST)
+    public Result orderReturn(@RequestBody @Validated OrderReturnParam orderReturnParam){
+        return Result.SUCCESS(orderReturnApplyService.createOrderReturn(orderReturnParam));
+    }
+
+    /**
+     * 售后订单发货
+     * @return
+     */
+    @ApiOperation(value = "订单售后")
+    @RequestMapping(value = "/express", method = RequestMethod.GET)
+    public Result orderExpress(Long id, String expressCode){
+        return Result.SUCCESS(orderReturnApplyService.orderExpress(id,expressCode));
+    }
+
+    /**
+     * 更新售后订单状态
+     * @param id
+     * @param status
+     * @return
+     */
+    @ApiOperation(value = "订单售后")
+    @RequestMapping(value = "/express", method = RequestMethod.GET)
+    public Result updateOrderReturn(Long id, Integer status){
+        return Result.SUCCESS(orderReturnApplyService.updateOrderReturn(id,status));
     }
 
 }

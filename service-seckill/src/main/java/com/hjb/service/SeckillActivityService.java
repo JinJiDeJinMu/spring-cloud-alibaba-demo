@@ -25,5 +25,7 @@ public interface SeckillActivityService extends IService<SeckillActivity> {
 
     List<SeckillActivityDTO> skillList();
 
-    String kill(Long activityId, Long skuId, Integer num);
+    String kill(Long activityId, Long skuId, Integer num,String path);
+
+    String killUrl(Long skuId);
 }
