@@ -62,9 +62,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private OrderItemService orderItemService;
 
     @Autowired
-    private RedissonClient redissonClient;
-
-    @Autowired
     private DefaultMQProducer producer;
 
     @Autowired
@@ -159,24 +156,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @param orderParam
      */
     public void reduceSkuInfo(SkuInfo skuInfo, OrderParam orderParam) {
-        RLock lock = redissonClient.getLock("SKU-COUNT-LOCK-" + String.valueOf(skuInfo.getId()));
-        try {
-            lock.lock(1, TimeUnit.SECONDS);
-
-            Boolean result = goodsFeignService.reduceSkuCount(skuInfo.getId(), orderParam.getNumber());
-            if (result == null || result == false) {
-                throw new OrderException("库存扣除失败", CommonConstants.ORDER_SKU_MOUNT);
-            }
-            log.info("扣除库存成功, skuInfoId: {}, 扣除: {}, 还剩: {}", skuInfo.getId(), orderParam.getNumber(), skuInfo.getMount());
-        } catch (Exception e) {
-            log.info("扣除库存失败, skuInfoId: {}, message: {}", orderParam.getSkuId(), e.getMessage());
-            throw new OrderException("库存失败", CommonConstants.ORDER_SKU_MOUNT);
-        } finally {
-            if (lock.isLocked()) {
-                if (lock.isHeldByCurrentThread()) {
-                    lock.unlock();
-                }
-            }
+        Boolean result = goodsFeignService.reduceSkuCount(skuInfo.getId(), orderParam.getNumber());
+        if (result == null || result == false) {
+            throw new OrderException("库存扣除失败", CommonConstants.ORDER_SKU_MOUNT);
         }
     }
 
