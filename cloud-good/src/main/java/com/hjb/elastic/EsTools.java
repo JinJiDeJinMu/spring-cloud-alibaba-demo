@@ -17,13 +17,17 @@ import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.PutMappingRequest;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -38,6 +42,38 @@ public class EsTools {
     @Autowired
     private RestHighLevelClient restHighLevelClient;
 
+
+    /**
+     * 修改mapping设置
+     * @param index
+     * @param mapping
+     * @return
+     */
+    public AcknowledgedResponse putMapping(String index, String mapping){
+        PutMappingRequest mappingRequest = new PutMappingRequest(index);
+        try {
+            XContentBuilder builder = JsonXContent.contentBuilder()
+                    .startObject()
+                    .startObject("properties")
+                    .startObject("content")
+                    .field("type","text")
+                    .field("analyzer","ik_max_word")
+                    .field("index","analyzed")
+                    .endObject()
+                    .endObject()
+                    .endObject();
+
+            mappingRequest.source(builder);
+
+            AcknowledgedResponse response = restHighLevelClient.indices().putMapping(mappingRequest, RequestOptions.DEFAULT);
+
+            return response;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
     /**
      * 创建索引
      * @param index
@@ -204,6 +240,12 @@ public class EsTools {
             log.info("search response={}", searchResponse);
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                restHighLevelClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return searchResponse;
     }

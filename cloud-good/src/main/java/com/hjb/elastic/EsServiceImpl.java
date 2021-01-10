@@ -15,7 +15,9 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -181,9 +184,9 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
             boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"goodsName","goodsDesc","keyword"));
         }
         // 品牌聚合（前20个）
-        TermsAggregationBuilder brandAggBuilder = AggregationBuilders.terms(keyword).field("brandName").size(20);
+        TermsAggregationBuilder brandAggBuilder = AggregationBuilders.terms("brandNames").field(keyword).size(20);
         // 分类聚合（前20个）
-        TermsAggregationBuilder categoryAggBuilder = AggregationBuilders.terms(keyword).field("categoryName").size(20);
+        TermsAggregationBuilder categoryAggBuilder = AggregationBuilders.terms("categoryNames").field(keyword).size(20);
         SearchSourceBuilder searchQuery = new SearchSourceBuilder();
 
         searchQuery.query(boolQueryBuilder);// 过滤条件
@@ -199,6 +202,15 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
             EsGoods esGoods = JSON.parseObject(hit.getSourceAsString(),EsGoods.class);
             result.add(esGoods);
         }
+        Aggregations aggregations = response.getAggregations();
+        Aggregation brandNames = aggregations.get("brandNames");
+        Aggregation categoryNames = aggregations.get("categoryNames");
+
+        List<Map<String,Object>> brands = new ArrayList<>();
+        List<Map<String,Object>> category = new ArrayList<>();
+        brands.add(brandNames.getMetaData());
+        category.add(categoryNames.getMetaData());
+
         return result;
     }
 }
