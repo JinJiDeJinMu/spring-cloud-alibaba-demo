@@ -17,7 +17,6 @@ import java.util.List;
  * @author jinmu
  * @since 2020-11-20
  */
-@Transactional(rollbackFor = Exception.class)
 public interface GoodsInfoService extends IService<GoodsInfo> {
 
 
@@ -26,7 +25,7 @@ public interface GoodsInfoService extends IService<GoodsInfo> {
      * @param goodsInfoParam
      * @return
      */
-    Result save(GoodsInfoParam goodsInfoParam);
+    Boolean save(GoodsInfoParam goodsInfoParam);
 
     /**
      * 查询商品详情

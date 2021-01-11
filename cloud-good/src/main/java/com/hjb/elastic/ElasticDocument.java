@@ -7,5 +7,5 @@ package com.hjb.elastic;
  */
 public class ElasticDocument {
 
-    public static String INDEX = "goodsku";
+    public static String INDEX = "goods";
 }

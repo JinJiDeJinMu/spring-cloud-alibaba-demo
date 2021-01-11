@@ -3,6 +3,7 @@ package com.hjb.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -83,11 +84,11 @@ public class GoodsInfo implements Serializable {
      */
       private Integer isRecommend;
 
-
+      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
       private LocalDateTime createdTime;
 
-
-      private LocalDateTime updateTime;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime updateTime;
 
 
 }

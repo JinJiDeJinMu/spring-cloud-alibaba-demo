@@ -1,5 +1,7 @@
 package com.hjb.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.domain.dto.GoodsDetailDTO;
@@ -10,8 +12,7 @@ import com.hjb.domain.GoodsInfo;
 import com.hjb.domain.SkuInfo;
 import com.hjb.elastic.ElasticDocument;
 import com.hjb.elastic.EsService;
-import com.hjb.elastic.model.EsGoods;
-import com.hjb.execption.BaseException;
+import com.hjb.elastic.model.Goods;
 import com.hjb.execption.good.GoodsException;
 import com.hjb.mapper.GoodsInfoMapper;
 import com.hjb.service.*;
@@ -48,14 +49,14 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Result save(GoodsInfoParam goodsInfoParam) {
+    public Boolean save(GoodsInfoParam goodsInfoParam) {
 
         //保存商品信息
         GoodsInfo goodsInfo = new GoodsInfo();
         BeanUtils.copyProperties(goodsInfoParam,goodsInfo);
         goodsInfo.setCreatedTime(LocalDateTime.now());
         goodsInfo.setUpdateTime(LocalDateTime.now());
-        save(goodsInfo);
+        this.save(goodsInfo);
 
         //保存商品属性
         List<GoodsAttribute> goodsAttributes = goodsInfoParam.getGoodsAttributeParamList()
@@ -79,22 +80,10 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
                 }).collect(Collectors.toList());
         skuInfoService.saveBatch(skuInfos);
 
-        //添加到es中
-        EsGoods esGoods = new EsGoods();
-        BeanUtils.copyProperties(goodsInfo,esGoods);
+        //保存到es
+        toEs(goodsInfo,skuInfos,goodsAttributes);
 
-        BigDecimal min_price = skuInfos.stream().
-                map(SkuInfo::getPrice).
-                min(Comparator.naturalOrder())
-                .orElse(BigDecimal.ZERO);
-        esGoods.setPrice(min_price);
-        esGoods.setSaleCount(0l);
-        esGoods.setGoodsAttributes(goodsAttributes);
-        esGoods.setSkuInfos(skuInfos);
-        System.out.println("esGoods=" + esGoods);
-        esService.insertData("goodsku",esGoods.getId(),esGoods);
-
-        return Result.SUCCESS();
+        return Boolean.TRUE;
     }
 
     //@GlobalTransactional(rollbackFor = Exception.class)
@@ -150,4 +139,32 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
         return Boolean.TRUE;
     }
 
+    private  boolean toEs(GoodsInfo goodsInfo,List<SkuInfo> skuInfos,List<GoodsAttribute> goodsAttributes){
+        Goods goods = new Goods();
+
+        BeanUtils.copyProperties(goodsInfo, goods);
+
+        List<Goods.Attribute> collect = goodsAttributes.stream().map(x -> {
+            Goods.Attribute attribute = new Goods.Attribute();
+
+            attribute.setId(x.getId());
+            JSONObject jsonObject = JSON.parseObject(x.getAttrValue());
+            attribute.setName(jsonObject.getString("key"));
+            attribute.setValue(jsonObject.getJSONArray("value").toJavaList(String.class));
+
+            return attribute;
+
+        }).collect(Collectors.toList());
+
+        goods.setGoodsAttributes(collect);
+
+        BigDecimal min_price = skuInfos.stream().
+                map(SkuInfo::getPrice).
+                min(Comparator.naturalOrder())
+                .orElse(BigDecimal.ZERO);
+        goods.setPrice(min_price);
+        goods.setSaleCount(0l);
+
+        return esService.insertData(ElasticDocument.INDEX, goods.getId(), goods);
+    }
 }

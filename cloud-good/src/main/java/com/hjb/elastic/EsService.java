@@ -1,6 +1,6 @@
 package com.hjb.elastic;
 
-import com.hjb.elastic.model.EsGoods;
+import com.hjb.elastic.model.Goods;
 import com.hjb.elastic.model.Query;
 
 
@@ -18,10 +18,11 @@ public interface EsService {
 
     Boolean bulkIndex(String index, List<Object> list);
 
-    List<EsGoods> search(Query query);
+    List<Goods> search(Query query);
 
-    List<EsGoods> recommend(Long id);
+    List<Goods> recommend(Long id);
 
-    List<EsGoods> query(String keyword);
+    List<Goods> query(String keyword);
+
 
 }

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjb.domain.GoodsInfo;
 import com.hjb.domain.SkuInfo;
 import com.hjb.elastic.EsService;
-import com.hjb.elastic.model.EsGoods;
+import com.hjb.elastic.model.Goods;
 import com.hjb.mapper.SkuInfoMapper;
 import com.hjb.service.GoodsInfoService;
 import com.hjb.service.SkuInfoService;
@@ -48,15 +48,6 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     @Override
     public boolean addOrUpdateSkuInfo(SkuInfo skuInfo) {
         saveOrUpdate(skuInfo);
-        //插入更新es
-        EsGoods esGoodsSKU = new EsGoods();
-
-        GoodsInfo goodsInfo = goodsInfoService.getById(skuInfo.getGoodsId());
-
-        BeanUtils.copyProperties(skuInfo,esGoodsSKU);
-        BeanUtils.copyProperties(goodsInfo,esGoodsSKU);
-        esGoodsSKU.setId(skuInfo.getId());
-        esService.insertData("goodsku",esGoodsSKU.getId(),esGoodsSKU);
 
         return Boolean.TRUE;
     }

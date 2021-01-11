@@ -1,10 +1,16 @@
 package com.hjb.elastic;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.hjb.domain.GoodsAttribute;
 import com.hjb.domain.GoodsInfo;
-import com.hjb.elastic.model.EsGoods;
+import com.hjb.domain.SkuInfo;
+import com.hjb.elastic.model.Goods;
 import com.hjb.elastic.model.Query;
+import com.hjb.service.GoodsAttributeService;
 import com.hjb.service.GoodsInfoService;
+import com.hjb.service.SkuInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
@@ -23,12 +29,16 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,6 +49,12 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
 
     @Autowired
     private GoodsInfoService goodsInfoService;
+
+    @Autowired
+    private SkuInfoService skuInfoService;
+
+    @Autowired
+    private GoodsAttributeService goodsAttributeService;
 
     @Override
     public Boolean createIndex(String index, String mapping, String setting) {
@@ -75,8 +91,8 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
     }
 
     @Override
-    public List<EsGoods> search(Query query) {
-        List<EsGoods> result = new ArrayList<>();
+    public List<Goods> search(Query query) {
+        List<Goods> result = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
@@ -123,15 +139,15 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
 
         SearchHit[] hits = response.getHits().getHits();
         for (SearchHit hit : hits) {
-            result.add(JSON.parseObject(hit.getSourceAsString(),EsGoods.class));
+            result.add(JSON.parseObject(hit.getSourceAsString(), Goods.class));
         }
         return result;
     }
 
     @Override
-    public List<EsGoods> recommend(Long id) {
+    public List<Goods> recommend(Long id) {
 
-        List<EsGoods> result = new ArrayList<>();
+        List<Goods> result = new ArrayList<>();
         GoodsInfo goodsInfo = goodsInfoService.getById(id);
         String goodsName = goodsInfo.getGoodsName();
         Long brandId = goodsInfo.getBrandId();
@@ -167,16 +183,16 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
 
         SearchResponse response = esTools.query(searchRequest);
         for (SearchHit hit : response.getHits().getHits()) {
-            EsGoods esGoods = JSON.parseObject(hit.getSourceAsString(),EsGoods.class);
+            Goods esGoods = JSON.parseObject(hit.getSourceAsString(), Goods.class);
             result.add(esGoods);
         }
         return result;
     }
 
     @Override
-    public List<EsGoods> query(String keyword) {
+    public List<Goods> query(String keyword) {
 
-        List<EsGoods> result = new ArrayList<>();
+        List<Goods> result = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
         if(StringUtils.isEmpty(keyword)){
             boolQueryBuilder.must(QueryBuilders.matchAllQuery());
@@ -199,7 +215,7 @@ public class EsServiceImpl implements com.hjb.elastic.EsService {
         SearchResponse response = esTools.query(searchRequest);
 
         for (SearchHit hit : response.getHits().getHits()) {
-            EsGoods esGoods = JSON.parseObject(hit.getSourceAsString(),EsGoods.class);
+            Goods esGoods = JSON.parseObject(hit.getSourceAsString(), Goods.class);
             result.add(esGoods);
         }
         Aggregations aggregations = response.getAggregations();

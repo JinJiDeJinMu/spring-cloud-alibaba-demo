@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hjb.domain.param.GoodsInfoParam;
 import com.hjb.domain.GoodsInfo;
+import com.hjb.elastic.EsService;
 import com.hjb.service.GoodsInfoService;
 import com.hjb.util.Result;
 import io.swagger.annotations.Api;
@@ -33,7 +34,7 @@ public class GoodsInfoController {
     private GoodsInfoService goodsInfoService;
 
     @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private EsService esService;
 
     /**
     * 根据主键id查询单条
@@ -100,11 +101,5 @@ public class GoodsInfoController {
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public Result goodsDetail(@RequestParam(value = "id") Long id){
         return Result.SUCCESS(goodsInfoService.detail(id));
-    }
-
-    @GetMapping("test")
-    public void test(String key){
-        redisTemplate.opsForValue().set("sss",key);
-        System.out.println(redisTemplate.opsForValue().get("sss"));
     }
 }

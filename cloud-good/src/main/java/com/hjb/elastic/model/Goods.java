@@ -1,7 +1,5 @@
 package com.hjb.elastic.model;
 
-import com.hjb.domain.GoodsAttribute;
-import com.hjb.domain.SkuInfo;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class EsGoods {
+public class Goods {
 
     private Long id;
 
@@ -41,7 +39,15 @@ public class EsGoods {
 
     private LocalDateTime createdTime;
 
-    List<GoodsAttribute> goodsAttributes;
+    List<Attribute> goodsAttributes;
 
-    List<SkuInfo> skuInfos;
+    @Data
+    public static class Attribute{
+
+        private Long id;
+
+        private String name;
+
+        private List<String> value;
+    }
 }
