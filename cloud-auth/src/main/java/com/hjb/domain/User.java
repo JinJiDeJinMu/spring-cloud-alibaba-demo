@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -44,7 +45,7 @@ public class User implements Serializable {
 
     private String email;
 
-    private Date registerTime;
+    private LocalDateTime registerTime;
 
       /**
      * 会员等级
@@ -68,9 +69,9 @@ public class User implements Serializable {
 
     private String lastLoginIp;
 
-    private Date lastLoginTime;
+    private LocalDateTime lastLoginTime;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
 
 }

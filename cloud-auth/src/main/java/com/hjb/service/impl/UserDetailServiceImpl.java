@@ -5,7 +5,9 @@ import com.hjb.domain.Permission;
 import com.hjb.domain.SecurityUser;
 import com.hjb.service.PermissionService;
 import com.hjb.service.UserService;
+import com.hjb.task.TaskHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -19,8 +21,16 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -33,6 +43,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
     ClientDetailsService clientDetailsService;
+
+    @Autowired
+    private TaskHandler taskHandler;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -65,8 +78,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
                     grantedAuthorities.add(grantedAuthority);
                 }
             });
+            //登录成功，异步更新记录
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = requestAttributes.getRequest();
+            taskHandler.updateUser(user,request.getRemoteAddr());
         }
 
         return new SecurityUser(user,grantedAuthorities);
     }
+
+
 }

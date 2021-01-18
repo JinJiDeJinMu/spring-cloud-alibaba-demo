@@ -1,19 +1,24 @@
 package com.hjb.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.hjb.domain.User;
+import com.hjb.domain.param.UserParam;
 import com.hjb.service.LoginService;
+import com.hjb.service.UserService;
 import com.hjb.util.AuthToken;
 import com.hjb.util.CookieUtil;
 import com.hjb.util.Result;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 
 @RestController
@@ -22,6 +27,9 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private UserService userService;
 
     @Value("${auth.clientId}")
     private String clientId;
@@ -61,6 +69,33 @@ public class LoginController {
     public Result logout(){
         saveCookie(null);
         return Result.SUCCESS();
+    }
+
+    @ApiOperation("注册")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public Result register(@Valid UserParam userParam){
+
+        User user = userService.getOne(new LambdaQueryWrapper<User>()
+                .eq(User::getUsername,userParam.getUsername()));
+
+        if(user != null){
+            return Result.FAILURE("用户名已存在");
+        }
+        user = userService.getOne(new LambdaQueryWrapper<User>()
+                .eq(User::getPhone,userParam.getPhone()));
+        if(user != null){
+            return Result.FAILURE("手机号已被注册");
+        }
+        user = new User();
+        user.setUsername(userParam.getUsername());
+        user.setPassword(new BCryptPasswordEncoder().encode(userParam.getPassword()));
+        user.setCreateTime(LocalDateTime.now());
+        user.setPhone(userParam.getPhone());
+        user.setRegisterTime(LocalDateTime.now());
+
+        userService.save(user);
+
+        return Result.SUCCESS("注册成功");
     }
 
 }

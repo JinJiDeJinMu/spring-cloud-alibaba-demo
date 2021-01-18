@@ -17,6 +17,7 @@ import com.hjb.execption.good.GoodsException;
 import com.hjb.mapper.GoodsInfoMapper;
 import com.hjb.service.*;
 import com.hjb.util.Result;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,7 +87,7 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
         return Boolean.TRUE;
     }
 
-    //@GlobalTransactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public GoodsDetailDTO detail(Long id) {
         GoodsInfo goodsInfo = getById(id);
@@ -166,5 +167,42 @@ public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo
         goods.setSaleCount(0l);
 
         return esService.insertData(ElasticDocument.INDEX, goods.getId(), goods);
+    }
+
+    @Override
+    public void test(){
+        List<GoodsInfo> list = this.list();
+        List<Object> result = list.stream().map(e -> {
+            Goods goods = new Goods();
+
+            BeanUtils.copyProperties(e, goods);
+
+            List<GoodsAttribute> goodsAttributes = goodsAttributeService.list(new LambdaQueryWrapper<GoodsAttribute>().eq(GoodsAttribute::getGoodsId, e.getId()));
+            List<Goods.Attribute> collect = goodsAttributes.stream().map(x -> {
+                Goods.Attribute attribute = new Goods.Attribute();
+
+                attribute.setId(x.getId());
+                JSONObject jsonObject = JSON.parseObject(x.getAttrValue());
+                attribute.setName(jsonObject.getString("key"));
+                attribute.setValue(jsonObject.getJSONArray("value").toJavaList(String.class));
+
+                return attribute;
+
+            }).collect(Collectors.toList());
+
+            goods.setGoodsAttributes(collect);
+
+            List<SkuInfo> skuInfos = skuInfoService.list(new LambdaQueryWrapper<SkuInfo>().eq(SkuInfo::getGoodsId, e.getId()));
+            BigDecimal min_price = skuInfos.stream().
+                    map(SkuInfo::getPrice).
+                    min(Comparator.naturalOrder())
+                    .orElse(BigDecimal.ZERO);
+            goods.setPrice(min_price);
+            goods.setSaleCount(0l);
+
+            return goods;
+        }).collect(Collectors.toList());
+
+        esService.bulkIndex(ElasticDocument.INDEX,result);
     }
 }

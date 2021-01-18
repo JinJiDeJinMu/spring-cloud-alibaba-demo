@@ -41,4 +41,5 @@ public interface GoodsInfoService extends IService<GoodsInfo> {
      */
     Boolean deleteGoods(List<Long> ids);
 
+    void test();
 }

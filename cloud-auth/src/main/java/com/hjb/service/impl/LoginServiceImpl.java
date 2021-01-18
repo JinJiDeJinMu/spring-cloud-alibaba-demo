@@ -47,14 +47,13 @@ public class LoginServiceImpl implements LoginService {
          * 参数2  指定要发送的请求的方法 PSOT
          * 参数3 指定请求实体(包含头和请求体数据)
          */
-        HttpEntity<MultiValueMap> requestentity = new HttpEntity<MultiValueMap>(formData,headers);
+        HttpEntity<MultiValueMap> result = new HttpEntity<MultiValueMap>(formData,headers);
 
-        ResponseEntity<Map> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestentity, Map.class);
+        ResponseEntity<Map> responseEntity = restTemplate.exchange(url, HttpMethod.POST, result, Map.class);
         //5.接收到返回的响应(就是:令牌的信息)
         Map body = responseEntity.getBody();
 
         //封装一次.
-
         AuthToken authToken = new AuthToken();
         //访问令牌(jwt)
         String accessToken = (String) body.get("access_token");
@@ -63,12 +62,12 @@ public class LoginServiceImpl implements LoginService {
         //jti，作为用户的身份标识
         String jwtToken= (String) body.get("jti");
 
-
         authToken.setJti(jwtToken);
         authToken.setAccessToken(accessToken);
         authToken.setRefreshToken(refreshToken);
 
         //6.返回
+
         return authToken;
     }
 }

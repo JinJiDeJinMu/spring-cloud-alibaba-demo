@@ -1,6 +1,7 @@
 package com.hjb.elastic;
 
 import com.alibaba.fastjson.JSON;
+import com.hjb.elastic.model.Goods;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -18,16 +19,15 @@ import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.PutMappingRequest;
+import org.elasticsearch.client.ml.PostDataRequest;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -170,8 +170,9 @@ public class EsTools {
     public BulkResponse bulkIndex(String index, List<Object> list) {
         BulkRequest request = new BulkRequest();
         list.forEach(e->{
-            IndexRequest indexRequest = new IndexRequest(index);
-            indexRequest.source(JSON.parseObject(JSON.toJSONString(e), Map.class));
+            Goods goods = (Goods) e;
+            IndexRequest indexRequest = new IndexRequest(index).id(goods.getId().toString());
+            indexRequest.source(JSON.toJSONString(e), XContentType.JSON);
             request.add(indexRequest);
         });
         BulkResponse bulkResponse = null;
