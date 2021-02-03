@@ -16,7 +16,7 @@ public class TaskHandler {
 
     @Async(value = "service-auth-task")
     public void updateUser(com.hjb.domain.User user,String url) {
-        log.info("service-auth-task is run Thread = " + Thread.currentThread().getName());
+        log.info("service-auth-task is run Thread = {}" , Thread.currentThread().getName());
         user.setLastLoginIp(url);
         user.setLastLoginTime(LocalDateTime.now());
 
