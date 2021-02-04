@@ -1,68 +1,105 @@
 package com.hjb.controller;
 
-import com.hjb.service.AuthService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.hjb.domain.User;
+import com.hjb.domain.param.UserParam;
+import com.hjb.service.LoginService;
+import com.hjb.service.UserService;
 import com.hjb.util.AuthToken;
 import com.hjb.util.CookieUtil;
 import com.hjb.util.Result;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+
 
 @RestController
 @RequestMapping(value = "/auth")
 public class AuthController {
 
-    //客户端ID
+    @Autowired
+    private LoginService loginService;
+
+    @Autowired
+    private UserService userService;
+
     @Value("${auth.clientId}")
     private String clientId;
 
-    //秘钥
     @Value("${auth.clientSecret}")
     private String clientSecret;
 
-    //Cookie存储的域名
+    private static final String GRAND_TYPE_PASSWORD = "password";
+
+    private static final String GRAND_TYPE_REFRESH = "refresh_token";
+
     @Value("${auth.cookieDomain}")
     private String cookieDomain;
 
-    //Cookie生命周期
     @Value("${auth.cookieMaxAge}")
     private int cookieMaxAge;
 
-    @Autowired
-    AuthService authService;
+    private static String TOKEN = "Authorization";
 
-    @PostMapping("/login")
-    public Result login(String username, String password) {
-        if(StringUtils.isEmpty(username)){
-            throw new RuntimeException("用户名不允许为空");
-        }
-        if(StringUtils.isEmpty(password)){
-            throw new RuntimeException("密码不允许为空");
-        }
-        //申请令牌
-        AuthToken authToken =  authService.login(username,password,clientId,clientSecret);
-
-        //用户身份令牌
-        String access_token = authToken.getAccessToken();
-        //将令牌存储到cookie
-        saveCookie(access_token);
-
-        return Result.SUCCESS("登录成功");
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Result login(@RequestParam("username") String username,
+                        @RequestParam("password") String password){
+        AuthToken authToken = loginService.login(username, password, clientId, clientSecret, GRAND_TYPE_PASSWORD);
+        saveCookie(authToken.getAccessToken());
+        return Result.SUCCESS(authToken);
     }
 
-    /***
-     * 将令牌存储到cookie
-     * @param token
-     */
+    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
+    public Result refresh(@RequestParam("refresh_token") String refresh_token){
+        AuthToken authToken = loginService.refresh(refresh_token, clientId, clientSecret, GRAND_TYPE_REFRESH);
+        saveCookie(authToken.getAccessToken());
+        return Result.SUCCESS(authToken);
+    }
+
     private void saveCookie(String token){
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-        CookieUtil.addCookie(response,cookieDomain,"/","Authorization",token,cookieMaxAge,false);
+        CookieUtil.addCookie(response,cookieDomain,"/",TOKEN,token,cookieMaxAge,false);
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public Result logout(){
+        saveCookie(null);
+        return Result.SUCCESS();
+    }
+
+    @ApiOperation("注册")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public Result register(@Valid UserParam userParam){
+
+        User user = userService.getOne(new LambdaQueryWrapper<User>()
+                .eq(User::getUsername,userParam.getUsername()));
+
+        if(user != null){
+            return Result.FAILURE("用户名已存在");
+        }
+        user = userService.getOne(new LambdaQueryWrapper<User>()
+                .eq(User::getPhone,userParam.getPhone()));
+        if(user != null){
+            return Result.FAILURE("手机号已被注册");
+        }
+        user = new User();
+        user.setUsername(userParam.getUsername());
+        user.setPassword(new BCryptPasswordEncoder().encode(userParam.getPassword()));
+        user.setCreateTime(LocalDateTime.now());
+        user.setPhone(userParam.getPhone());
+        user.setRegisterTime(LocalDateTime.now());
+
+        userService.save(user);
+
+        return Result.SUCCESS("注册成功");
+    }
+
 }

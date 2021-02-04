@@ -11,4 +11,4 @@ spring:
         file-extension: yaml
 
 ignore:
-  url: /service-good/goodsInfo/get,/service-auth/au/login,/service-auth/au/logout,/service-auth/au/register
+  url: /service-good/goodsInfo/get,/service-auth/auth/login,/service-auth/auth/logout,/service-auth/auth/register
