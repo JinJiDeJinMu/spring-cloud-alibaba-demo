@@ -1,0 +1,23 @@
+
+ˆ
+java:S13192"mThe type of the "param" object should be an interface such as "Map" rather than the implementation "HashMap".(ŠÙ“¥üÿÿÿÿ
+J
+java:S3740A"/Provide the parametrized type for this generic.(ÄñªÎşÿÿÿÿ
+`
+java:S4488<"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(µ¨î
+j
+java:S3252>"OUse static access with "com.github.pagehelper.page.PageMethod" for "startPage".(íÆÙÔùÿÿÿÿ
+ƒ
+java:S1319="mThe type of the "param" object should be an interface such as "Map" rather than the implementation "HashMap".(µ¯×Ñ
+Q
+java:S1128";Remove this unused import 'com.hjb.util.SecurityUserUtils'.(ƒ›˜Ø
+`
+java:S44881"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ø›ˆˆ
+`
+java:S4488J"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(Ä¯À
+^
+java:S4488'"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ìêœÂ
+J
+java:S3740A"/Provide the parametrized type for this generic.(ÄñªÎşÿÿÿÿ
+_
+java:S4488U"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(…½‹6

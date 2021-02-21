@@ -1,0 +1,14 @@
+
+`
+java:S4488O"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ÚŞ•
+c
+java:S4488H"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ïşÒÊûÿÿÿÿ
+e
+java:S44884"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(Ãèïûÿÿÿÿ
+m
+java:S2259D"RA "NullPointerException" could be thrown; "getRequestAttributes" is nullable here.(Ëù¿ßşÿÿÿÿ
+l
+java:S4488<"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ãã·ıÿÿÿÿ8ñ¸İö.
+r	java:S117="QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‰İË¾ûÿÿÿÿ8Æˆİö.
+k
+java:S30082"PRename this field "TOKEN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(İá˜÷ùÿÿÿÿ

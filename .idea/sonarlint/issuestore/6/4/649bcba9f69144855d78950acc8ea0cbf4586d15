@@ -1,0 +1,32 @@
+
+Q
+java:S3740C"/Provide the parametrized type for this generic.(¹šÓåıÿÿÿÿ8É¢Şö.
+6
+java:S2129!" Remove this "String" constructor(ÔêÈ¦
+J
+java:S3740'"/Provide the parametrized type for this generic.(®Í§¡ÿÿÿÿÿ
+r	java:S1170"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡³îÿùÿÿÿÿ8ÚÊİö.
+=
+java:S21294" Remove this "String" constructor(ÔêÈ¦8Åìİö.
+e
+java:S2259,"H"NullPointerException" will be thrown when invoking method "getToken()".(“Öş8ª˜£Şö.
+Q
+java:S3740<"/Provide the parametrized type for this generic.(“µâµøÿÿÿÿ8Åìİö.
+E
+java:S3740*"/Provide the parametrized type for this generic.(Ìè…™
+L
+java:S3740>"/Provide the parametrized type for this generic.(Ìè…™8èó•İö.
+J
+java:S3740'"/Provide the parametrized type for this generic.(®Í§¡ÿÿÿÿÿ
+Q
+java:S3740:"/Provide the parametrized type for this generic.(®Í§¡ÿÿÿÿÿ8Åìİö.
+Q
+java:S3740:"/Provide the parametrized type for this generic.(®Í§¡ÿÿÿÿÿ8Åìİö.
+e
+java:S2259@"H"NullPointerException" will be thrown when invoking method "getToken()".(“Öş8èÒ¡Şö.
+{
+java:S2293:"YReplace the type specification in this constructor call with the diamond operator ("<>").(®Í§¡ÿÿÿÿÿ8Åìİö.
+J
+java:S3740)"/Provide the parametrized type for this generic.(“µâµøÿÿÿÿ
+t
+java:S2293'"YReplace the type specification in this constructor call with the diamond operator ("<>").(®Í§¡ÿÿÿÿÿ

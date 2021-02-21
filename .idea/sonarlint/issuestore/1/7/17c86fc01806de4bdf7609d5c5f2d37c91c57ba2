@@ -1,0 +1,23 @@
+
+ƒ
+java:S1319/"mThe type of the "param" object should be an interface such as "Map" rather than the implementation "HashMap".(ıÚ”Ô
+ˆ
+java:S1319:"mThe type of the "param" object should be an interface such as "Map" rather than the implementation "HashMap".(‚´Šªúÿÿÿÿ
+J
+java:S3740>"/Provide the parametrized type for this generic.(ÄñªÎşÿÿÿÿ
+J
+java:S3740>"/Provide the parametrized type for this generic.(ÄñªÎşÿÿÿÿ
+^
+java:S4488$"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ìêœÂ
+`
+java:S4488."JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ø›ˆˆ
+`
+java:S44889"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(µ¨î
+j
+java:S3252;"OUse static access with "com.github.pagehelper.page.PageMethod" for "startPage".(íÆÙÔùÿÿÿÿ
+`
+java:S4488G"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(Ä¯À
+_
+java:S4488Q"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(…½‹6
+e
+java:S4488]"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(µò»ÿÿÿÿÿ

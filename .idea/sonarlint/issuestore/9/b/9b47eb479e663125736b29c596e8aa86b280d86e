@@ -1,0 +1,20 @@
+
+a
+java:S1128
+"KRemove this unused import 'org.springframework.context.annotation.Primary'.(“ğ›ß
+v
+java:S1128"`Remove this unused import 'org.springframework.boot.context.properties.ConfigurationProperties'.(¦Õ¸Ç
+b
+java:S1128"LRemove this unused import 'org.springframework.boot.jdbc.DataSourceBuilder'.(Í÷í
+n
+java:S1128"SRemove this unused import 'org.springframework.beans.factory.annotation.Qualifier'.(íàÄ®ıÿÿÿÿ
+ƒ
+java:S1128"hRemove this unused import 'org.springframework.security.oauth2.provider.code.AuthorizationCodeServices'.(ÉÏÂ›şÿÿÿÿ
+[
+java:S1128"@Remove this unused import 'org.springframework.http.HttpMethod'.(Ê¨Ä¡øÿÿÿÿ
+t
+java:S1128"YRemove this unused import 'org.springframework.security.crypto.password.PasswordEncoder'.(‰¡ßáÿÿÿÿÿ
+y
+java:S1128"dRemove this unused import 'org.springframework.security.oauth2.provider.token.store.JdbcTokenStore'.(‡ã(
+‡
+java:S1128"lRemove this unused import 'org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices'.(à„Ãşúÿÿÿÿ

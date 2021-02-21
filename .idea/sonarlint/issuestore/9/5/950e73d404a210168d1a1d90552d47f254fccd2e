@@ -1,0 +1,9 @@
+
+C
+java:S1185."(Remove this method to simply inherit it.(Î…ü†ıÿÿÿÿ
+z
+java:S1488)"_Immediately return this expression instead of assigning it to the temporary variable "manager".(¡Äøÿÿÿÿ
+‘
+java:S1128"{Remove this unused import 'org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity'.(Ô¦ø
+s
+java:S1128"]Remove this unused import 'org.springframework.security.core.userdetails.UserDetailsService'.(¶…¥à

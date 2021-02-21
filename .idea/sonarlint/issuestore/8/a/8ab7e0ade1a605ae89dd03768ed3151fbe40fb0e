@@ -1,0 +1,18 @@
+
+g
+java:S1128
+"LRemove this unused import 'org.springframework.scheduling.annotation.Async'.(Ýë€Ûúÿÿÿÿ
+B
+java:S1128",Remove this unused import 'java.time.Clock'.(ÕýÓÙ
+©
+java:S11303"’Remove the declaration of thrown exception 'org.springframework.security.core.userdetails.UsernameNotFoundException' which is a runtime exception.(žÌÃŸ
+j
+java:S2259S"OA "NullPointerException" could be thrown; "requestAttributes" is nullable here.(ñé»‘üÿÿÿÿ
+O
+java:S1128"4Remove this unused import 'java.time.LocalDateTime'.(æÃ§ƒüÿÿÿÿ
+C
+java:S1128"-Remove this unused import 'java.time.ZoneId'.( Æ½“
+Z
+java:S1128!"DRemove this unused import 'java.util.concurrent.ExecutionException'.(¡£ØÍ
+Y
+java:S1128 "CRemove this unused import 'java.util.concurrent.CompletableFuture'.(ôÞä´

@@ -1,0 +1,23 @@
+
+E
+java:S3740n"/Provide the parametrized type for this generic.(µùæ™
+F
+java:S3740œ"/Provide the parametrized type for this generic.(µùæ™
+`
+java:S1192q"JDefine a constant instead of duplicating this literal "goodsDesc" 3 times.(›ğØş
+y
+java:S1128"^Remove this unused import 'com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper'.(à¡òúÿÿÿÿ
+N
+java:S1128"3Remove this unused import 'com.hjb.domain.SkuInfo'.(£™É’ÿÿÿÿÿ
+G
+java:S1128$"1Remove this unused import 'java.math.BigDecimal'.(êêŠ
+S
+java:S1128)"8Remove this unused import 'java.util.stream.Collectors'.(Óóº´úÿÿÿÿ
+O
+java:S1128":Remove this unused import 'com.hjb.domain.GoodsAttribute'.(îĞğ(
+R
+java:S1128"<Remove this unused import 'com.alibaba.fastjson.JSONObject'.(äıµ
+G
+java:S1128&"1Remove this unused import 'java.util.Comparator'.(î¹ó¹
+V
+java:S1128 "@Remove this unused import 'org.springframework.beans.BeanUtils'.(ŠğÄÜ
